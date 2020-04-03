@@ -55,10 +55,10 @@ namespace Kuhpik
             SceneManager.LoadScene(sceneIndex);
         }
 
-        public static void ChangeGameState(string name)
+        public static void ChangeGameState(EGamestate type)
         {
             fsm.State.Deactivate();
-            fsm.ChangeState(name);
+            fsm.ChangeState(type.GetName());
             fsm.State.Activate();
         }
 

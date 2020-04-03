@@ -6,7 +6,7 @@ namespace Kuhpik
 {
     public class GameStateInstaller : MonoBehaviour
     {
-        [SerializeField] private string firstGameStateName;
+        [SerializeField] private EGamestate firstGameState;
         [SerializeField] private bool useGameObjects;
         [SerializeField] [ReorderableList] [HideIf("useGameObjects")] private GameStateData[] gameStateDatas;
         [SerializeField] [ReorderableList] [ShowIf("useGameObjects")] private GameStateSetuper[] gameStateSetupers;
@@ -18,7 +18,7 @@ namespace Kuhpik
             if (useGameObjects) ProcessWithGameObjects(fsm);
             else ProcessWithSettings(fsm);
 
-            fsm.SetState(firstGameStateName);
+            fsm.SetState(firstGameState.GetName());
             return fsm;
         }
 
@@ -34,7 +34,7 @@ namespace Kuhpik
                         systems.Add(setuper.transform.GetChild(i).GetComponent<GameSystem>());
                 }
 
-                fsm.AddState(setuper.name, new GameState(setuper.IsRestarting, systems.ToArray()), setuper.AllowedTransitions);
+                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, systems.ToArray()), setuper.AllowedTransitions);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Kuhpik
         {
             foreach (var data in gameStateDatas)
             {
-                fsm.AddState(data.name, new GameState(data.isRestarting, data.systems), data.allowedTransitions);
+                fsm.AddState(data.type.GetName(), new GameState(data.type, data.isRestarting, data.systems), data.allowedTransitions);
             }
         }
     }

@@ -7,7 +7,7 @@ namespace Kuhpik
     [System.Serializable]
     public struct GameStateData
     {
-        public string name;
+        public EGamestate type;
         public GameSystem[] systems;
         public string allowedTransitions;
         public bool isRestarting;
@@ -20,11 +20,13 @@ namespace Kuhpik
         public bool IsInited { get; private set; }
 
         private bool isRestarting;
+        private EGamestate type;
 
-        public GameState(bool isRestarting, params MonoBehaviour[] systems)
+        public GameState(EGamestate type, bool isRestarting, params MonoBehaviour[] systems)
         {
             Systems = systems.Select(x => x as IGameSystem).ToArray();
             this.isRestarting = isRestarting;
+            this.type = type;
             Setup();
         }
 
@@ -35,6 +37,8 @@ namespace Kuhpik
                 Perform<IIniting>();
                 IsInited = true;
             }
+
+            UIManager.OpenScreen(type);
         }
 
         public void Deactivate()

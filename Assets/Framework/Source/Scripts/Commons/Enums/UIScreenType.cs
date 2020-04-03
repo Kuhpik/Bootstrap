@@ -1,3 +1,5 @@
-﻿public enum UIScreenType
+﻿public enum EGamestate
 {
+    Game,
+    Menu
 }
