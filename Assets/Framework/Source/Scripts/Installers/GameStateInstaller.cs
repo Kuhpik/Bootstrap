@@ -8,8 +8,9 @@ namespace Kuhpik
     {
         [SerializeField] private EGamestate firstGameState;
         [SerializeField] private bool useGameObjects;
+        [SerializeField] [ShowIf("useGameObjects")] private bool getFromScene;
         [SerializeField] [ReorderableList] [HideIf("useGameObjects")] private GameStateData[] gameStateDatas;
-        [SerializeField] [ReorderableList] [ShowIf("useGameObjects")] private GameStateSetuper[] gameStateSetupers;
+        [SerializeField] [ReorderableList] [HideIf("getFromScene")] private GameStateSetuper[] gameStateSetupers;
 
         public FSMProcessor<GameState> InstallGameStates()
         {
@@ -24,7 +25,9 @@ namespace Kuhpik
 
         private void ProcessWithGameObjects(FSMProcessor<GameState> fsm)
         {
-            foreach (var setuper in gameStateSetupers)
+            var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
+
+            foreach (var setuper in setupers)
             {
                 var systems = new List<GameSystem>();
 

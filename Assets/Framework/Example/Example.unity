@@ -411,6 +411,11 @@ PrefabInstance:
       propertyPath: gameStateDatas.Array.data[0].type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: getFromScene
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4987531766057273802, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: m_LocalPosition.x
