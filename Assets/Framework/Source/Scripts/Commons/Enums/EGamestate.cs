@@ -1,5 +1,5 @@
 ﻿public enum EGamestate
 {
-    Game,
-    Menu
+    Menu,
+    Game
 }
