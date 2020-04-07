@@ -51,9 +51,12 @@ namespace Kuhpik
                 screen.Close();
             }
 
-            stateScreens[type].Open();
-            background.gameObject.SetActive(stateScreens[type].UseBackground);
-            background.color = stateScreens[type].BackgroundColor;
+            if (stateScreens.ContainsKey(type))
+            {
+                stateScreens[type].Open();
+                background.gameObject.SetActive(stateScreens[type].UseBackground);
+                background.color = stateScreens[type].BackgroundColor;
+            }
         }
 
         public static void OpenScreenAdditionaly(EGamestate type)
