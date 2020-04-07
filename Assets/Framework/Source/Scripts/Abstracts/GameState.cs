@@ -9,7 +9,7 @@ namespace Kuhpik
     {
         public EGamestate type;
         public GameSystem[] systems;
-        public string allowedTransitions;
+        public EGamestate[] allowedTransitions;
         public bool isRestarting;
     }
 

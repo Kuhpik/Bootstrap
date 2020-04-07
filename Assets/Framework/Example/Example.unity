@@ -388,6 +388,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
+      propertyPath: gameStateDatas.Array.data[0].systems.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: gameStateDatas.Array.data[0].allowedTransitions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
       propertyPath: firstGameStateName
       value: 1
       objectReference: {fileID: 0}
@@ -409,11 +419,21 @@ PrefabInstance:
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: gameStateDatas.Array.data[0].type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: getFromScene
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: gameStateDatas.Array.data[0].systems.Array.data[0]
+      value: 
+      objectReference: {fileID: 1581325951}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: gameStateDatas.Array.data[0].allowedTransitions.Array.data[0]
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4987531766057273802, guid: 865d14520ea908b47818a741324e3095,

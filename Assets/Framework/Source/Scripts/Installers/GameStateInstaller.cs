@@ -37,7 +37,7 @@ namespace Kuhpik
                         systems.Add(setuper.transform.GetChild(i).GetComponent<GameSystem>());
                 }
 
-                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, systems.ToArray()), setuper.AllowedTransitions);
+                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, systems.ToArray()), setuper.AllowedTransitions.GetNames());
             }
         }
 
@@ -45,7 +45,7 @@ namespace Kuhpik
         {
             foreach (var data in gameStateDatas)
             {
-                fsm.AddState(data.type.GetName(), new GameState(data.type, data.isRestarting, data.systems), data.allowedTransitions);
+                fsm.AddState(data.type.GetName(), new GameState(data.type, data.isRestarting, data.systems), data.allowedTransitions.GetNames());
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Kuhpik
@@ -16,6 +17,11 @@ namespace Kuhpik
         public static string GetName<T>(this T value) where T : Enum
         {
             return Enum.GetName(typeof(T), value);
+        }
+
+        public static string[] GetNames<T>(this T[] values) where T : Enum
+        {
+            return values.Select(x => Enum.GetName(typeof(T), x)).ToArray();
         }
 
         public static void PerformAction<T>(this IGameSystem system) where T : IGameSystem

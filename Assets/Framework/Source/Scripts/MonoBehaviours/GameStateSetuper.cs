@@ -12,6 +12,6 @@ namespace Kuhpik
 
         public EGamestate Type => type;
         public bool IsRestarting => isRestarting;
-        public string[] AllowedTransitions => allowedTransitions.Select(x => x.GetName()).ToArray();
+        public EGamestate[] AllowedTransitions => allowedTransitions;
     }
 }
