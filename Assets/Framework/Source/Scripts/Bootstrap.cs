@@ -10,8 +10,6 @@ namespace Kuhpik
     {
         private const string saveKey = "saveKey";
 
-        [Header("Settings")]
-        [SerializeField] [Range(10, 60)] private int updatesPerSecons = 60;
         [SerializeField] private GameConfig config;
 
         private static PlayerData playerData;
@@ -20,12 +18,6 @@ namespace Kuhpik
 
         private void Start()
         {
-            if (updatesPerSecons < 60)
-            {
-                QualitySettings.vSyncCount = 0;
-                Application.targetFrameRate = updatesPerSecons;
-            }
-
             InitSystems();
         }
 
