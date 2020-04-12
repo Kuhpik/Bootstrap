@@ -49,18 +49,9 @@ namespace Kuhpik
         }
 
         /// <summary>
-        /// Select random element of array.
+        /// Select random element of collection.
         /// </summary>
-        public static T GetRandom<T>(this T[] collection)
-        {
-            var rng = Random.Range(0, collection.Length);
-            return collection[rng];
-        }
-
-        /// <summary>
-        /// Select random element of list
-        /// </summary>
-        public static T GetRandom<T>(this List<T> collection)
+        public static T GetRandom<T>(this IList<T> collection)
         {
             var rng = Random.Range(0, collection.Count);
             return collection[rng];

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Kuhpik
 {
@@ -14,8 +13,6 @@ namespace Kuhpik
         [Header("Settings")]
         [SerializeField] [Range(10, 60)] private int updatesPerSecons = 60;
         [SerializeField] private GameConfig config;
-        [SerializeField] private bool isTapToStart;
-        [SerializeField] private Button startButton;
 
         private static PlayerData playerData;
         private static FSMProcessor<GameState> fsm;
@@ -29,8 +26,7 @@ namespace Kuhpik
                 Application.targetFrameRate = updatesPerSecons;
             }
 
-            if (isTapToStart) startButton.onClick.AddListener(InitSystems);
-            else InitSystems();
+            InitSystems();
         }
 
         private void Update()
@@ -73,6 +69,7 @@ namespace Kuhpik
             LoadPlayerData();
             HandleGameStates();
             HandleInjections();
+            HandleCamerasFOV();
 
             fsm.State.Activate();
         }
@@ -95,6 +92,11 @@ namespace Kuhpik
         private void HandleInjections()
         {
             GetComponentInChildren<InjectionsInstaller>().Inject(systems.Values, config, playerData, new GameData());
+        }
+
+        private void HandleCamerasFOV()
+        {
+            GetComponentInChildren<CameraInstaller>().Process();
         }
     }
 }

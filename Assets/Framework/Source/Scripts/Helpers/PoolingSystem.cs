@@ -218,5 +218,27 @@ namespace Kuhpik
         }
 
         #endregion
+
+        #region Collections
+
+        public static void PoolCollection<T>(this IList<T> collection, string name) where T : Component
+        {
+            foreach (var item in collection)
+            {
+                PoolObject(item.gameObject, name);
+            }
+        }
+
+        public static void PoolCollection<T>(this IList<T> collection, GameObject prefab) where T : Component
+        {
+            PoolCollection(collection, prefab.name);
+        }
+
+        public static void PoolCollection<T>(this IList<T> collection) where T : Component
+        {
+            PoolCollection(collection, collection[0].name);
+        }
+
+        #endregion
     }
 }
