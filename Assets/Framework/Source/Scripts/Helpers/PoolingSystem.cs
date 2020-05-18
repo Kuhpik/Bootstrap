@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityAsync;
-using WaitForSeconds = UnityAsync.WaitForSeconds;
 
 namespace Kuhpik
 {
@@ -178,7 +178,7 @@ namespace Kuhpik
         /// </summary>
         public static async void PoolObject(GameObject @object, string id, float time)
         {
-            await new WaitForSeconds(time);
+            await Task.Delay(TimeSpan.FromSeconds(time));
             PoolObject(@object, id);
         }
 

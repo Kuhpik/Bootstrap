@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.collab-proxy": "1.2.16",
@@ -51,5 +52,11 @@
         "com.openupm"
       ]
     }
-  ]
+  ],
+  "lock": {
+    "com.dbrizov.naughtyattributes": {
+      "hash": "8361c4c50a4f375cfac3cdb67ebd3babf15c42d8",
+      "revision": "upm"
+    }
+  }
 }

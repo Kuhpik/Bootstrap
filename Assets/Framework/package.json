@@ -1,0 +1,14 @@
+{
+  "name": "com.kuhpik.bootstrap",
+  "displayName": "Kuhpik's Bootstrap",
+  "version": "0.9.9",
+  "unity": "2019.2",
+  "description": "Framework for small games and prototypes",
+  "keywords": [ "framework", "extensions" ],
+  "category": "frameworks",
+
+  "dependencies": 
+    { 
+      "com.dbrizov.naughtyattributes" : "2.0.4" 
+    }
+}
