@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Kuhpik.Pooling
 {
-    [CreateAssetMenu(menuName = "Game Asset/Pooling/Pool")]
+    [CreateAssetMenu(menuName = "Kuhpik/Pooling/Pool")]
     public class Pool : ScriptableObject, IPoolData
     {
         [SerializeField] [BoxGroup("Settings")] private int capacity;

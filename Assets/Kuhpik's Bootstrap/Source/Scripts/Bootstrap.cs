@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kuhpik.Pooling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace Kuhpik
 {
+    [DefaultExecutionOrder(500)]
     public class Bootstrap : MonoBehaviour
     {
         private const string saveKey = "saveKey";
@@ -41,6 +43,7 @@ namespace Kuhpik
 
             SaveExtension.Save(playerData, saveKey);
             SceneManager.LoadScene(sceneIndex);
+            PoolingSystem.Clear();
         }
 
         public static void ChangeGameState(EGamestate type)
@@ -57,6 +60,7 @@ namespace Kuhpik
 
         private void InitSystems()
         {
+            CreatePools();
             ResolveSystems();
             LoadPlayerData();
             HandleGameStates();
@@ -89,6 +93,11 @@ namespace Kuhpik
         private void HandleCamerasFOV()
         {
             GetComponentInChildren<CameraInstaller>().Process();
+        }
+
+        private void CreatePools()
+        {
+            GetComponentInChildren<PoolInstaller>().Init();
         }
     }
 }

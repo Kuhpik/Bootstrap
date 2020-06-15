@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Kuhpik.Pooling
 {
-    [CreateAssetMenu(menuName = "Game Asset/Pooling/Config")]
+    [CreateAssetMenu(menuName = "Kuhpik/Pooling/Config")]
     public class PoolingConfig : ScriptableObject
     {
-        [SerializeField] private int capacity;
+        [SerializeField] private int defaultCapacity = 16;
         [SerializeField] [ReorderableList] private Pool[] pools;
 
-        public int Capacity => capacity;
+        public int Capacity => defaultCapacity;
         public Pool[] Pools => pools;
     }
 }
