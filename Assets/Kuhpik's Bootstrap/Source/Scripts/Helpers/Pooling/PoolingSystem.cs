@@ -1,21 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-namespace Kuhpik
+namespace Kuhpik.Pooling
 {
     internal static class PoolingSystem
     {
-        #region Structs
-
-        internal struct PoolingData
-        {
-            public int capacity;
-            public float poolTime;
-            public bool dontDestroy;
-            public GameObject prefab;
-            public List<Type> cachedComponents;
-        }
+        #region DATA
 
         internal struct ObjectData
         {
@@ -25,39 +17,104 @@ namespace Kuhpik
 
         #endregion
 
-        #region Fields
+        #region FIELDS
 
-        private const int baseCapacity = 16;
-        private static Dictionary<string, PoolingData> poolingData, dontDestroyPoolingData; //Used in pool creation;
-        private static Dictionary<string, Queue<ObjectData>> pool, dontDestroyPool; //Pool itself;
-        private static Dictionary<string, Queue<ObjectData>> busy, dontDestroyBusy; //Stores ObjectData that was taken from pool;
+        private static int baseCapacity = 16;
+
+        private static Dictionary<string, Queue<ObjectData>> pool, dontDestroyPool;
+        private static Dictionary<string, Queue<ObjectData>> busy, dontDestroyBusy;
+        private static Dictionary<string, IPoolData> poolingData, dontDestroyPoolingData;
 
         #endregion
 
-        #region Get
+        #region SETUP
+
+        public static void Init(IList<IPoolData> datas, int capacity = 0)
+        {
+            if (capacity > 0) baseCapacity = capacity;
+
+            foreach (var data in datas)
+            {
+                InitPool(data);
+            }
+        }
+
+        public static void Clear()
+        {
+            poolingData = new Dictionary<string, IPoolData>();
+            busy = new Dictionary<string, Queue<ObjectData>>();
+            pool = new Dictionary<string, Queue<ObjectData>>();
+        }
+
+        #endregion
+
+        #region ADD
+
+        public static void InitPool(IPoolData data)
+        {
+            var dictionary = data.DontDestroy ? dontDestroyPoolingData : poolingData;
+
+            if (!dictionary.ContainsKey(data.Prefab.name))
+            {
+                dictionary.Add(data.Prefab.name, data);
+                CreatePool(data);
+            }
+        }
+
+        public static void CreatePool(IPoolData data)
+        {
+            var dictionary = data.DontDestroy ? dontDestroyPool : pool;
+
+            if (!dictionary.ContainsKey(data.Prefab.name))
+            {
+                var count = data.Capacity > 0 ? data.Capacity : baseCapacity;
+                dictionary.Add(data.Prefab.name, new Queue<ObjectData>());
+
+                for (int i = 0; i < count; i++)
+                {
+                    ExtendPool(GameObject.Instantiate(data.Prefab));
+                }
+            }
+        }
+
+        public static void ExtendPool(GameObject @object)
+        {
+            var data = poolingData.ContainsKey(@object.name) ? poolingData[@object.name] : dontDestroyPoolingData[@object.name];
+            var pool = data.DontDestroy ? dontDestroyPool : PoolingSystem.pool;
+            var objectData = new ObjectData();
+
+            objectData.components = data.Components.ToDictionary(x => x.GetType(), x => x);
+            objectData.gameObject = @object;
+
+            pool[@object.name].Enqueue(objectData);
+        }
+
+        #endregion
+
+        #region GET
 
         public static GameObject GetObject(GameObject original)
         {
-            if (CheckQueue(original, out var @object)) return @object;
-            else return ExtendPool(GameObject.Instantiate(original));
+            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original));
+            return Get(original);
         }
 
         public static GameObject GetObject(GameObject original, Transform parent, bool worldPositionStays = false)
         {
-            if (CheckQueue(original, out var @object)) return @object;
-            else return ExtendPool(GameObject.Instantiate(original, parent, worldPositionStays));
+            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, parent, worldPositionStays));
+            return Get(original);
         }
         
         public static GameObject GetObject(GameObject original, Vector3 position, Quaternion rotation, Transform parent)
         {
-            if (CheckQueue(original, out var @object)) return @object;
-            else return ExtendPool(GameObject.Instantiate(original, position, rotation, parent));
+            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, position, rotation, parent));
+            return Get(original);
         }
         
         public static GameObject GetObject(GameObject original, Vector3 position, Quaternion rotation)
         {
-            if (CheckQueue(original, out var @object)) return @object;
-            else return ExtendPool(GameObject.Instantiate(original, position, rotation));
+            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, position, rotation));
+            return Get(original);
         }
 
         static bool CheckQueue(GameObject original, out GameObject @object)
@@ -69,26 +126,15 @@ namespace Kuhpik
             return exist;
         }
 
-        static GameObject ExtendPool(GameObject @object)
+        static GameObject Get(GameObject @object)
         {
-            return @object;
+            return new GameObject();
         }
 
         //public static T GetComponent<T>(GameObject original) where T : Component
         //{
         //    var queue = pool[original.name];
         //}
-
-        #endregion
-
-        #region Setup
-
-        public static void Clear()
-        {
-            poolingData = new Dictionary<string, PoolingData>();
-            busy = new Dictionary<string, Queue<ObjectData>>();
-            pool = new Dictionary<string, Queue<ObjectData>>();
-        }
 
         #endregion
     }
