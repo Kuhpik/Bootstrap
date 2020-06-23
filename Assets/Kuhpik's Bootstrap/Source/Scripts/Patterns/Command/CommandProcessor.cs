@@ -1,24 +1,23 @@
-﻿using Kuhpik;
+﻿using System.Collections.Generic;
 
 public sealed class CommandProcessor
 {
-    private ICommand[] commands;
-    private int index;
+    private Queue<ICommand> commands;
 
     public CommandProcessor(int maxCount)
     {
-        commands = new ICommand[maxCount];
+        commands = new Queue<ICommand>(maxCount);
     }
 
     public void Process(ICommand command)
     {
-        commands.Push(ref index, command);
+        commands.Enqueue(command);
         command.Execute();
     }
 
     public void Undo()
     {
-        if (index < 0) return;
-        commands[index--].Undo();
+        if (commands.Count == 0) return;
+        commands.Dequeue().Undo();
     }
 }

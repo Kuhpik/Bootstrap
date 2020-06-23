@@ -27,28 +27,6 @@ namespace Kuhpik
         }
 
         /// <summary>
-        /// Adds an element to the array at the specified index and increases the index by 1. When the array reaches its maximum size, it shifts the array by 1 to the beginning.
-        /// </summary>
-        public static void Push<T>(this T[] collection, ref int index, T item)
-        {
-            if (index < collection.Length)
-            {
-                collection[index] = item;
-                index++;
-            }
-            else
-            {
-                for (int i = 1; i < collection.Length; i++)
-                {
-                    var element = collection[i];
-                    collection[i - 1] = element;
-                }
-
-                collection[collection.Length - 1] = item;
-            }
-        }
-
-        /// <summary>
         /// Select random element of collection.
         /// </summary>
         public static T GetRandom<T>(this IList<T> collection)
