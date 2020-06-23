@@ -12,6 +12,7 @@ namespace Kuhpik.Example
         {
             base.Subscribe();
             infoButton.onClick.AddListener(() => Debug.Log($"{infoButton.name} button clicked"));
+            infoButton.onClick.AddListener(() => Bootstrap.GameRestart(0));
         }
 
         public override void Open()

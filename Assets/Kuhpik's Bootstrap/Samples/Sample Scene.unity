@@ -676,6 +676,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1262853259176030575, guid: e46c31529a156574ca6505f70899d705, type: 3}
+  dontDestroyprefab: {fileID: 2474733713559537453, guid: 1c22d92497ed8ff4694afc548d806d8c,
+    type: 3}
   rotation: {x: 10, y: 50, z: 0}
 --- !u!1 &1841035509
 GameObject:

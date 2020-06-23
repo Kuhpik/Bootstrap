@@ -44,11 +44,11 @@ namespace Kuhpik.Pooling
         /// </summary>
         public static void Clear()
         {            
-            foreach (var pair in busyDictionary)
+            foreach (var pair in busyDictionary.ToArray())
             {
                 if (dataDictionary[pair.Key].DontDestroy)
                 {
-                    foreach (var data in pair.Value.Values)
+                    foreach (var data in pair.Value.Values.ToArray())
                     {
                         Pool(data.gameObject);
                     }
@@ -94,6 +94,7 @@ namespace Kuhpik.Pooling
 
             @object.name = name;
             @object.SetActive(false);
+            if (data.DontDestroy) GameObject.DontDestroyOnLoad(@object);
 
             objectData.gameObject = @object;
             objectData.components = data.Components.ToDictionary(x => x.GetType(), x => @object.GetComponent(x.GetType()));
