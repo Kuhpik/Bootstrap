@@ -31,7 +31,15 @@ namespace Kuhpik
         /// </summary>
         public static T GetRandom<T>(this IList<T> collection)
         {
-            var rng = Random.Range(0, collection.Count);
+            return collection.GetRandom(0, 0);
+        }
+
+        /// <summary>
+        /// Select random element of collection with specified range. Uses size of collection when max is not declared.
+        /// </summary>
+        public static T GetRandom<T>(this IList<T> collection, int min, int max = 0)
+        {
+            var rng = Random.Range(min, max == 0 ? collection.Count : max);
             return collection[rng];
         }
     }
