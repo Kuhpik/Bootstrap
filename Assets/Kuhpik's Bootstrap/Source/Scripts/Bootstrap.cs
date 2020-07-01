@@ -36,7 +36,7 @@ namespace Kuhpik
 
         public static void GameRestart(int sceneIndex)
         {
-            foreach (var system in systems.Keys)
+            foreach (var system in systems.Values)
             {
                 (system as IGameSystem).PerformAction<IDisposing>();
             }
