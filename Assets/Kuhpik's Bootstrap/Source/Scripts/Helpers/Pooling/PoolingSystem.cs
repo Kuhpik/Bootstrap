@@ -182,7 +182,7 @@ namespace Kuhpik.Pooling
         static GameObject Get(GameObject @object)
         {
             var data = GetData(@object);
-            return new GameObject();
+            return data.gameObject;
         }
 
         static ObjectData GetData(GameObject @object)
