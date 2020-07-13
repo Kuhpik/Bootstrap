@@ -32,13 +32,13 @@ namespace Kuhpik
 
         public void Activate()
         {
+            UIManager.OpenScreen(type);
+
             if (isRestarting || !IsInited)
             {
                 Perform<IIniting>();
                 IsInited = true;
             }
-
-            UIManager.OpenScreen(type);
         }
 
         public void Deactivate()
