@@ -26,7 +26,7 @@ namespace Kuhpik.Example
                 cubes.Add(cubeRB.transform);
             }
 
-            PoolingSystem.GetObject(prefab, new Vector3(0, 3, 10), Quaternion.identity);
+            PoolingSystem.GetObject(prefab);
         }
 
         void IRunning.OnRun()

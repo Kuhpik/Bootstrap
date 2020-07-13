@@ -82,22 +82,24 @@ namespace Kuhpik.Pooling
 
                 for (int i = 0; i < count; i++)
                 {
-                    ExtendPool(GameObject.Instantiate(data.Prefab), data.Prefab.name);
+                    ExtendPool(data.Prefab);
                 }
             }
         }
 
-        static void ExtendPool(GameObject @object, string name)
+        static void ExtendPool(GameObject @object)
         {
+            var copy = GameObject.Instantiate(@object);
+            var name = @object.name;
             var data = dataDictionary[name];
             var objectData = new ObjectData();
 
-            @object.name = name;
-            @object.SetActive(false);
-            if (data.DontDestroy) GameObject.DontDestroyOnLoad(@object);
+            copy.name = name;
+            copy.SetActive(false);
+            if (data.DontDestroy) GameObject.DontDestroyOnLoad(copy);
 
-            objectData.gameObject = @object;
-            objectData.components = data.Components.ToDictionary(x => x.GetType(), x => @object.GetComponent(x.GetType()));
+            objectData.gameObject = copy;
+            objectData.components = data.Components.ToDictionary(x => x.GetType(), x => copy.GetComponent(x.GetType()));
 
             poolDictionary[name].Enqueue(objectData);
         }
@@ -106,28 +108,10 @@ namespace Kuhpik.Pooling
 
         #region GET OBJECT
 
-        public static GameObject GetObject(GameObject original)
+        public static GameObject GetObject(GameObject @object)
         {
-            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original), original.name);
-            return Get(original);
-        }
-
-        public static GameObject GetObject(GameObject original, Transform parent, bool worldPositionStays = false)
-        {
-            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, parent, worldPositionStays), original.name);
-            return Get(original);
-        }
-        
-        public static GameObject GetObject(GameObject original, Vector3 position, Quaternion rotation, Transform parent)
-        {
-            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, position, rotation, parent), original.name);
-            return Get(original);
-        }
-        
-        public static GameObject GetObject(GameObject original, Vector3 position, Quaternion rotation)
-        {
-            if (!CheckQueue(original, out var @object)) ExtendPool(GameObject.Instantiate(original, position, rotation), original.name);
-            return Get(original);
+            var data = GetData(@object);
+            return data.gameObject;
         }
 
         #endregion
@@ -179,14 +163,10 @@ namespace Kuhpik.Pooling
 
         #region HELPERS
 
-        static GameObject Get(GameObject @object)
-        {
-            var data = GetData(@object);
-            return data.gameObject;
-        }
-
         static ObjectData GetData(GameObject @object)
         {
+            CheckQueue(@object);
+
             var data = poolDictionary[@object.name].Dequeue();
             if (!busyDictionary.ContainsKey(@object.name)) busyDictionary.Add(@object.name, new Dictionary<int, ObjectData>());
             if (dataDictionary[@object.name].PoolTime > 0) Pool(data.gameObject, dataDictionary[@object.name].PoolTime);
@@ -195,13 +175,14 @@ namespace Kuhpik.Pooling
             return data;
         }
 
-        static bool CheckQueue(GameObject original, out GameObject @object)
+        static void CheckQueue(GameObject @object)
         {
-            var queue = poolDictionary[original.name];
-            var exist = queue.Count > 0;
+            var queue = poolDictionary[@object.name];
 
-            @object = exist ? queue.Dequeue().gameObject : null;
-            return exist;
+            if (queue.Count == 0)
+            {
+                ExtendPool(@object);
+            }
         }
 
         #endregion
