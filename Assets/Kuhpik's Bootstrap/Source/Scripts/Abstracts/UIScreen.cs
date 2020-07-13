@@ -1,38 +1,41 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-public abstract class UIScreen : MonoBehaviour, IUIScreen
+namespace Kuhpik
 {
-    [SerializeField] [BoxGroup("Base Settings")] private EGamestate type;
-    [SerializeField] [BoxGroup("Base Settings")] private GameObject screen;
-    [SerializeField] [BoxGroup("Background")] private bool useBackground;
-    [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Color backgroundColor;
-
-    public EGamestate Type => type;
-    public bool UseBackground => useBackground;
-    public Color BackgroundColor => backgroundColor;
-
-    public virtual void Open()
+    public abstract class UIScreen : MonoBehaviour, IUIScreen
     {
-        screen.SetActive(true);
-    }
+        [SerializeField] [BoxGroup("Base Settings")] private EGamestate type;
+        [SerializeField] [BoxGroup("Base Settings")] private GameObject screen;
+        [SerializeField] [BoxGroup("Background")] private bool useBackground;
+        [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Color backgroundColor;
 
-    public virtual void Close()
-    {
-        screen.SetActive(false);
-    }
+        public EGamestate Type => type;
+        public bool UseBackground => useBackground;
+        public Color BackgroundColor => backgroundColor;
 
-    /// <summary>
-    /// Use it for special cases.
-    /// </summary>
-    public virtual void Refresh()
-    {
-    }
+        public virtual void Open()
+        {
+            screen.SetActive(true);
+        }
 
-    /// <summary>
-    /// Subscribe is called on Awake()
-    /// </summary>
-    public virtual void Subscribe()
-    {     
+        public virtual void Close()
+        {
+            screen.SetActive(false);
+        }
+
+        /// <summary>
+        /// Use it for special cases.
+        /// </summary>
+        public virtual void Refresh()
+        {
+        }
+
+        /// <summary>
+        /// Subscribe is called on Awake()
+        /// </summary>
+        public virtual void Subscribe()
+        {
+        }
     }
 }

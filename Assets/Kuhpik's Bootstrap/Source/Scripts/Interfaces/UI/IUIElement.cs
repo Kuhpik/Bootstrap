@@ -1,4 +1,7 @@
-﻿internal interface IUIElement
+﻿namespace Kuhpik
 {
-    void Refresh();
+    internal interface IUIElement
+    {
+        void Refresh();
+    }
 }

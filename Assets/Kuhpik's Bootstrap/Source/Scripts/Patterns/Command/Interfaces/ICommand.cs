@@ -1,5 +1,8 @@
-﻿public interface ICommand
+﻿namespace Kuhpik
 {
-    void Execute();
-    void Undo();
+    public interface ICommand
+    {
+        void Execute();
+        void Undo();
+    }
 }

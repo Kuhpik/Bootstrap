@@ -1,5 +1,8 @@
-﻿public enum EGamestate
+﻿namespace Kuhpik
 {
-    Menu,
-    Game
+    public enum EGamestate
+    {
+        Menu,
+        Game
+    }
 }

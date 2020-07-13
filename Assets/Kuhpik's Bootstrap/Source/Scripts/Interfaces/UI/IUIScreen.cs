@@ -1,6 +1,9 @@
-﻿internal interface IUIScreen : IUIElement
+﻿namespace Kuhpik
 {
-    EGamestate Type { get; }
-    void Open();
-    void Close();
+    internal interface IUIScreen : IUIElement
+    {
+        EGamestate Type { get; }
+        void Open();
+        void Close();
+    }
 }

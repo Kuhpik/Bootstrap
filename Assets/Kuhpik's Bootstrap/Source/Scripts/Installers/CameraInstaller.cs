@@ -4,31 +4,34 @@ using UnityEngine;
 /// <summary>
 /// Thx to https://gist.github.com/coastwise/5952119
 /// </summary>
-public class CameraInstaller : MonoBehaviour
+namespace Kuhpik
 {
-    [SerializeField] private bool scaleFOV;
-    [SerializeField] [ShowIf("scaleFOV")] private bool portrait;
-    [SerializeField] [ShowIf("scaleFOV")] private bool allCameras;
-    [SerializeField] [HideIf("allCameras")] private Camera[] cameras;
-
-    public void Process()
+    public class CameraInstaller : MonoBehaviour
     {
-        if (scaleFOV)
+        [SerializeField] private bool scaleFOV;
+        [SerializeField] [ShowIf("scaleFOV")] private bool portrait;
+        [SerializeField] [ShowIf("scaleFOV")] private bool allCameras;
+        [SerializeField] [HideIf("allCameras")] private Camera[] cameras;
+
+        public void Process()
         {
-            var screenSize = portrait ? new Vector2(1080, 1920) : new Vector2(1920, 1080);
-            var collection = allCameras ? FindObjectsOfType<Camera>() : cameras;
-            var screenAspect = (float)Screen.width / (float)Screen.height;
-            var aspect = screenSize.x / screenSize.y;
-
-            Debug.Log($"Current screen size is {Screen.width}x{Screen.height}. Aspect ratio is {screenAspect}");
-
-            foreach (var cam in collection)
+            if (scaleFOV)
             {
-                var camRads = cam.fieldOfView * Mathf.Deg2Rad;
-                camRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) * aspect);
-                var screenRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) / screenAspect);
+                var screenSize = portrait ? new Vector2(1080, 1920) : new Vector2(1920, 1080);
+                var collection = allCameras ? FindObjectsOfType<Camera>() : cameras;
+                var screenAspect = (float)Screen.width / (float)Screen.height;
+                var aspect = screenSize.x / screenSize.y;
 
-                cam.fieldOfView = screenRads * Mathf.Rad2Deg;
+                Debug.Log($"Current screen size is {Screen.width}x{Screen.height}. Aspect ratio is {screenAspect}");
+
+                foreach (var cam in collection)
+                {
+                    var camRads = cam.fieldOfView * Mathf.Deg2Rad;
+                    camRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) * aspect);
+                    var screenRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) / screenAspect);
+
+                    cam.fieldOfView = screenRads * Mathf.Rad2Deg;
+                }
             }
         }
     }

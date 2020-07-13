@@ -2,14 +2,17 @@
 using Kuhpik.Pooling;
 using NaughtyAttributes;
 
-public class PoolInstaller : MonoBehaviour
+namespace Kuhpik
 {
-    [SerializeField] private bool usePooling;
-    [SerializeField] [ShowIf("usePooling")] private PoolingConfig config;
-
-    public void Init()
+    public class PoolInstaller : MonoBehaviour
     {
-        if (usePooling)
-            PoolingSystem.Init(config.Pools, config.Capacity);
+        [SerializeField] private bool usePooling;
+        [SerializeField] [ShowIf("usePooling")] private PoolingConfig config;
+
+        public void Init()
+        {
+            if (usePooling)
+                PoolingSystem.Init(config.Pools, config.Capacity);
+        }
     }
 }

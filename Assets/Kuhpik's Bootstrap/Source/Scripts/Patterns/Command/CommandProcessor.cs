@@ -1,23 +1,26 @@
 ﻿using System.Collections.Generic;
 
-public sealed class CommandProcessor
+namespace Kuhpik
 {
-    private Queue<ICommand> commands;
-
-    public CommandProcessor(int maxCount)
+    public sealed class CommandProcessor
     {
-        commands = new Queue<ICommand>(maxCount);
-    }
+        private Queue<ICommand> commands;
 
-    public void Process(ICommand command)
-    {
-        commands.Enqueue(command);
-        command.Execute();
-    }
+        public CommandProcessor(int maxCount)
+        {
+            commands = new Queue<ICommand>(maxCount);
+        }
 
-    public void Undo()
-    {
-        if (commands.Count == 0) return;
-        commands.Dequeue().Undo();
+        public void Process(ICommand command)
+        {
+            commands.Enqueue(command);
+            command.Execute();
+        }
+
+        public void Undo()
+        {
+            if (commands.Count == 0) return;
+            commands.Dequeue().Undo();
+        }
     }
 }
