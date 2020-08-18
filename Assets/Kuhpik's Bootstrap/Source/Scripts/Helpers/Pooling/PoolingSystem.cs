@@ -151,6 +151,11 @@ namespace Kuhpik.Pooling
             busyDictionary[@object.name].Remove(@object.GetInstanceID());
             poolDictionary[@object.name].Enqueue(data);
             data.gameObject.SetActive(false);
+
+            if (dataDictionary[@object.name].DontDestroy)
+            {
+                data.gameObject.transform.SetParent(null);
+            }
         }
 
         public async static void Pool(GameObject @object, float time)
