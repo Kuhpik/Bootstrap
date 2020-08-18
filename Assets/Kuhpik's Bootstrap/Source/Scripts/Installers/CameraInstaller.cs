@@ -26,11 +26,19 @@ namespace Kuhpik
 
                 foreach (var cam in collection)
                 {
-                    var camRads = cam.fieldOfView * Mathf.Deg2Rad;
+                    var camRads = (cam.orthographic ? cam.orthographicSize : cam.fieldOfView) * Mathf.Deg2Rad;
                     camRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) * aspect);
                     var screenRads = 2f * Mathf.Atan(Mathf.Tan(camRads / 2f) / screenAspect);
 
-                    cam.fieldOfView = screenRads * Mathf.Rad2Deg;
+                    if (!cam.orthographic)
+                    {
+                        cam.fieldOfView = screenRads * Mathf.Rad2Deg;
+                    }
+
+                    else
+                    {
+                        cam.orthographicSize = screenRads * Mathf.Rad2Deg;
+                    }
                 }
             }
         }
