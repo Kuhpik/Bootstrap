@@ -7,14 +7,6 @@ namespace Kuhpik
 {
     public static class FramerokExtensions
     {
-        public static bool TryGetComponent<T>(this GameObject @object, out T component) where T : class
-        {
-            var goComponent = @object.GetComponent<T>();
-            component = goComponent;
-
-            return goComponent == null;
-        }
-
         public static void FindOnScene<T>(this T field) where T : MonoBehaviour
         {
             field = GameObject.FindObjectOfType<T>();
