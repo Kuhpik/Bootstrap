@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Kuhpik.Example
 {
-    public class ExampleSystem : GameSystem, IIniting, IRunning
+    public class ExampleSystem : GameSystem, IIniting, IRunning, IFixedUpdating
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private GameObject dontDestroyprefab;
@@ -35,6 +35,11 @@ namespace Kuhpik.Example
             {
                 cube.Rotate(rotation * Time.deltaTime);
             }            
+        }
+
+        void IFixedUpdating.OnFixedUpdate()
+        {
+            Debug.Log("Fixed update");
         }
     }
 }

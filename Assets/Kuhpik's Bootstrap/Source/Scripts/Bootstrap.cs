@@ -34,6 +34,17 @@ namespace Kuhpik
             }
         }
 
+        private void FixedUpdate()
+        {
+            if (fsm.State.IsInited)
+            {
+                for (int i = 0; i < fsm.State.FixedUpdateSystems.Length; i++)
+                {
+                    fsm.State.FixedUpdateSystems[i].OnFixedUpdate();
+                }
+            }
+        }
+
         public static void GameRestart(int sceneIndex)
         {
             foreach (var system in systems.Values)

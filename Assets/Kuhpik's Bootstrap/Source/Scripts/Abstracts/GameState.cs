@@ -17,6 +17,7 @@ namespace Kuhpik
     {
         public IGameSystem[] Systems { get; private set; }
         public IRunning[] RunningSystems { get; private set; }
+        public IFixedUpdating[] FixedUpdateSystems { get; private set; }
         public bool IsInited { get; private set; }
 
         private bool isRestarting;
@@ -51,15 +52,9 @@ namespace Kuhpik
         }
 
         private void Setup()
-        {
-            var runnings = new List<IRunning>();
-
-            for (int i = 0; i < Systems.Length; i++)
-            {
-                if (Systems[i] is IRunning) runnings.Add(Systems[i] as IRunning);
-            }
-
-            RunningSystems = runnings.ToArray();
+        {            
+            RunningSystems = Systems.Where(x => x is IRunning).Select(x => x as IRunning).ToArray();
+            FixedUpdateSystems = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
         }
 
         private void Perform<T>() where T : IGameSystem
