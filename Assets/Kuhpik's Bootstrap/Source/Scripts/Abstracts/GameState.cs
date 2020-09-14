@@ -16,7 +16,7 @@ namespace Kuhpik
     public sealed class GameState
     {
         public IGameSystem[] Systems { get; private set; }
-        public IRunning[] RunningSystems { get; private set; }
+        public IUpdating[] UpdateSystems { get; private set; }
         public IFixedUpdating[] FixedUpdateSystems { get; private set; }
         public bool IsInited { get; private set; }
 
@@ -53,7 +53,7 @@ namespace Kuhpik
 
         private void Setup()
         {            
-            RunningSystems = Systems.Where(x => x is IRunning).Select(x => x as IRunning).ToArray();
+            UpdateSystems = Systems.Where(x => x is IUpdating).Select(x => x as IUpdating).ToArray();
             FixedUpdateSystems = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
         }
 

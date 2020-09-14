@@ -27,9 +27,9 @@ namespace Kuhpik
         {
             if (fsm.State.IsInited)
             {
-                for (int i = 0; i < fsm.State.RunningSystems.Length; i++)
+                for (int i = 0; i < fsm.State.UpdateSystems.Length; i++)
                 {
-                    fsm.State.RunningSystems[i].OnRun();
+                    fsm.State.UpdateSystems[i].OnUpdate();
                 }
             }
         }
