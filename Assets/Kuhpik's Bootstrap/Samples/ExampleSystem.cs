@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Kuhpik.Example
 {
-    public class ExampleSystem : GameSystem, IIniting, IRunning, IFixedUpdating
+    public class ExampleSystem : GameSystem, IIniting, IUpdating, IFixedUpdating
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private GameObject dontDestroyprefab;
@@ -14,27 +14,25 @@ namespace Kuhpik.Example
 
         void IIniting.OnInit()
         {
-            cubes = new List<Transform>();
-
             for (int i = 0; i < 7; i++)
             {
                 PoolingSystem.GetComponent<Rigidbody>(dontDestroyprefab, out var cubeRB);
                 cubeRB.transform.position = new Vector3(-7 + 2.5f * i, 0, 15);
                 cubeRB.velocity = Vector3.zero;
                 cubeRB.useGravity = i % 2 == 0;
-
-                cubes.Add(cubeRB.transform);
             }
 
-            PoolingSystem.GetObject(prefab);
+            cubes = new List<Transform>() { PoolingSystem.GetObject(prefab).transform };
         }
 
-        void IRunning.OnRun()
+        void IUpdating.OnUpdate()
         {
             foreach (var cube in cubes)
             {
                 cube.Rotate(rotation * Time.deltaTime);
-            }            
+            }
+
+            Debug.Log("Update");
         }
 
         void IFixedUpdating.OnFixedUpdate()
