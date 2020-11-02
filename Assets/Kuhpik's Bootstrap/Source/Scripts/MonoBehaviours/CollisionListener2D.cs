@@ -5,8 +5,8 @@ namespace Kuhpik
 {
     public class CollisionListener2D : MonoBehaviour
     {
-        public Action<Transform> CollisionEnterEvent2D, CollisionExitEvent2D;
-        public Action<Transform> TriggerEnterEvent2D, TriggetExitEvent2D;
+        public event Action<Transform> CollisionEnterEvent2D, CollisionExitEvent2D;
+        public event Action<Transform> TriggerEnterEvent2D, TriggetExitEvent2D;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
