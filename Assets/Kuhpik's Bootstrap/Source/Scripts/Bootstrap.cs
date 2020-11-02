@@ -14,6 +14,7 @@ namespace Kuhpik
 
         [SerializeField] private GameConfig config;
 
+        private static string[] statesOrder;
         private static PlayerData playerData;
         private static FSMProcessor<GameState> fsm;
         private static Dictionary<Type, GameSystem> systems;
@@ -57,11 +58,16 @@ namespace Kuhpik
             PoolingSystem.Clear();
         }
 
-        public static void ChangeGameState(EGamestate type)
+        public static void ChangeGameState(EGamestate type, bool openScreen = true)
+        {
+            ChangeGameState(type.GetName(), openScreen);
+        }
+
+        private static void ChangeGameState(string stateName, bool openScreen = true)
         {
             fsm.State.Deactivate();
-            fsm.ChangeState(type.GetName());
-            fsm.State.Activate();
+            fsm.ChangeState(stateName);
+            fsm.State.Activate(openScreen);
         }
 
         public static T GetSystem<T>() where T : class
@@ -78,7 +84,11 @@ namespace Kuhpik
             HandleInjections();
             HandleCamerasFOV();
 
-            fsm.State.Activate();
+            fsm.SetState(statesOrder[0]);
+            for (int i = 1; i < statesOrder.Length; i++)
+            {
+                ChangeGameState(statesOrder[i]);
+            }
         }
 
         private void ResolveSystems()
@@ -88,7 +98,7 @@ namespace Kuhpik
 
         private void HandleGameStates()
         {
-            fsm = GetComponentInChildren<GameStateInstaller>().InstallGameStates();
+            GetComponentInChildren<GameStateInstaller>().InstallGameStates(out fsm, out statesOrder);
         }
 
         private void LoadPlayerData()

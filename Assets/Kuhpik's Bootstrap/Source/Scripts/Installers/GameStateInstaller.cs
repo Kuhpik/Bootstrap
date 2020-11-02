@@ -1,26 +1,24 @@
 ﻿using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Kuhpik
 {
     public class GameStateInstaller : MonoBehaviour
     {
-        [SerializeField] private EGamestate firstGameState;
-        [SerializeField] private bool useGameObjects;
+        [SerializeField] private bool useArray;
+        [SerializeField] [ShowIf("useArray")] private EGamestate[] gameStatesOrder;
+        [SerializeField] [HideIf("useArray")] private EGamestate firstGameState;
         [SerializeField] [ShowIf("useGameObjects")] private bool getFromScene;
-        [SerializeField] [ReorderableList] [HideIf("useGameObjects")] private GameStateData[] gameStateDatas;
         [SerializeField] [ReorderableList] [HideIf("getFromScene")] private GameStateSetuper[] gameStateSetupers;
 
-        public FSMProcessor<GameState> InstallGameStates()
+        public void InstallGameStates(out FSMProcessor<GameState> fsm, out string[] order)
         {
-            var fsm = new FSMProcessor<GameState>();
-
-            if (useGameObjects) ProcessWithGameObjects(fsm);
-            else ProcessWithSettings(fsm);
-
-            fsm.SetState(firstGameState.GetName());
-            return fsm;
+            order = useArray ? gameStatesOrder.Select(x => x.GetName()).ToArray() : new string[] { firstGameState.GetName() };
+            fsm = new FSMProcessor<GameState>();
+            ProcessWithGameObjects(fsm);
         }
 
         private void ProcessWithGameObjects(FSMProcessor<GameState> fsm)
@@ -37,15 +35,7 @@ namespace Kuhpik
                         systems.Add(setuper.transform.GetChild(i).GetComponent<GameSystem>());
                 }
 
-                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, systems.ToArray()), setuper.AllowedTransitions.GetNames());
-            }
-        }
-
-        private void ProcessWithSettings(FSMProcessor<GameState> fsm)
-        {
-            foreach (var data in gameStateDatas)
-            {
-                fsm.AddState(data.type.GetName(), new GameState(data.type, data.isRestarting, data.systems), data.allowedTransitions.GetNames());
+                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions.GetNames());
             }
         }
     }

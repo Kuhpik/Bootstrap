@@ -1,5 +1,4 @@
 ﻿using NaughtyAttributes;
-using System.Linq;
 using UnityEngine;
 
 namespace Kuhpik
@@ -8,10 +7,14 @@ namespace Kuhpik
     {
         [SerializeField] private EGamestate type;
         [SerializeField] private bool isRestarting;
+        [SerializeField] private bool openAdditionalScreens;
+        [SerializeField] [ReorderableList] [ShowIf("openAdditionalScreens")] EGamestate[] additionalScreens;
         [SerializeField] [ReorderableList] private EGamestate[] allowedTransitions;
 
         public EGamestate Type => type;
         public bool IsRestarting => isRestarting;
+        public bool OpenAdditionalScreens => openAdditionalScreens;
+        public EGamestate[] AdditionalScreens => additionalScreens;
         public EGamestate[] AllowedTransitions => allowedTransitions;
     }
 }
