@@ -5,8 +5,8 @@ namespace Kuhpik
 {
     public class CollisionListener : MonoBehaviour
     {
-        public Action<Transform> CollisionEnterEvent, CollisionExitEvent;
-        public Action<Transform> TriggerEnterEvent, TriggetExitEvent;
+        public event Action<Transform> CollisionEnterEvent, CollisionExitEvent;
+        public event Action<Transform> TriggerEnterEvent, TriggetExitEvent;
 
         private void OnCollisionEnter(Collision collision)
         {
