@@ -152,6 +152,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   isRestarting: 0
+  openAdditionalScreens: 0
+  additionalScreens: 
   allowedTransitions: 01000000
 --- !u!4 &387851849
 Transform:
@@ -165,9 +167,53 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1581325950}
+  - {fileID: 503233337}
   m_Father: {fileID: 1111215629}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &503233336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 503233337}
+  - component: {fileID: 503233338}
+  m_Layer: 0
+  m_Name: Save Testing System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &503233337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503233336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387851849}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &503233338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503233336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b8b79cdbcf28f4e9526a1fd1548263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &600822899
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +367,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
+      propertyPath: gameStatesOrder.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
       propertyPath: firstGameStateName
       value: 1
       objectReference: {fileID: 0}
@@ -347,7 +398,7 @@ PrefabInstance:
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: getFromScene
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
@@ -358,6 +409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: gameStateDatas.Array.data[0].allowedTransitions.Array.data[0]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: useArray
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3071254408399880636, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
@@ -375,6 +431,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a38a748b40242b4469210602e34d65f4,
         type: 2}
+    - target: {fileID: 3803046130012422129, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: isTesting
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3803046130012422129, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: playerData.intToSave
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4987531766057273802, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: m_LocalPosition.x

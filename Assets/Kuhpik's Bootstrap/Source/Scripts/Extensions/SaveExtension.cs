@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Kuhpik.OdinSerializer;
+using System;
+using UnityEngine;
 
 namespace Kuhpik
 {
@@ -9,8 +11,8 @@ namespace Kuhpik
         /// </summary>
         public static void Save<T>(T value, string id)
         {
-            var @string = JsonUtility.ToJson(value);
-            PlayerPrefs.SetString(id, @string);
+            byte[] bytes = SerializationUtility.SerializeValue(value, DataFormat.Binary);
+            PlayerPrefs.SetString(id, Convert.ToBase64String(bytes));
         }
 
         /// <summary>
@@ -20,8 +22,8 @@ namespace Kuhpik
         {
             if (PlayerPrefs.HasKey(id))
             {
-                var @string = PlayerPrefs.GetString(id);
-                field = JsonUtility.FromJson<T>(@string);
+                byte[] bytes = Convert.FromBase64String(PlayerPrefs.GetString(id));
+                field = SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
             }
 
             else
@@ -39,8 +41,8 @@ namespace Kuhpik
         {
             if (PlayerPrefs.HasKey(id))
             {
-                var @string = PlayerPrefs.GetString(id);
-                return JsonUtility.FromJson<T>(@string);
+                byte[] bytes = Convert.FromBase64String(PlayerPrefs.GetString(id));
+                return SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
             }
 
             else

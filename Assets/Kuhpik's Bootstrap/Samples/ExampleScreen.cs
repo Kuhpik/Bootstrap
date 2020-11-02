@@ -7,12 +7,12 @@ namespace Kuhpik.Example
     public class ExampleScreen : UIScreen
     {
         [SerializeField] [BoxGroup()] private Button infoButton;
+        public Button InfoButton => infoButton;
 
         public override void Subscribe()
         {
             base.Subscribe();
-            infoButton.onClick.AddListener(() => Debug.Log($"{infoButton.name} button clicked"));
-            infoButton.onClick.AddListener(() => Bootstrap.GameRestart(0));
+            Debug.Log("Example screen subscribed");
         }
 
         public override void Open()
