@@ -83,12 +83,7 @@ namespace Kuhpik
             HandleGameStates();
             HandleInjections();
             HandleCamerasFOV();
-
-            fsm.SetState(statesOrder[0]);
-            for (int i = 1; i < statesOrder.Length; i++)
-            {
-                ChangeGameState(statesOrder[i]);
-            }
+            ActivateStates();
         }
 
         private void ResolveSystems()
@@ -119,6 +114,16 @@ namespace Kuhpik
         private void CreatePools()
         {
             GetComponentInChildren<PoolInstaller>().Init();
+        }
+
+        private void ActivateStates()
+        {
+            fsm.State.Activate(true);
+
+            for (int i = 1; i < statesOrder.Length; i++)
+            {
+                ChangeGameState(statesOrder[i]);
+            }
         }
     }
 }

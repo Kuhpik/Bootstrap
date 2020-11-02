@@ -9,9 +9,9 @@ namespace Kuhpik
     public class GameStateInstaller : MonoBehaviour
     {
         [SerializeField] private bool useArray;
+        [SerializeField] private bool getFromScene;
         [SerializeField] [ShowIf("useArray")] private EGamestate[] gameStatesOrder;
         [SerializeField] [HideIf("useArray")] private EGamestate firstGameState;
-        [SerializeField] [ShowIf("useGameObjects")] private bool getFromScene;
         [SerializeField] [ReorderableList] [HideIf("getFromScene")] private GameStateSetuper[] gameStateSetupers;
 
         public void InstallGameStates(out FSMProcessor<GameState> fsm, out string[] order)
@@ -35,8 +35,10 @@ namespace Kuhpik
                         systems.Add(setuper.transform.GetChild(i).GetComponent<GameSystem>());
                 }
 
-                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions.GetNames());
+                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions.GetNames());
             }
+
+            fsm.SetState(useArray ? gameStatesOrder[0].GetName() : firstGameState.GetName());
         }
     }
 }
