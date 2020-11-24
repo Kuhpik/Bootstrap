@@ -12,9 +12,9 @@ namespace Kuhpik
         {
             #if UNITY_EDITOR
             if (isTesting) return playerData;
-            else return SaveExtension.Load(saveKey, new PlayerData());
+            else return SaveExtension.Override(saveKey, new PlayerData());
             #else
-            return SaveExtension.Load(saveKey, new PlayerData());
+            return SaveExtension.Override(saveKey, new PlayerData());
             #endif
         }
     }
