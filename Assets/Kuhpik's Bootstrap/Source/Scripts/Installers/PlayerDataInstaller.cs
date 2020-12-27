@@ -5,8 +5,8 @@ namespace Kuhpik
 {
     class PlayerDataInstaller : MonoBehaviour
     {
-        [SerializeField] private bool isTesting;
-        [SerializeField] [ShowIf("isTesting")] private PlayerData playerData;
+        [SerializeField] bool isTesting;
+        [SerializeField] [ShowIf("isTesting")] PlayerData playerData;
 
         public PlayerData InstallData(string saveKey)
         {

@@ -12,8 +12,8 @@ namespace Kuhpik
         public bool IsInited { get; private set; }
         public EGamestate[] additionalScreens { get; private set; }
 
-        private bool isRestarting;
-        private EGamestate type;
+        bool isRestarting;
+        EGamestate type;
 
         public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
         {
@@ -52,13 +52,13 @@ namespace Kuhpik
             }
         }
 
-        private void Setup()
+        void Setup()
         {
             UpdateSystems = Systems.Where(x => x is IUpdating).Select(x => x as IUpdating).ToArray();
             FixedUpdateSystems = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
         }
 
-        private void Perform<T>() where T : IGameSystem
+        void Perform<T>() where T : IGameSystem
         {
             for (int i = 0; i < Systems.Length; i++)
             {

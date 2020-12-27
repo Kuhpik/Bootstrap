@@ -7,7 +7,7 @@ namespace Kuhpik
 {
     public class InjectionsInstaller : MonoBehaviour
     {
-        [SerializeField] [ReorderableList] private ScriptableObject[] additionalInjections;
+        [SerializeField] [ReorderableList] ScriptableObject[] additionalInjections;
 
         public void Inject(IEnumerable<GameSystem> systems, params object[] injections)
         {
@@ -17,7 +17,7 @@ namespace Kuhpik
             Process(systems, additionalInjections);
         }
 
-        private void Process(IEnumerable<GameSystem> systems, params object[] injections)
+        void Process(IEnumerable<GameSystem> systems, params object[] injections)
         {
             foreach (var system in systems)
             {

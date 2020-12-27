@@ -9,33 +9,40 @@ namespace Kuhpik
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] [BoxGroup("Settings")] private Image backgroundScreen;
-        [SerializeField] [BoxGroup("Settings")] private EGamestate previewScreen;
+        [SerializeField] [BoxGroup("Settings")] Image backgroundScreen;
+        [SerializeField] [BoxGroup("Settings")] EGamestate previewScreen;
 
-        private static Image background;
-        private static Dictionary<EGamestate, UIScreen> stateScreens;
-        private static Dictionary<Type, UIScreen> uiScreens;
+        static Image background;
+        static Dictionary<EGamestate, UIScreen> stateScreens;
+        static Dictionary<Type, UIScreen> uiScreens;
 
         #region Editor
 
         [Button]
-        private void ShowPreview()
+        void ShowPreview()
         {
             var screens = FindObjectsOfType<UIScreen>();
             var screen = screens.First(x => x.Type == previewScreen);
+
+            HidePreview(screens);
             screen.Open();
         }
 
         [Button]
-        private void HidePreview()
+        void HidePreview()
         {
             var screens = FindObjectsOfType<UIScreen>();
+            HidePreview(screens);
+        }
+
+        void HidePreview(UIScreen[] screens)
+        {
             foreach (var screen in screens) screen.Close();
         }
 
         #endregion
 
-        private void Awake()
+        void Awake()
         {
             stateScreens = GameObject.FindObjectsOfType<UIScreen>().ToDictionary(x => x.Type, x => x);
             uiScreens = stateScreens.Values.ToDictionary(x => x.GetType(), x => x);

@@ -6,10 +6,10 @@ namespace Kuhpik.Pooling
     [CreateAssetMenu(menuName = "Kuhpik/Pooling/Pool")]
     public class Pool : ScriptableObject, IPoolData
     {
-        [SerializeField] [BoxGroup("Settings")] private int capacity;
-        [SerializeField] [BoxGroup("Settings")] private float poolTime;
-        [SerializeField] [BoxGroup("Settings")] private bool dontDestroy;
-        [SerializeField] [BoxGroup("Settings")] private GameObject prefab;
+        [SerializeField] [BoxGroup("Settings")] int capacity;
+        [SerializeField] [BoxGroup("Settings")] float poolTime;
+        [SerializeField] [BoxGroup("Settings")] bool dontDestroy;
+        [SerializeField] [BoxGroup("Settings")] GameObject prefab;
         [SerializeField] [ReorderableList] private Component[] cachedComponents;
 
         public int Capacity => capacity;

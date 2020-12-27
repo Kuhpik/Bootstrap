@@ -4,7 +4,7 @@
     {
         protected T screen;
 
-        private void Start()
+        void Start()
         {
             screen = UIManager.GetUIScreen<T>();
         }

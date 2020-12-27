@@ -5,9 +5,9 @@ namespace Kuhpik
 {
     public abstract class UIScreen : MonoBehaviour, IUIScreen
     {
-        [SerializeField] [BoxGroup("Base Settings")] private EGamestate type;
-        [SerializeField] [BoxGroup("Base Settings")] private GameObject screen;
-        [SerializeField] [BoxGroup("Background")] private bool useBackground;
+        [SerializeField] [BoxGroup("Base Settings")] EGamestate type;
+        [SerializeField] [BoxGroup("Base Settings")] GameObject screen;
+        [SerializeField] [BoxGroup("Background")] bool useBackground;
         [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Color backgroundColor;
 
         public EGamestate Type => type;

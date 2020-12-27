@@ -4,7 +4,7 @@ namespace Kuhpik
 {
     public sealed class CommandProcessor
     {
-        private Queue<ICommand> commands;
+        Queue<ICommand> commands;
 
         public CommandProcessor(int maxCount)
         {

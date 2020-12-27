@@ -10,21 +10,21 @@ namespace Kuhpik
     [DefaultExecutionOrder(500)]
     public class Bootstrap : MonoBehaviour
     {
-        private const string saveKey = "saveKey";
+        const string saveKey = "saveKey";
 
-        [SerializeField] private GameConfig config;
+        [SerializeField] GameConfig config;
 
-        private static string[] statesOrder;
-        private static PlayerData playerData;
-        private static FSMProcessor<GameState> fsm;
-        private static Dictionary<Type, GameSystem> systems;
+        static string[] statesOrder;
+        static PlayerData playerData;
+        static FSMProcessor<GameState> fsm;
+        static Dictionary<Type, GameSystem> systems;
 
-        private void Start()
+        void Start()
         {
             InitSystems();
         }
 
-        private void Update()
+        void Update()
         {
             if (fsm.State.IsInited)
             {
@@ -35,7 +35,7 @@ namespace Kuhpik
             }
         }
 
-        private void FixedUpdate()
+        void FixedUpdate()
         {
             if (fsm.State.IsInited)
             {
@@ -63,19 +63,19 @@ namespace Kuhpik
             ChangeGameState(type.GetName(), openScreen);
         }
 
-        private static void ChangeGameState(string stateName, bool openScreen = true)
+        public static T GetSystem<T>() where T : class
+        {
+            return systems[typeof(T)] as T;
+        }
+
+        static void ChangeGameState(string stateName, bool openScreen = true)
         {
             fsm.State.Deactivate();
             fsm.ChangeState(stateName);
             fsm.State.Activate(openScreen);
         }
 
-        public static T GetSystem<T>() where T : class
-        {
-            return systems[typeof(T)] as T;
-        }
-
-        private void InitSystems()
+        void InitSystems()
         {
             CreatePools();
             ResolveSystems();
@@ -86,37 +86,37 @@ namespace Kuhpik
             ActivateStates();
         }
 
-        private void ResolveSystems()
+        void ResolveSystems()
         {
             systems = FindObjectsOfType<GameSystem>().ToDictionary(system => system.GetType(), system => system);
         }
 
-        private void HandleGameStates()
+        void HandleGameStates()
         {
             GetComponentInChildren<GameStateInstaller>().InstallGameStates(out fsm, out statesOrder);
         }
 
-        private void LoadPlayerData()
+        void LoadPlayerData()
         {
             playerData = GetComponentInChildren<PlayerDataInstaller>().InstallData(saveKey);
         }
 
-        private void HandleInjections()
+        void HandleInjections()
         {
             GetComponentInChildren<InjectionsInstaller>().Inject(systems.Values, config, playerData, new GameData());
         }
 
-        private void HandleCamerasFOV()
+        void HandleCamerasFOV()
         {
             GetComponentInChildren<CameraInstaller>().Process();
         }
 
-        private void CreatePools()
+        void CreatePools()
         {
             GetComponentInChildren<PoolInstaller>().Init();
         }
 
-        private void ActivateStates()
+        void ActivateStates()
         {
             fsm.State.Activate(true);
 

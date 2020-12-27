@@ -6,8 +6,8 @@ namespace Kuhpik
 {
     public class PoolInstaller : MonoBehaviour
     {
-        [SerializeField] private bool usePooling;
-        [SerializeField] [ShowIf("usePooling")] private PoolingConfig config;
+        [SerializeField] bool usePooling;
+        [SerializeField] [ShowIf("usePooling")] PoolingConfig config;
 
         public void Init()
         {

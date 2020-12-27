@@ -6,7 +6,7 @@ namespace Kuhpik
     {
         public static T Instance { get; private set; }
 
-        private void Awake()
+        void Awake()
         {
             if (Instance == null)
             {

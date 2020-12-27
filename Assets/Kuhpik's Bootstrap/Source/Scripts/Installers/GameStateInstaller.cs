@@ -8,11 +8,11 @@ namespace Kuhpik
 {
     public class GameStateInstaller : MonoBehaviour
     {
-        [SerializeField] private bool useArray;
-        [SerializeField] private bool getFromScene;
-        [SerializeField] [ShowIf("useArray")] private EGamestate[] gameStatesOrder;
-        [SerializeField] [HideIf("useArray")] private EGamestate firstGameState;
-        [SerializeField] [ReorderableList] [HideIf("getFromScene")] private GameStateSetuper[] gameStateSetupers;
+        [SerializeField] bool useArray;
+        [SerializeField] bool getFromScene;
+        [SerializeField] [ShowIf("useArray")] EGamestate[] gameStatesOrder;
+        [SerializeField] [HideIf("useArray")] EGamestate firstGameState;
+        [SerializeField] [ReorderableList] [HideIf("getFromScene")] GameStateSetuper[] gameStateSetupers;
 
         public void InstallGameStates(out FSMProcessor<GameState> fsm, out string[] order)
         {
@@ -21,7 +21,7 @@ namespace Kuhpik
             ProcessWithGameObjects(fsm);
         }
 
-        private void ProcessWithGameObjects(FSMProcessor<GameState> fsm)
+        void ProcessWithGameObjects(FSMProcessor<GameState> fsm)
         {
             var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
 
