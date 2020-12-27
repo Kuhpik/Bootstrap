@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleFOV: 1
-  portrait: 1
   allCameras: 1
+  clampAspectRatio: 1
   cameras: []
+  targetResolution: {x: 1080, y: 1920}
+  screenRatioClamp: {x: 0, y: 1}
 --- !u!1 &1917835718499638880
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,10 +204,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef6f52b95cb52834686ddaf07588561f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstGameState: 0
-  useGameObjects: 0
+  useArray: 0
   getFromScene: 0
-  gameStateDatas: []
+  gameStatesOrder: 
+  firstGameState: 0
   gameStateSetupers: []
 --- !u!1 &5457145906544905826
 GameObject:
@@ -370,3 +372,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTesting: 0
+  playerData:
+    intToSave: 0
