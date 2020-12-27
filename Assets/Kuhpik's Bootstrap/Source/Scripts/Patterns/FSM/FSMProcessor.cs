@@ -10,10 +10,9 @@ namespace Kuhpik
     {
         public T State { get; private set; }
 
+        string currentStateName;
         Dictionary<string, T> states = new Dictionary<string, T>();
         Dictionary<string, IEnumerable<string>> allowedTransition = new Dictionary<string, IEnumerable<string>>();
-
-        string currentStateName;
 
         public FSMProcessor()
         {

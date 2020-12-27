@@ -10,17 +10,17 @@ namespace Kuhpik
         public IUpdating[] UpdateSystems { get; private set; }
         public IFixedUpdating[] FixedUpdateSystems { get; private set; }
         public bool IsInited { get; private set; }
-        public EGamestate[] additionalScreens { get; private set; }
+        public EGamestate[] AdditionalScreens { get; private set; }
+        public EGamestate Type { get; private set; }
 
         bool isRestarting;
-        EGamestate type;
 
         public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
         {
             Systems = systems.Select(x => x as IGameSystem).ToArray();
-            this.additionalScreens = additionalScreens;
+            this.AdditionalScreens = additionalScreens;
             this.isRestarting = isRestarting;
-            this.type = type;
+            this.Type = type;
             Setup();
         }
 
@@ -28,9 +28,9 @@ namespace Kuhpik
         {
             if (openScreen)
             {
-                UIManager.OpenScreen(type);
+                UIManager.OpenScreen(Type);
 
-                foreach (var type in additionalScreens)
+                foreach (var type in AdditionalScreens)
                 {
                     UIManager.OpenScreenAdditionaly(type);
                 }

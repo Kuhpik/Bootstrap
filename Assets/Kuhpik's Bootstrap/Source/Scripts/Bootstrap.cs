@@ -18,6 +18,7 @@ namespace Kuhpik
         static PlayerData playerData;
         static FSMProcessor<GameState> fsm;
         static Dictionary<Type, GameSystem> systems;
+        static EGamestate lastState;
 
         void Start()
         {
@@ -60,12 +61,23 @@ namespace Kuhpik
 
         public static void ChangeGameState(EGamestate type, bool openScreen = true)
         {
+            lastState = GetCurrentGamestate();
             ChangeGameState(type.GetName(), openScreen);
         }
 
         public static T GetSystem<T>() where T : class
         {
             return systems[typeof(T)] as T;
+        }
+
+        public static EGamestate GetCurrentGamestate()
+        {
+            return fsm.State.Type;
+        }
+
+        public static EGamestate GetLastGamestate()
+        {
+            return lastState;
         }
 
         static void ChangeGameState(string stateName, bool openScreen = true)
