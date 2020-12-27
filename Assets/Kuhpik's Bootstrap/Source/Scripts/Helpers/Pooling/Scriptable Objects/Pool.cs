@@ -10,7 +10,7 @@ namespace Kuhpik.Pooling
         [SerializeField] [BoxGroup("Settings")] float poolTime;
         [SerializeField] [BoxGroup("Settings")] bool dontDestroy;
         [SerializeField] [BoxGroup("Settings")] GameObject prefab;
-        [SerializeField] [ReorderableList] private Component[] cachedComponents;
+        [SerializeField] [ReorderableList] Component[] cachedComponents;
 
         public int Capacity => capacity;
         public float PoolTime => poolTime;

@@ -14,7 +14,7 @@ namespace Kuhpik.Example
 
         void IIniting.OnInit()
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 512; i++)
             {
                 PoolingSystem.GetComponent<Rigidbody>(dontDestroyprefab, out var cubeRB);
                 cubeRB.transform.position = new Vector3(-7 + 2.5f * i, 0, 15);

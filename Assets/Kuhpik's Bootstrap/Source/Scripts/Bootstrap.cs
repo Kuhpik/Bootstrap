@@ -53,9 +53,9 @@ namespace Kuhpik
                 (system as IGameSystem).PerformAction<IDisposing>();
             }
 
+            PoolingSystem.Clear();
             SaveExtension.Save(playerData, saveKey);
             SceneManager.LoadScene(sceneIndex);
-            PoolingSystem.Clear();
         }
 
         public static void ChangeGameState(EGamestate type, bool openScreen = true)

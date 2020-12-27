@@ -22,6 +22,7 @@ namespace Kuhpik.Pooling
 
         private static int baseCapacity = 16;
         private static Dictionary<string, IPoolData> dataDictionary = new Dictionary<string, IPoolData>();
+        private static Dictionary<string, Transform> objectGroupDictinary = new Dictionary<string, Transform>();
         private static Dictionary<string, Queue<ObjectData>> poolDictionary = new Dictionary<string, Queue<ObjectData>>();
         private static Dictionary<string, Dictionary<int, ObjectData>> busyDictionary = new Dictionary<string, Dictionary<int, ObjectData>>();
 
@@ -43,20 +44,22 @@ namespace Kuhpik.Pooling
         /// Better call it when switching scenes.
         /// </summary>
         public static void Clear()
-        {            
-            foreach (var pair in busyDictionary.ToArray())
+        {
+            foreach (var item in dataDictionary.ToArray())
             {
-                if (dataDictionary[pair.Key].DontDestroy)
+                if (!item.Value.DontDestroy)
                 {
-                    foreach (var data in pair.Value.Values.ToArray())
-                    {
-                        Pool(data.gameObject);
-                    }
+                    poolDictionary.Remove(item.Key);
+                    dataDictionary.Remove(item.Key);
+                    objectGroupDictinary.Remove(item.Key);
+                }
+
+                else
+                {
+                    PoolEverything(item.Value.Prefab);
                 }
             }
 
-            poolDictionary = poolDictionary.Where(x => dataDictionary[x.Key].DontDestroy).ToDictionary(p => p.Key, p => p.Value);
-            dataDictionary = dataDictionary.Where(x => x.Value.DontDestroy).ToDictionary(p => p.Key, p => p.Value);
             busyDictionary = new Dictionary<string, Dictionary<int, ObjectData>>();
         }
 
@@ -80,6 +83,9 @@ namespace Kuhpik.Pooling
                 var count = data.Capacity > 0 ? data.Capacity : baseCapacity;
                 poolDictionary.Add(data.Prefab.name, new Queue<ObjectData>());
 
+                objectGroupDictinary.Add(data.Prefab.name, new GameObject($"[POOL] {data.Prefab.name} group").transform);
+                if (data.DontDestroy) GameObject.DontDestroyOnLoad(objectGroupDictinary[data.Prefab.name].gameObject);
+
                 for (int i = 0; i < count; i++)
                 {
                     ExtendPool(data.Prefab);
@@ -94,14 +100,13 @@ namespace Kuhpik.Pooling
             var data = dataDictionary[name];
             var objectData = new ObjectData();
 
-            copy.name = name;
-            copy.SetActive(false);
             if (data.DontDestroy) GameObject.DontDestroyOnLoad(copy);
 
+            copy.name = name;
             objectData.gameObject = copy;
             objectData.components = data.Components.ToDictionary(x => x.GetType(), x => copy.GetComponent(x.GetType()));
 
-            poolDictionary[name].Enqueue(objectData);
+            PoolEnqueue(objectData);
         }
 
         #endregion
@@ -145,23 +150,31 @@ namespace Kuhpik.Pooling
 
         #region POOL
 
+        /// <summary>
+        /// Pools object back using it's name (instances have same name as a prefab)
+        /// </summary>
         public static void Pool(GameObject @object)
         {
             var data = busyDictionary[@object.name][@object.GetInstanceID()];
             busyDictionary[@object.name].Remove(@object.GetInstanceID());
-            poolDictionary[@object.name].Enqueue(data);
-            data.gameObject.SetActive(false);
-
-            if (dataDictionary[@object.name].DontDestroy)
-            {
-                data.gameObject.transform.SetParent(null);
-            }
+            PoolEnqueue(data);
         }
 
         public async static void Pool(GameObject @object, float time)
         {
             await Task.Delay(TimeSpan.FromSeconds(time));
             Pool(@object);
+        }
+
+        /// <summary>
+        /// Pools all active objects back using it's name (instances have same name as a prefab)
+        /// </summary>
+        public static void PoolEverything(GameObject @object)
+        {
+            foreach (var item in busyDictionary[@object.name].ToArray())
+            {
+                Pool(item.Value.gameObject);
+            }
         }
 
         #endregion
@@ -188,6 +201,13 @@ namespace Kuhpik.Pooling
             {
                 ExtendPool(@object);
             }
+        }
+
+        static void PoolEnqueue(ObjectData data)
+        {
+            data.gameObject.transform.SetParent(objectGroupDictinary[data.gameObject.name]);
+            poolDictionary[data.gameObject.name].Enqueue(data);
+            data.gameObject.SetActive(false);
         }
 
         #endregion
