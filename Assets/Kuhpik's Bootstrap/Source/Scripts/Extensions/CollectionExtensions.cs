@@ -46,7 +46,7 @@ namespace Kuhpik
         /// <summary>
         /// Select random element of collection with specified range. Can have out param with RNG index
         /// </summary>
-        public static T GetRandom<T>(this IList<T> collection, out int rng, int max = 0, int min = 0)
+        public static T GetRandom<T>(this IList<T> collection, out int rng, int min = 0, int max = 0)
         {
             rng = Random.Range(min, max == 0 ? collection.Count : max);
             return collection[rng];
