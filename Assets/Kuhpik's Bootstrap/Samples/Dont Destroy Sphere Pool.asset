@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a956141d78f24954b8a74aad7ae7d230, type: 3}
   m_Name: Dont Destroy Sphere Pool
   m_EditorClassIdentifier: 
-  capacity: 3
+  capacity: 1000
   poolTime: 0
   dontDestroy: 1
   prefab: {fileID: 2474733713559537453, guid: 1c22d92497ed8ff4694afc548d806d8c, type: 3}
