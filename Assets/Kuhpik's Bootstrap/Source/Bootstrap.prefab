@@ -205,10 +205,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useArray: 0
-  getFromScene: 0
-  gameStatesOrder: 
+  getFromScene: 1
+  gameStatesOrder: 00000000
   firstGameState: 0
-  gameStateSetupers: []
+  gameStateSetupers:
+  - {fileID: 0}
 --- !u!1 &5457145906544905826
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usePooling: 0
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: a38a748b40242b4469210602e34d65f4, type: 2}
 --- !u!1 &8881485089472549652
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,4 +374,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTesting: 0
   playerData:
-    intToSave: 0
+    intToSave: 60

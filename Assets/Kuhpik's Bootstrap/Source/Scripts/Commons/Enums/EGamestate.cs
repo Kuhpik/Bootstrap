@@ -2,7 +2,8 @@
 {
     public enum EGamestate
     {
-        Menu,
-        Game
+        Loading,
+        Game,
+        Result
     }
 }
