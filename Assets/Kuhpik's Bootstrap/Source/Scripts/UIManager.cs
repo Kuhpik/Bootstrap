@@ -45,7 +45,7 @@ namespace Kuhpik
         void Awake()
         {
             stateScreens = GameObject.FindObjectsOfType<UIScreen>().ToDictionary(x => x.Type, x => x);
-            uiScreens = stateScreens.Values.ToDictionary(x => x.GetType(), x => x);
+            uiScreens = stateScreens.Values.Where(x => x.GetType() != typeof(UIScreen)).ToDictionary(x => x.GetType(), x => x);
 
             foreach (var screen in stateScreens.Values) screen.Subscribe();
             background = backgroundScreen;

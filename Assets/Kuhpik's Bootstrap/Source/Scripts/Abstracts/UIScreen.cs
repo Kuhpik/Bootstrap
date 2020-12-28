@@ -3,24 +3,48 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    public abstract class UIScreen : MonoBehaviour, IUIScreen
+    public class UIScreen : MonoBehaviour, IUIScreen
     {
-        [SerializeField] [BoxGroup("Base Settings")] EGamestate type;
-        [SerializeField] [BoxGroup("Base Settings")] GameObject screen;
+        [SerializeField] [BoxGroup("Settings")] EGamestate type;
+        [SerializeField] [BoxGroup("Settings")] bool getScreenFromChild = true;
+        [SerializeField] [BoxGroup("Settings")] [HideIf("getScreenFromChild")] GameObject screen;
+
         [SerializeField] [BoxGroup("Background")] bool useBackground;
         [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Color backgroundColor;
+
+        //You will get the idea once you use it
+        [SerializeField] [BoxGroup("Elements")] bool hideElementsOnOpen;
+        [SerializeField] [BoxGroup("Elements")] bool showElementsOnHide;
+
+        [SerializeField] [BoxGroup("Elements")] [ShowIf("hideElementsOnOpen")] GameObject[] elementsToHideOnOpen;
+        [SerializeField] [BoxGroup("Elements")] [ShowIf("showElementsOnHide")] GameObject[] elementsToShowOnHide;
 
         public EGamestate Type => type;
         public bool UseBackground => useBackground;
         public Color BackgroundColor => backgroundColor;
 
+        void Awake()
+        {
+            screen = getScreenFromChild ? transform.GetChild(0).gameObject : screen;
+        }
+
         public virtual void Open()
         {
+            foreach (var element in elementsToHideOnOpen)
+            {
+                element.SetActive(false);
+            }
+
             screen.SetActive(true);
         }
 
         public virtual void Close()
         {
+            foreach (var element in elementsToShowOnHide)
+            {
+                element.SetActive(true);
+            }
+
             screen.SetActive(false);
         }
 
