@@ -12,6 +12,12 @@ namespace Kuhpik
             field = GameObject.FindObjectOfType<T>();
         }
 
+        public static T FindOrUse<T>(this T field) where T : MonoBehaviour
+        {
+            if (field == null) field = GameObject.FindObjectOfType<T>();
+            return field;
+        }
+
         public static string GetName<T>(this T value) where T : Enum
         {
             return Enum.GetName(typeof(T), value);

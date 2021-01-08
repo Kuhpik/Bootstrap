@@ -519,8 +519,8 @@ MonoBehaviour:
   useBackground: 0
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
   hideElementsOnOpen: 0
-  elementsToHideOnOpen: []
   showElementsOnHide: 0
+  elementsToHideOnOpen: []
   elementsToShowOnHide: []
 --- !u!1 &946499708
 GameObject:
@@ -577,8 +577,8 @@ MonoBehaviour:
   useBackground: 0
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
   hideElementsOnOpen: 0
-  elementsToHideOnOpen: []
   showElementsOnHide: 0
+  elementsToHideOnOpen: []
   elementsToShowOnHide: []
 --- !u!1 &1065383376
 GameObject:
@@ -1055,8 +1055,8 @@ MonoBehaviour:
   useBackground: 1
   backgroundColor: {r: 1, g: 1, b: 1, a: 0.21568628}
   hideElementsOnOpen: 0
-  elementsToHideOnOpen: []
   showElementsOnHide: 0
+  elementsToHideOnOpen: []
   elementsToShowOnHide: []
   infoButton: {fileID: 1225807476}
 --- !u!1001 &30510484342017262
