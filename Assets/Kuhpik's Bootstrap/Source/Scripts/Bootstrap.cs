@@ -61,9 +61,17 @@ namespace Kuhpik
                 (system as IGameSystem).PerformAction<IDisposing>();
             }
 
+            SaveGame();
             PoolingSystem.Clear();
-            SaveExtension.Save(playerData, saveKey);
             SceneManager.LoadScene(sceneIndex);
+        }
+
+        /// <summary>
+        /// Saves all changes in Player Data to PlayerPrefs
+        /// </summary>
+        public static void SaveGame()
+        {
+            SaveExtension.Save(playerData, saveKey);
         }
 
         public static void ChangeGameState(EGamestate type, bool openScreen = true)
