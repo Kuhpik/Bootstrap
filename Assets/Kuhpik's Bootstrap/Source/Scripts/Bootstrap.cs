@@ -47,6 +47,13 @@ namespace Kuhpik
             }
         }
 
+        void OnApplicationQuit()
+        {
+            #if UNITY_EDITOR
+            Debug.Log("Possible to get Pooling System Error. Ignore it. Editor Issues");
+            #endif
+        }
+
         public static void GameRestart(int sceneIndex)
         {
             foreach (var system in systems.Values)
