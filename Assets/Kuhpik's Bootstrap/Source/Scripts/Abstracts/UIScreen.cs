@@ -11,6 +11,7 @@ namespace Kuhpik
 
         [SerializeField] [BoxGroup("Background")] bool useBackground;
         [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Color backgroundColor;
+        [SerializeField] [BoxGroup("Background")] [ShowIf("useBackground")] Sprite backgroundSprite;
 
         //You will get the idea once you use it
         [SerializeField] [BoxGroup("Elements")] bool hideElementsOnOpen;
@@ -22,6 +23,7 @@ namespace Kuhpik
         public EGamestate Type => type;
         public bool UseBackground => useBackground;
         public Color BackgroundColor => backgroundColor;
+        public Sprite BackgroundSprite => backgroundSprite;
 
         void Awake()
         {

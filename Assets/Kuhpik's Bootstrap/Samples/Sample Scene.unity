@@ -516,8 +516,9 @@ MonoBehaviour:
   type: 1
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  useBackground: 1
+  backgroundColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 0.7294118}
+  backgroundSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -574,8 +575,9 @@ MonoBehaviour:
   type: 2
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  useBackground: 1
+  backgroundColor: {r: 1, g: 0, b: 0, a: 0.50980395}
+  backgroundSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -1054,6 +1056,7 @@ MonoBehaviour:
   screen: {fileID: 600822899}
   useBackground: 1
   backgroundColor: {r: 1, g: 1, b: 1, a: 0.21568628}
+  backgroundSprite: {fileID: 0}
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []

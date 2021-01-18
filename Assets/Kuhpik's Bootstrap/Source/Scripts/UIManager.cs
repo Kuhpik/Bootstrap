@@ -12,9 +12,9 @@ namespace Kuhpik
         [SerializeField] [BoxGroup("Settings")] Image backgroundScreen;
         [SerializeField] [BoxGroup("Settings")] EGamestate previewScreen;
 
-        static Image background;
         static Dictionary<EGamestate, UIScreen> stateScreens;
         static Dictionary<Type, UIScreen> uiScreens;
+        static Image background;
 
         #region Editor
 
@@ -51,6 +51,17 @@ namespace Kuhpik
             background = backgroundScreen;
         }
 
+        public static void ChangeBackground(Sprite sprite)
+        {
+            ChangeBackground(sprite, Color.white);
+        }
+
+        public static void ChangeBackground(Sprite sprite, Color color)
+        {
+            background.sprite = sprite;
+            background.color = color;
+        }
+
         public static void OpenScreen(EGamestate type)
         {
             foreach (var screen in stateScreens.Values)
@@ -62,7 +73,7 @@ namespace Kuhpik
             {
                 stateScreens[type].Open();
                 background.gameObject.SetActive(stateScreens[type].UseBackground);
-                background.color = stateScreens[type].BackgroundColor;
+                ChangeBackground(stateScreens[type].BackgroundSprite, stateScreens[type].BackgroundColor);
             }
         }
 
