@@ -4,7 +4,7 @@
 
 ## Установка
 * Скачайте последний [Unitypackage](../../releases/latest)
-* Вам так же будет нужен плагин [Naughty Attributes](https://github.com/dbrizov/NaughtyAttributes) версии **2.0.7**. Версии выше могут конфликтовать.
+* Вам так же будет нужен плагин [Naughty Attributes](https://github.com/dbrizov/NaughtyAttributes)
 * Для построения более гибкой архитектуры я рекомендую так же поставить плагин [Signals](https://github.com/supyrb/signals)
 * Переместите на вашу сцену префабы **Bootstrap** и **UI Canvas** которые находятся в папке _Kuhpik's Bootstrap/Source_
 
