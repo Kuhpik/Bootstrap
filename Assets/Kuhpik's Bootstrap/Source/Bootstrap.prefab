@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed42646e02d8df448f1be3c5f30844f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: de15fdf285a833641b4716d20f2deae6, type: 2}
 --- !u!1 &1667885864281730087
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usePooling: 0
-  config: {fileID: 11400000, guid: a38a748b40242b4469210602e34d65f4, type: 2}
+  config: {fileID: 0}
 --- !u!1 &8881485089472549652
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,5 +423,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTesting: 0
-  playerData:
-    intToSave: 60
