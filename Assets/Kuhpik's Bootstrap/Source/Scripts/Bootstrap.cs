@@ -1,43 +1,49 @@
 ﻿using Kuhpik.Pooling;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = System.Object;
 
 namespace Kuhpik
 {
     [DefaultExecutionOrder(500)]
     public class Bootstrap : MonoBehaviour
     {
-        const string saveKey = "saveKey";
-
         [SerializeField] GameConfig config;
-
-        static string[] statesOrder;
-        static PlayerData playerData;
-        static FSMProcessor<GameState> fsm;
-        static Dictionary<Type, GameSystem> systems;
         static EGamestate lastState;
+
+        internal static GameState currentState;
+        internal static Dictionary<Type, GameSystem> systems;
+        internal static List<Object> itemsToInject = new List<Object>();
+
+        internal static event Action OnSaveEvent;
+        internal static event Action OnGameStartEvent;
+        internal static event Action OnGamePreStartEvent;
+        internal static event Action<EGamestate> OnStateChangedEvent;
 
         void Start()
         {
-            InitSystems();
+            itemsToInject.Add(config);
+            itemsToInject.Add(new GameData());
+
+            OnGamePreStartEvent?.Invoke();
+            OnGameStartEvent?.Invoke();
         }
 
         void Update()
         {
-            for (int i = 0; i < fsm.State.UpdateSystems.Length; i++)
+            for (int i = 0; i < currentState.UpdateSystems.Length; i++)
             {
-                fsm.State.UpdateSystems[i].OnUpdate();
+                currentState.UpdateSystems[i].OnUpdate();
             }
         }
 
         void FixedUpdate()
         {
-            for (int i = 0; i < fsm.State.FixedUpdateSystems.Length; i++)
+            for (int i = 0; i < currentState.FixedUpdateSystems.Length; i++)
             {
-                fsm.State.FixedUpdateSystems[i].OnFixedUpdate();
+                currentState.FixedUpdateSystems[i].OnFixedUpdate();
             }
         }
 
@@ -61,17 +67,18 @@ namespace Kuhpik
         }
 
         /// <summary>
-        /// Saves all changes in Player Data to PlayerPrefs
+        /// Saves all changes in Player Data to PlayerPrefs.
+        /// On level complete\fail use GameRestart() instead.
         /// </summary>
         public static void SaveGame()
         {
-            SaveExtension.Save(playerData, saveKey);
+            OnSaveEvent?.Invoke();
         }
 
-        public static void ChangeGameState(EGamestate type, bool openScreen = true)
+        public static void ChangeGameState(EGamestate type)
         {
             lastState = GetCurrentGamestate();
-            ChangeGameState(type.GetName(), openScreen);
+            OnStateChangedEvent?.Invoke(type);
         }
 
         public static T GetSystem<T>() where T : class
@@ -81,58 +88,12 @@ namespace Kuhpik
 
         public static EGamestate GetCurrentGamestate()
         {
-            return fsm.State.Type;
+            return currentState.Type;
         }
 
         public static EGamestate GetLastGamestate()
         {
             return lastState;
-        }
-
-        static void ChangeGameState(string stateName, bool openScreen = true)
-        {
-            fsm.State.Deactivate();
-            fsm.ChangeState(stateName);
-            fsm.State.Activate(openScreen);
-        }
-
-        void InitSystems()
-        {
-            ResolveSystems();
-            LoadPlayerData();
-            HandleGameStates();
-            HandleInjections();
-            ActivateStates();
-        }
-
-        void ResolveSystems()
-        {
-            systems = FindObjectsOfType<GameSystem>().ToDictionary(system => system.GetType(), system => system);
-        }
-
-        void HandleGameStates()
-        {
-            GetComponentInChildren<GameStateInstaller>().InstallGameStates(out fsm, out statesOrder);
-        }
-
-        void LoadPlayerData()
-        {
-            playerData = GetComponentInChildren<PlayerDataInstaller>().InstallData(saveKey);
-        }
-
-        void HandleInjections()
-        {
-            GetComponentInChildren<InjectionsInstaller>().Inject(systems.Values, config, playerData, new GameData());
-        }
-
-        void ActivateStates()
-        {
-            fsm.State.Activate(true);
-
-            for (int i = 1; i < statesOrder.Length; i++)
-            {
-                ChangeGameState(statesOrder[i]);
-            }
         }
     }
 }

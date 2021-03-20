@@ -3,12 +3,22 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    class PlayerDataInstaller : MonoBehaviour
+    [DefaultExecutionOrder(10)]
+    public class PlayerDataInstaller : MonoBehaviour
     {
         [SerializeField] bool isTesting;
         [SerializeField] [ShowIf("isTesting")] PlayerData playerData;
 
-        public PlayerData InstallData(string saveKey)
+        const string saveKey = "saveKey";
+        PlayerData data;
+
+        void Start()
+        {
+            Bootstrap.itemsToInject.Add(HandlePlayerData());
+            Bootstrap.OnSaveEvent += Save;
+        }
+
+        PlayerData HandlePlayerData()
         {
             #if UNITY_EDITOR
             if (isTesting) return playerData;
@@ -16,6 +26,11 @@ namespace Kuhpik
             #else
             return SaveExtension.Override(saveKey, new PlayerData());
             #endif
+        }
+
+        void Save()
+        {
+            SaveExtension.Save(data, saveKey);
         }
     }
 }
