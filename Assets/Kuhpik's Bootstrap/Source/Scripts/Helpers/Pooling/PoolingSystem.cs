@@ -76,6 +76,20 @@ namespace Kuhpik.Pooling
             }
         }
 
+        /// <summary>
+        /// Call this if you want to init pool from code.
+        /// Caching components is not an option here.
+        /// </summary>
+        public static void InitPool(GameObject prefab, int cout, bool dontDestyroy, float poolBackTime = 0f)
+        {
+            if (!dataDictionary.ContainsKey(prefab.name))
+            {
+                var poolData = new PoolingData(prefab, cout, dontDestyroy, poolBackTime);
+                dataDictionary.Add(prefab.name, poolData);
+                CreatePool(poolData);
+            }
+        }
+
         static void CreatePool(IPoolData data)
         {
             if (!poolDictionary.ContainsKey(data.Prefab.name))
