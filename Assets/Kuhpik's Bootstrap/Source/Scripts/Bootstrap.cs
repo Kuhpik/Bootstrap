@@ -14,6 +14,7 @@ namespace Kuhpik
         static EGamestate lastState;
 
         internal static GameState currentState;
+        internal static GameState[] gameStates;
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
 
@@ -56,9 +57,9 @@ namespace Kuhpik
 
         public static void GameRestart(int sceneIndex)
         {
-            foreach (var system in systems.Values)
+            foreach (var state in gameStates)
             {
-                (system as IGameSystem).PerformAction<IDisposing>();
+                state.Deactivate(true);
             }
 
             SaveGame();

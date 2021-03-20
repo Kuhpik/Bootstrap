@@ -56,6 +56,7 @@ namespace Kuhpik
 
             fsm.SetState(useArray ? gameStatesOrder[0].GetName() : firstGameState.GetName());
 
+            Bootstrap.gameStates = fsm.GetAllStates<GameState>();
             Bootstrap.systems = systemsDictionary;
             Bootstrap.currentState = fsm.State;
         }

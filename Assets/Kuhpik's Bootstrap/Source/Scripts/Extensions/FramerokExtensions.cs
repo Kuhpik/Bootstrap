@@ -32,21 +32,5 @@ namespace Kuhpik
         {
             return Random.Range(minmax.x, minmax.y);
         }
-
-        public static void PerformAction<T>(this IGameSystem system) where T : IGameSystem
-        {
-            if (system is T)
-            {
-                if (typeof(T) == typeof(IIniting))
-                {
-                    ((IIniting)system).OnInit();
-                }
-
-                else if (typeof(T) == typeof(IDisposing))
-                {
-                    ((IDisposing)system).OnDispose();
-                }
-            }
-        }
     }
 }

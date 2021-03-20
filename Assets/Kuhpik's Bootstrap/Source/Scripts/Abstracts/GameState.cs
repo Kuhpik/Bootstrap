@@ -8,22 +8,28 @@ namespace Kuhpik
     public sealed class GameState
     {
         public IGameSystem[] Systems { get; private set; }
+
+        //Avoid casting. Have to wait till C# 8.0
+        public IIniting[] InitingSystem { get; private set; }
         public IUpdating[] UpdateSystems { get; private set; }
+        public IDisposing[] DisposingSystem { get; private set; }
         public IFixedUpdating[] FixedUpdateSystems { get; private set; }
-        public bool IsInited { get; private set; }
+
         public EGamestate[] AdditionalScreens { get; private set; }
         public EGamestate Type { get; private set; }
 
         IFixedUpdating[] setupedFixedUpdateSystem;
         IUpdating[] setupedUpdateSystems;
+
+        public bool isInited;
         bool isRestarting;
 
         public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
         {
             Systems = systems.Select(x => x as IGameSystem).ToArray();
-            this.AdditionalScreens = additionalScreens;
+            AdditionalScreens = additionalScreens;
             this.isRestarting = isRestarting;
-            this.Type = type;
+            Type = type;
             Setup();
         }
 
@@ -34,21 +40,29 @@ namespace Kuhpik
             PrepareUpdatingSystems();
         }
 
-        public void Deactivate()
+        public void Deactivate(bool ignoreCheck = false)
         {
-            if (isRestarting && IsInited)
+            if ((isRestarting && isInited) || ignoreCheck)
             {
-                Perform<IDisposing>();
-                IsInited = false;
+                for (int i = 0; i < DisposingSystem.Length; i++)
+                {
+                    DisposingSystem[i].OnDispose();
+                }
+
+                isInited = false;
             }
         }
 
         void HandleInit()
         {
-            if (isRestarting || !IsInited)
+            if (isRestarting || !isInited)
             {
-                Perform<IIniting>();
-                IsInited = true;
+                for (int i = 0; i < InitingSystem.Length; i++)
+                {
+                    InitingSystem[i].OnInit();
+                }
+
+                isInited = true;
             }
         }
 
@@ -78,16 +92,10 @@ namespace Kuhpik
 
         void Setup()
         {
+            InitingSystem = Systems.Where(x => x is IIniting).Select(x => x as IIniting).ToArray();
+            DisposingSystem = Systems.Where(x => x is IDisposing).Select(x => x as IDisposing).ToArray();
             setupedUpdateSystems = Systems.Where(x => x is IUpdating).Select(x => x as IUpdating).ToArray();
             setupedFixedUpdateSystem = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
-        }
-
-        void Perform<T>() where T : IGameSystem
-        {
-            for (int i = 0; i < Systems.Length; i++)
-            {
-                Systems[i].PerformAction<T>();
-            }
         }
     }
 }
