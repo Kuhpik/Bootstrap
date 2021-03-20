@@ -171,6 +171,9 @@ namespace Kuhpik.Pooling
         /// </summary>
         public static void PoolEverything(GameObject @object)
         {
+            if (!busyDictionary.ContainsKey(@object.name)) return;
+            if (!busyDictionary[@object.name].Any()) return;
+
             foreach (var item in busyDictionary[@object.name].ToArray())
             {
                 Pool(item.Value.gameObject);
