@@ -23,6 +23,14 @@ namespace Kuhpik
         internal static event Action OnGamePreStartEvent;
         internal static event Action<EGamestate> OnStateChangedEvent;
 
+        void Awake()
+        {
+            OnSaveEvent = null;
+            OnGameStartEvent = null;
+            OnGamePreStartEvent = null;
+            OnStateChangedEvent = null;
+        }
+
         void Start()
         {
             itemsToInject.Add(config);
