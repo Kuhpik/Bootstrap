@@ -81,7 +81,7 @@ namespace Kuhpik
             {
                 gameView.CallMethod("SizeSelectionCallback", indexes[resolution], null);
                 gameView.Repaint();
-                yield return null;
+                yield return new WaitForSecondsRealtime(0.1f);
 
                 cameraInstaller.FindOrUse().Resize();
                 yield return new WaitForEndOfFrame();
