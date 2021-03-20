@@ -192,6 +192,7 @@ namespace Kuhpik.Pooling
             if (!busyDictionary.ContainsKey(@object.name)) busyDictionary.Add(@object.name, new Dictionary<int, ObjectData>());
             if (dataDictionary[@object.name].PoolTime > 0) Pool(data.gameObject, dataDictionary[@object.name].PoolTime);
             busyDictionary[@object.name].Add(data.gameObject.GetInstanceID(), data);
+            data.gameObject.transform.SetParent(null);
             data.gameObject.SetActive(true);
             return data;
         }
