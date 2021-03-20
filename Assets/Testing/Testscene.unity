@@ -656,6 +656,16 @@ PrefabInstance:
       propertyPath: usePooling
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3619535309375669431, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: loadingPath
+      value: Pooling
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619535309375669431, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: baseCapacity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4987531766057273802, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: m_RootOrder
