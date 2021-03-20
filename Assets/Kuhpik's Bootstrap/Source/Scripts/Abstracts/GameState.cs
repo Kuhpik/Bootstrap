@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
+using System;
 
 namespace Kuhpik
 {
@@ -66,9 +67,11 @@ namespace Kuhpik
 
         async void PrepareUpdatingSystems()
         {
-            UpdateSystems = new IUpdating[0];
-            FixedUpdateSystems = new IFixedUpdating[0];
+            UpdateSystems = Array.Empty<IUpdating>();
+            FixedUpdateSystems = Array.Empty<IFixedUpdating>();
+
             await Task.Yield();
+
             FixedUpdateSystems = setupedFixedUpdateSystem;
             UpdateSystems = setupedUpdateSystems;
         }
