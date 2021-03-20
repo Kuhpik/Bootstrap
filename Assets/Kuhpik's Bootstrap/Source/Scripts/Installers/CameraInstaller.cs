@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 namespace Kuhpik
 {
+    [DefaultExecutionOrder(10)]
     public class CameraInstaller : MonoBehaviour
     {
         [SerializeField] bool scaleFOV;
@@ -19,10 +20,7 @@ namespace Kuhpik
 
         Dictionary<Camera, float> fovDictionary;
 
-        /// <summary>
-        /// Initial setup and values preparations. Don't call manually from code.
-        /// </summary>
-        public void Process()
+        void Start()
         {
             if (scaleFOV)
             {

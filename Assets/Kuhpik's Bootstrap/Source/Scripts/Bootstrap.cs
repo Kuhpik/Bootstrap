@@ -98,12 +98,10 @@ namespace Kuhpik
 
         void InitSystems()
         {
-            CreatePools();
             ResolveSystems();
             LoadPlayerData();
             HandleGameStates();
             HandleInjections();
-            HandleCamerasFOV();
             ActivateStates();
         }
 
@@ -125,16 +123,6 @@ namespace Kuhpik
         void HandleInjections()
         {
             GetComponentInChildren<InjectionsInstaller>().Inject(systems.Values, config, playerData, new GameData());
-        }
-
-        void HandleCamerasFOV()
-        {
-            GetComponentInChildren<CameraInstaller>().Process();
-        }
-
-        void CreatePools()
-        {
-            GetComponentInChildren<PoolInstaller>().Init();
         }
 
         void ActivateStates()
