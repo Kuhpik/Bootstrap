@@ -8,11 +8,16 @@ namespace Kuhpik
     public class PoolInstaller : MonoBehaviour
     {
         [SerializeField] bool usePooling;
-        [SerializeField] [ShowIf("usePooling")] PoolingConfig config;
+        [SerializeField] [ShowIf("usePooling")] int baseCapacity;
+        [SerializeField] [ShowIf("usePooling")] string loadingPath = "Pooling";
 
         void Start()
         {
-            if (usePooling) PoolingSystem.Init(config.Pools, config.Capacity);
+            if (usePooling)
+            {
+                var pools = Resources.LoadAll<Pool>(loadingPath);
+                PoolingSystem.Init(pools, baseCapacity);
+            }
         }
     }
 }
