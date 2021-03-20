@@ -6,29 +6,27 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    public sealed class FSMProcessor<T>
+    public sealed class FSMProcessor<TKey, TState>
     {
-        public T State { get; private set; }
+        public TState State { get; private set; }
 
-        string currentStateName;
-        Dictionary<string, T> states = new Dictionary<string, T>();
-        Dictionary<string, IEnumerable<string>> allowedTransition = new Dictionary<string, IEnumerable<string>>();
+        TKey currentStateKey;
+        Dictionary<TKey, TState> states = new Dictionary<TKey, TState>();
+        Dictionary<TKey, IEnumerable<TKey>> allowedTransition = new Dictionary<TKey, IEnumerable<TKey>>();
 
-        public FSMProcessor()
+        public FSMProcessor() { }
+
+        public FSMProcessor(TKey key, TState state, params string[] allowedTransitions) : base()
         {
-        }
-
-        public FSMProcessor(string name, T state, params string[] allowedTransitions)
-        {
-            currentStateName = name;
+            currentStateKey = key;
             State = state;
-            AddState(name, state);
+            AddState(key, state);
         }
 
-        public void AddState(string name, T state, params string[] allowedTransitions)
+        public void AddState(TKey key, TState state, params TKey[] allowedTransitions)
         {
-            states.Add(name, state);
-            AddTransition(name, allowedTransitions);
+            states.Add(key, state);
+            AddTransition(key, allowedTransitions);
         }
 
         public T[] GetAllStates<T>()
@@ -36,37 +34,37 @@ namespace Kuhpik
             return states.Values.ToArray() as T[];
         }
 
-        public void ChangeState(string name)
+        public void ChangeState(TKey key)
         {
-            if (allowedTransition.ContainsKey(currentStateName) && !allowedTransition[currentStateName].Contains(name))
+            if (allowedTransition.ContainsKey(currentStateKey) && !allowedTransition[currentStateKey].Contains(key))
             {
-                Debug.LogError($"Not allowed transition from {currentStateName} to {name}!");
+                Debug.LogError($"Not allowed transition from {currentStateKey} to {key}!");
             }
             else
             {
-                Debug.Log($"State changed to {name}!");
-                State = states[name];
-                currentStateName = name;
+                Debug.Log($"State changed to {key}!");
+                State = states[key];
+                currentStateKey = key;
             }
         }
 
-        public async void ChangeState(string name, float delay)
+        public async void ChangeState(TKey key, float delay)
         {
             await Task.Delay(TimeSpan.FromSeconds(delay));
-            ChangeState(name);
+            ChangeState(key);
         }
 
-        public void SetState(string name)
+        public void SetState(TKey key)
         {
             if (State != null) return;
 
-            currentStateName = name;
-            State = states[name];
+            currentStateKey = key;
+            State = states[key];
         }
 
-        public void AddTransition(string name, params string[] allowedTransitions)
+        public void AddTransition(TKey key, params TKey[] allowedTransitions)
         {
-            allowedTransition.Add(name, allowedTransitions);
+            allowedTransition.Add(key, allowedTransitions);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Kuhpik
         [SerializeField] [HideIf("useArray")] EGamestate firstGameState;
         [SerializeField] [ReorderableList] [HideIf("getFromScene")] GameStateSetuper[] gameStateSetupers;
 
-        FSMProcessor<GameState> fsm;
+        FSMProcessor<EGamestate, GameState> fsm;
         EGamestate[] statesOrder;
 
         void Start()
@@ -25,14 +25,14 @@ namespace Kuhpik
             Bootstrap.OnStateChangedEvent += ChangeGameState;
         }
 
-        void InstallGameStates(out FSMProcessor<GameState> fsm, out EGamestate[] order)
+        void InstallGameStates(out FSMProcessor<EGamestate, GameState> fsm, out EGamestate[] order)
         {
             order = useArray ? gameStatesOrder.Select(x => x).ToArray() : new EGamestate[] { firstGameState };
-            fsm = new FSMProcessor<GameState>();
+            fsm = new FSMProcessor<EGamestate, GameState>();
             ProcessWithGameObjects(fsm);
         }
 
-        void ProcessWithGameObjects(FSMProcessor<GameState> fsm)
+        void ProcessWithGameObjects(FSMProcessor<EGamestate , GameState> fsm)
         {
             var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
             var systemsDictionary = new Dictionary<Type, GameSystem>();
@@ -51,10 +51,10 @@ namespace Kuhpik
                     }
                 }
 
-                fsm.AddState(setuper.Type.GetName(), new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions.GetNames());
+                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions);
             }
 
-            fsm.SetState(useArray ? gameStatesOrder[0].GetName() : firstGameState.GetName());
+            fsm.SetState(useArray ? gameStatesOrder[0] : firstGameState);
 
             Bootstrap.gameStates = fsm.GetAllStates<GameState>();
             Bootstrap.systems = systemsDictionary;
@@ -74,7 +74,7 @@ namespace Kuhpik
         void ChangeGameState(EGamestate type)
         {
             fsm.State.Deactivate();
-            fsm.ChangeState(type.GetName());
+            fsm.ChangeState(type);
             fsm.State.Activate(true);
 
             Bootstrap.currentState = fsm.State;
