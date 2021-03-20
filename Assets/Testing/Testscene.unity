@@ -721,6 +721,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7399030431659905887, guid: 865d14520ea908b47818a741324e3095,
+        type: 3}
+      propertyPath: path
+      value: C:/Users/atins/Pictures/Test
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 865d14520ea908b47818a741324e3095, type: 3}
 --- !u!4 &1383131874 stripped
@@ -1391,10 +1396,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fbef7ef7ea38740a69a13009642e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restartKey: 256
+  restartKey: 259
   isTesting: 1
   prefabsToGet:
   - {fileID: 7963056108516852266, guid: 86ff3e2dccef7814e9187deb76c5c169, type: 3}
   - {fileID: 6736479130336874524, guid: 51d89f84ca843924dafffa4781509d32, type: 3}
   prefabsToPool:
   - {fileID: 8714161982321491528, guid: 60a9cbdfcd0fb3b4bb28420f9f677e5f, type: 3}
+  codeDontDestroyPrefab: {fileID: 8578971270396946326, guid: 58e43ff705e2eee4599f3924afbe262f,
+    type: 3}

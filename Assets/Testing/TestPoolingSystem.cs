@@ -10,6 +10,7 @@ public class TestPoolingSystem : GameSystem, IIniting, IUpdating
     [Header("Pool")]
     [SerializeField] GameObject[] prefabsToGet;
     [SerializeField] GameObject[] prefabsToPool;
+    [SerializeField] GameObject codeDontDestroyPrefab;
 
     void IIniting.OnInit()
     {
@@ -25,6 +26,9 @@ public class TestPoolingSystem : GameSystem, IIniting, IUpdating
             var @object = PoolingSystem.GetObject(prefab);
             PoolingSystem.Pool(@object);
         }
+
+        PoolingSystem.InitPool(codeDontDestroyPrefab, 3, true, 0);
+        PoolingSystem.InitPool(new GameObject("Code"), 5, false);
     }
 
     void IUpdating.OnUpdate()
