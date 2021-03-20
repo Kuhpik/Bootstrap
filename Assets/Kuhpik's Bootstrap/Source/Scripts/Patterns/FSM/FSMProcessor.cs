@@ -31,6 +31,11 @@ namespace Kuhpik
             AddTransition(name, allowedTransitions);
         }
 
+        public T[] GetAllStates<T>()
+        {
+            return states.Values.ToArray() as T[];
+        }
+
         public void ChangeState(string name)
         {
             if (allowedTransition.ContainsKey(currentStateName) && !allowedTransition[currentStateName].Contains(name))
