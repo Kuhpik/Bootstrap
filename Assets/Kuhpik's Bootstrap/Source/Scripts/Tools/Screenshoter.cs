@@ -1,4 +1,6 @@
-﻿using NaughtyAttributes;
+﻿#if UNITY_EDITOR
+
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,11 +36,6 @@ namespace Kuhpik
 
         void Awake()
         {
-            #if !UNITY_EDITOR
-            enabled = false;
-            return;
-            #endif
-
             sizeHolder = GetType("GameViewSizes").FetchProperty("instance").FetchProperty("currentGroup");
             gameView = GetWindow(GetType("GameView"));
             index = (int)gameView.FetchProperty("selectedSizeIndex");
@@ -133,3 +130,5 @@ namespace Kuhpik
         #endregion
     }
 }
+
+#endif
