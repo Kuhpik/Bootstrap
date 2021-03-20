@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 
@@ -13,6 +13,8 @@ namespace Kuhpik
         public EGamestate[] AdditionalScreens { get; private set; }
         public EGamestate Type { get; private set; }
 
+        IFixedUpdating[] setupedFixedUpdateSystem;
+        IUpdating[] setupedUpdateSystems;
         bool isRestarting;
 
         public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
@@ -26,21 +28,9 @@ namespace Kuhpik
 
         public void Activate(bool openScreen)
         {
-            if (openScreen)
-            {
-                UIManager.OpenScreen(Type);
-
-                foreach (var type in AdditionalScreens)
-                {
-                    UIManager.OpenScreenAdditionaly(type);
-                }
-            }
-
-            if (isRestarting || !IsInited)
-            {
-                Perform<IIniting>();
-                IsInited = true;
-            }
+            HandleInit();
+            HandleScreens(openScreen);
+            PrepareUpdatingSystems();
         }
 
         public void Deactivate()
@@ -52,10 +42,41 @@ namespace Kuhpik
             }
         }
 
+        void HandleInit()
+        {
+            if (isRestarting || !IsInited)
+            {
+                Perform<IIniting>();
+                IsInited = true;
+            }
+        }
+
+        void HandleScreens(bool openScreen)
+        {
+            if (openScreen)
+            {
+                UIManager.OpenScreen(Type);
+
+                foreach (var type in AdditionalScreens)
+                {
+                    UIManager.OpenScreenAdditionaly(type);
+                }
+            }
+        }
+
+        async void PrepareUpdatingSystems()
+        {
+            UpdateSystems = new IUpdating[0];
+            FixedUpdateSystems = new IFixedUpdating[0];
+            await Task.Yield();
+            FixedUpdateSystems = setupedFixedUpdateSystem;
+            UpdateSystems = setupedUpdateSystems;
+        }
+
         void Setup()
         {
-            UpdateSystems = Systems.Where(x => x is IUpdating).Select(x => x as IUpdating).ToArray();
-            FixedUpdateSystems = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
+            setupedUpdateSystems = Systems.Where(x => x is IUpdating).Select(x => x as IUpdating).ToArray();
+            setupedFixedUpdateSystem = Systems.Where(x => x is IFixedUpdating).Select(x => x as IFixedUpdating).ToArray();
         }
 
         void Perform<T>() where T : IGameSystem

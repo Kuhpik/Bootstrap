@@ -27,23 +27,17 @@ namespace Kuhpik
 
         void Update()
         {
-            if (fsm.State.IsInited)
+            for (int i = 0; i < fsm.State.UpdateSystems.Length; i++)
             {
-                for (int i = 0; i < fsm.State.UpdateSystems.Length; i++)
-                {
-                    fsm.State.UpdateSystems[i].OnUpdate();
-                }
+                fsm.State.UpdateSystems[i].OnUpdate();
             }
         }
 
         void FixedUpdate()
         {
-            if (fsm.State.IsInited)
+            for (int i = 0; i < fsm.State.FixedUpdateSystems.Length; i++)
             {
-                for (int i = 0; i < fsm.State.FixedUpdateSystems.Length; i++)
-                {
-                    fsm.State.FixedUpdateSystems[i].OnFixedUpdate();
-                }
+                fsm.State.FixedUpdateSystems[i].OnFixedUpdate();
             }
         }
 
