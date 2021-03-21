@@ -8,7 +8,10 @@
         Loading = 1,
         Menu = 2,
         Game = 3,
-        Result = 10
+        Pause = 4,
+        Result = 10,
+
+        CurrencyShared = 100
 
         // Extend just like that
         //

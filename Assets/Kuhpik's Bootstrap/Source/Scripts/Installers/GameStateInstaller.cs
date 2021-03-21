@@ -37,6 +37,7 @@ namespace Kuhpik
             var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
             var systemsDictionary = new Dictionary<Type, GameSystem>();
 
+            //Prepare all Gamestates
             foreach (var setuper in setupers)
             {
                 var systems = new List<GameSystem>();
@@ -51,12 +52,34 @@ namespace Kuhpik
                     }
                 }
 
-                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.OpenAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions);
+                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], !setuper.UseAdditionalStates, systems.ToArray()), setuper.AllowedTransitions);
+            }
+
+            //Handle one's that has additional states
+            foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
+            {
+                var state = fsm.GetState(setuper.Type);
+                var first = new List<IGameSystem>();
+                var last = new List<IGameSystem>();
+
+                for (int i = 0; i < setuper.AdditionalStatesInTheBegining.Length; i++)
+                {
+                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheBegining[i]);
+                    first.AddRange(additionalState.Systems);
+                }
+
+                for (int i = 0; i < setuper.AdditionalStatesInTheEnd.Length; i++)
+                {
+                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheEnd[i]);
+                    last.AddRange(additionalState.Systems);
+                }
+
+                state.ContactSystems(first, last);
             }
 
             fsm.SetState(useArray ? gameStatesOrder[0] : firstGameState);
 
-            Bootstrap.gameStates = fsm.GetAllStates<GameState>();
+            Bootstrap.gameStates = fsm.GetAllStates();
             Bootstrap.systems = systemsDictionary;
             Bootstrap.currentState = fsm.State;
         }

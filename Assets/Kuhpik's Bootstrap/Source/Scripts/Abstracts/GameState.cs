@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Linq;
-using UnityEngine;
 using System;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace Kuhpik
 {
@@ -24,12 +25,26 @@ namespace Kuhpik
         public bool isInited;
         bool isRestarting;
 
-        public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
+        public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, bool setupImmediate, params MonoBehaviour[] systems)
         {
             Systems = systems.Select(x => x as IGameSystem).ToArray();
             AdditionalScreens = additionalScreens;
             this.isRestarting = isRestarting;
             Type = type;
+
+            if (setupImmediate) Setup();
+        }
+
+        public void ContactSystems(IEnumerable<IGameSystem> systemsInTheBegining, IEnumerable<IGameSystem> systemsInTheEnd)
+        {
+            var contacted = new List<IGameSystem>();
+
+            contacted.AddRange(systemsInTheBegining);
+            contacted.AddRange(Systems);
+            contacted.AddRange(systemsInTheEnd);
+
+            Systems = contacted.ToArray();
+
             Setup();
         }
 
