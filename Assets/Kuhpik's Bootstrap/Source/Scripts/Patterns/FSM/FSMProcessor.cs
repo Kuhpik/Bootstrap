@@ -29,9 +29,14 @@ namespace Kuhpik
             AddTransition(key, allowedTransitions);
         }
 
-        public T[] GetAllStates<T>()
+        public TState[] GetAllStates()
         {
-            return states.Values.ToArray() as T[];
+            return states.Values.ToArray();
+        }
+
+        public TState GetState(TKey key)
+        {
+            return states[key];
         }
 
         public void ChangeState(TKey key)
