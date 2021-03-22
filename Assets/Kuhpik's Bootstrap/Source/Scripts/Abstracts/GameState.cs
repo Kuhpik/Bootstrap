@@ -16,93 +16,97 @@ namespace Kuhpik
         public IDisposing[] DisposingSystem { get; private set; }
         public IFixedUpdating[] FixedUpdateSystems { get; private set; }
 
+        public GameState[] StatesIncludingSubstates { get; private set; }
         public EGamestate[] AdditionalScreens { get; private set; }
         public EGamestate Type { get; private set; }
 
         IFixedUpdating[] setupedFixedUpdateSystem;
         IUpdating[] setupedUpdateSystems;
 
+        public bool isRestarting { get; private set; }
         public bool isInited;
-        bool isRestarting;
 
-        public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, bool setupImmediate, params MonoBehaviour[] systems)
+        public GameState(EGamestate type, bool isRestarting, EGamestate[] additionalScreens, params MonoBehaviour[] systems)
         {
             Systems = systems.Select(x => x as IGameSystem).ToArray();
+            StatesIncludingSubstates = new GameState[] { this };
             AdditionalScreens = additionalScreens;
             this.isRestarting = isRestarting;
             Type = type;
-
-            if (setupImmediate) Setup();
-        }
-
-        public void ContactSystems(IEnumerable<IGameSystem> systemsInTheBegining, IEnumerable<IGameSystem> systemsInTheEnd)
-        {
-            var contacted = new List<IGameSystem>();
-
-            contacted.AddRange(systemsInTheBegining);
-            contacted.AddRange(Systems);
-            contacted.AddRange(systemsInTheEnd);
-
-            Systems = contacted.ToArray();
-
             Setup();
         }
 
-        public void Activate(bool openScreen)
+        public void ContactStates(IEnumerable<GameState> statesInTheBegining, IEnumerable<GameState> statesInTheEnd)
         {
-            HandleInit();
-            HandleScreens(openScreen);
-            PrepareUpdatingSystems();
+            var contacted = new List<GameState>();
+
+            contacted.AddRange(statesInTheBegining);
+            contacted.AddRange(StatesIncludingSubstates);
+            contacted.AddRange(statesInTheEnd);
+
+            StatesIncludingSubstates = contacted.ToArray();
+        }
+
+        public void Activate()
+        {
+            foreach (var state in StatesIncludingSubstates)
+            {
+                HandleScreens(state);
+                PrepareUpdatingSystems(state);
+                HandleInit(state);
+            }
         }
 
         public void Deactivate(bool ignoreCheck = false)
         {
-            if ((isRestarting && isInited) || ignoreCheck)
+            foreach (var state in StatesIncludingSubstates)
             {
-                for (int i = 0; i < DisposingSystem.Length; i++)
+                if ((state.isRestarting && state.isInited) || ignoreCheck)
                 {
-                    DisposingSystem[i].OnDispose();
-                }
+                    for (int i = 0; i < state.DisposingSystem.Length; i++)
+                    {
+                        state.DisposingSystem[i].OnDispose();
+                    }
 
-                isInited = false;
-            }
-        }
-
-        void HandleInit()
-        {
-            if (isRestarting || !isInited)
-            {
-                for (int i = 0; i < InitingSystem.Length; i++)
-                {
-                    InitingSystem[i].OnInit();
-                }
-
-                isInited = true;
-            }
-        }
-
-        void HandleScreens(bool openScreen)
-        {
-            if (openScreen)
-            {
-                UIManager.OpenScreen(Type);
-
-                foreach (var type in AdditionalScreens)
-                {
-                    UIManager.OpenScreenAdditionaly(type);
+                    state.isInited = false;
                 }
             }
         }
 
-        async void PrepareUpdatingSystems()
+        void HandleInit(GameState state)
         {
-            UpdateSystems = Array.Empty<IUpdating>();
-            FixedUpdateSystems = Array.Empty<IFixedUpdating>();
+            if (state.isRestarting || !state.isInited)
+            {
+                for (int i = 0; i < state.InitingSystem.Length; i++)
+                {
+                    state.InitingSystem[i].OnInit();
+                }
+
+                state.isInited = true;
+            }
+        }
+
+        void HandleScreens(GameState state)
+        {
+            // Only open current state's screen.
+            // Otherwise additional screens in the end will close main state's UI screen;
+            if (state == this) UIManager.OpenScreen(state.Type);
+
+            foreach (var type in state.AdditionalScreens)
+            {
+                UIManager.OpenScreenAdditionaly(type);
+            }
+        }
+
+        async void PrepareUpdatingSystems(GameState state)
+        {
+            state.UpdateSystems = Array.Empty<IUpdating>();
+            state.FixedUpdateSystems = Array.Empty<IFixedUpdating>();
 
             await Task.Yield();
 
-            FixedUpdateSystems = setupedFixedUpdateSystem;
-            UpdateSystems = setupedUpdateSystems;
+            state.FixedUpdateSystems = state.setupedFixedUpdateSystem;
+            state.UpdateSystems = state.setupedUpdateSystems;
         }
 
         void Setup()

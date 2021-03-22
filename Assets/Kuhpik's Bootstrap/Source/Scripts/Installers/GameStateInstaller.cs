@@ -52,29 +52,29 @@ namespace Kuhpik
                     }
                 }
 
-                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], !setuper.UseAdditionalStates, systems.ToArray()), setuper.AllowedTransitions);
+                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions);
             }
 
             //Handle one's that has additional states
             foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
             {
                 var state = fsm.GetState(setuper.Type);
-                var first = new List<IGameSystem>();
-                var last = new List<IGameSystem>();
+                var first = new List<GameState>();
+                var last = new List<GameState>();
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheBegining.Length; i++)
                 {
                     var additionalState = fsm.GetState(setuper.AdditionalStatesInTheBegining[i]);
-                    first.AddRange(additionalState.Systems);
+                    first.Add(additionalState);
                 }
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheEnd.Length; i++)
                 {
                     var additionalState = fsm.GetState(setuper.AdditionalStatesInTheEnd[i]);
-                    last.AddRange(additionalState.Systems);
+                    last.Add(additionalState);
                 }
 
-                state.ContactSystems(first, last);
+                state.ContactStates(first, last);
             }
 
             fsm.SetState(useArray ? gameStatesOrder[0] : firstGameState);
@@ -86,7 +86,7 @@ namespace Kuhpik
 
         void ActivateStates()
         {
-            fsm.State.Activate(true);
+            fsm.State.Activate();
 
             for (int i = 1; i < statesOrder.Length; i++)
             {
@@ -98,7 +98,7 @@ namespace Kuhpik
         {
             fsm.State.Deactivate();
             fsm.ChangeState(type);
-            fsm.State.Activate(true);
+            fsm.State.Activate();
 
             Bootstrap.currentState = fsm.State;
         }
