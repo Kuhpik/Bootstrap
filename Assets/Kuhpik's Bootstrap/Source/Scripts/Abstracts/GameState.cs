@@ -56,23 +56,34 @@ namespace Kuhpik
                 HandleScreens(state);
                 PrepareUpdatingSystems(state);
                 HandleInit(state);
-            }              
+            }
         }
 
         public void Deactivate(bool ignoreCheck = false)
         {
-            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
+            if (!ignoreCheck)
             {
-                var state = StatesIncludingSubstates[i];
-
-                if ((state.isRestarting && state.isInited) || ignoreCheck)
+                for (int i = 0; i < StatesIncludingSubstates.Length; i++)
                 {
-                    for (int j = 0; j < state.DisposingSystem.Length; j++)
-                    {
-                        state.DisposingSystem[j].OnDispose();
-                    }
+                    var state = StatesIncludingSubstates[i];
 
-                    state.isInited = false;
+                    if ((state.isRestarting && state.isInited) || ignoreCheck)
+                    {
+                        for (int j = 0; j < state.DisposingSystem.Length; j++)
+                        {
+                            state.DisposingSystem[j].OnDispose();
+                        }
+
+                        state.isInited = false;
+                    }
+                }
+            }
+
+            else
+            {
+                for (int i = 0; i < DisposingSystem.Length; i++)
+                {
+                    DisposingSystem[i].OnDispose();
                 }
             }
         }
