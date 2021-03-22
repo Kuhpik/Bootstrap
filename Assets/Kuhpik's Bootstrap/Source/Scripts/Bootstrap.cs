@@ -42,18 +42,12 @@ namespace Kuhpik
 
         void Update()
         {
-            for (int i = 0; i < currentState.UpdateSystems.Length; i++)
-            {
-                currentState.UpdateSystems[i].OnUpdate();
-            }
+            currentState.RunUpdate();
         }
 
         void FixedUpdate()
         {
-            for (int i = 0; i < currentState.FixedUpdateSystems.Length; i++)
-            {
-                currentState.FixedUpdateSystems[i].OnFixedUpdate();
-            }
+            currentState.RunFixedUpdate();
         }
 
         void OnApplicationQuit()

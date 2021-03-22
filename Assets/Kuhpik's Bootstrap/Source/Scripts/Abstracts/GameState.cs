@@ -49,26 +49,52 @@ namespace Kuhpik
 
         public void Activate()
         {
-            foreach (var state in StatesIncludingSubstates)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
+                var state = StatesIncludingSubstates[i];
+
                 HandleScreens(state);
                 PrepareUpdatingSystems(state);
                 HandleInit(state);
-            }
+            }              
         }
 
         public void Deactivate(bool ignoreCheck = false)
         {
-            foreach (var state in StatesIncludingSubstates)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
+                var state = StatesIncludingSubstates[i];
+
                 if ((state.isRestarting && state.isInited) || ignoreCheck)
                 {
-                    for (int i = 0; i < state.DisposingSystem.Length; i++)
+                    for (int j = 0; j < state.DisposingSystem.Length; j++)
                     {
-                        state.DisposingSystem[i].OnDispose();
+                        state.DisposingSystem[j].OnDispose();
                     }
 
                     state.isInited = false;
+                }
+            }
+        }
+
+        public void RunUpdate()
+        {
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
+            {
+                for (int j = 0; j < StatesIncludingSubstates[i].UpdateSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].UpdateSystems[j].OnUpdate();
+                }
+            }
+        }
+
+        public void RunFixedUpdate()
+        {
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
+            {
+                for (int j = 0; j < StatesIncludingSubstates[i].FixedUpdateSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].FixedUpdateSystems[j].OnFixedUpdate();
                 }
             }
         }
