@@ -46,9 +46,11 @@ namespace Kuhpik
                 {
                     if (setuper.transform.GetChild(i).gameObject.activeSelf)
                     {
-                        var system = setuper.transform.GetChild(i).GetComponent<GameSystem>();
-                        systemsDictionary.Add(system.GetType(), system);
-                        systems.Add(system);
+                        if (setuper.transform.GetChild(i).TryGetComponent<GameSystem>(out var system))
+                        {
+                            systemsDictionary.Add(system.GetType(), system);
+                            systems.Add(system);
+                        }
                     }
                 }
 
