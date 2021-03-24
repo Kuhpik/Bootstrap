@@ -14,7 +14,9 @@ namespace Kuhpik
 
         void Start()
         {
-            Bootstrap.itemsToInject.Add(HandlePlayerData());
+            data = HandlePlayerData();
+
+            Bootstrap.itemsToInject.Add(data);
             Bootstrap.OnSaveEvent += Save;
         }
 
