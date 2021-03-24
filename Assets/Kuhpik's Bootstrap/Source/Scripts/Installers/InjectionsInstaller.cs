@@ -18,14 +18,14 @@ namespace Kuhpik
 
         void Process()
         {
-            Inject(Bootstrap.systems.Values, Bootstrap.itemsToInject);
+            Inject(Bootstrap.systems.Values.ToArray(), Bootstrap.itemsToInject.Concat(additionalInjections).ToArray());
         }
 
         void Inject(IEnumerable<GameSystem> systems, params object[] injections)
         {
-            if (injections == null || injections.Length == 0 || systems == null) return;
+            if (injections == null || systems == null || injections.Length == 0) return;
 
-            Process(systems, injections.Concat(additionalInjections).ToArray());
+            Process(systems, injections);
         }
 
         void Process(IEnumerable<GameSystem> systems, params object[] injections)
