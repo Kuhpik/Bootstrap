@@ -1,5 +1,4 @@
-﻿using Kuhpik.Pooling;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,13 +49,6 @@ namespace Kuhpik
             currentState.RunFixedUpdate();
         }
 
-        void OnApplicationQuit()
-        {
-            #if UNITY_EDITOR
-            Debug.Log("Possible to get Pooling System Error. Ignore it. Editor Issues");
-            #endif
-        }
-
         public static void GameRestart(int sceneIndex)
         {
             foreach (var state in gameStates)
@@ -65,7 +57,6 @@ namespace Kuhpik
             }
 
             SaveGame();
-            PoolingSystem.Clear();
             SceneManager.LoadScene(sceneIndex);
         }
 
