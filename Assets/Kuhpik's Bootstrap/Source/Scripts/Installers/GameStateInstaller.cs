@@ -11,12 +11,12 @@ namespace Kuhpik
     {
         [SerializeField] bool useArray;
         [SerializeField] bool getFromScene;
-        [SerializeField] [ShowIf("useArray")] EGamestate[] gameStatesOrder;
-        [SerializeField] [HideIf("useArray")] EGamestate firstGameState;
+        [SerializeField] [ShowIf("useArray")] GameStateName[] gameStatesOrder;
+        [SerializeField] [HideIf("useArray")] GameStateName firstGameState;
         [SerializeField] [ReorderableList] [HideIf("getFromScene")] GameStateSetuper[] gameStateSetupers;
 
-        FSMProcessor<EGamestate, GameState> fsm;
-        EGamestate[] statesOrder;
+        FSMProcessor<GameStateName, GameState> fsm;
+        GameStateName[] statesOrder;
 
         void Start()
         {
@@ -25,14 +25,14 @@ namespace Kuhpik
             Bootstrap.OnStateChangedEvent += ChangeGameState;
         }
 
-        void InstallGameStates(out FSMProcessor<EGamestate, GameState> fsm, out EGamestate[] order)
+        void InstallGameStates(out FSMProcessor<GameStateName, GameState> fsm, out GameStateName[] order)
         {
-            order = useArray ? gameStatesOrder.Select(x => x).ToArray() : new EGamestate[] { firstGameState };
-            fsm = new FSMProcessor<EGamestate, GameState>();
+            order = useArray ? gameStatesOrder.Select(x => x).ToArray() : new GameStateName[] { firstGameState };
+            fsm = new FSMProcessor<GameStateName, GameState>();
             ProcessWithGameObjects(fsm);
         }
 
-        void ProcessWithGameObjects(FSMProcessor<EGamestate , GameState> fsm)
+        void ProcessWithGameObjects(FSMProcessor<GameStateName , GameState> fsm)
         {
             var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
             var systemsDictionary = new Dictionary<Type, GameSystem>();
@@ -54,7 +54,7 @@ namespace Kuhpik
                     }
                 }
 
-                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new EGamestate[0], systems.ToArray()), setuper.AllowedTransitions);
+                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new GameStateName[0], systems.ToArray()), setuper.AllowedTransitions);
             }
 
             //Handle one's that has additional states
@@ -96,7 +96,7 @@ namespace Kuhpik
             }
         }
 
-        void ChangeGameState(EGamestate type)
+        void ChangeGameState(GameStateName type)
         {
             fsm.State.Deactivate();
             fsm.ChangeState(type);

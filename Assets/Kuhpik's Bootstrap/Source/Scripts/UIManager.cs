@@ -10,9 +10,9 @@ namespace Kuhpik
     public class UIManager : MonoBehaviour
     {
         [SerializeField] [BoxGroup("Settings")] Image backgroundScreen;
-        [SerializeField] [BoxGroup("Settings")] EGamestate previewScreen;
+        [SerializeField] [BoxGroup("Settings")] GameStateName previewScreen;
 
-        static Dictionary<EGamestate, UIScreen> stateScreens;
+        static Dictionary<GameStateName, UIScreen> stateScreens;
         static Dictionary<Type, UIScreen> uiScreens;
         static Image background;
 
@@ -62,7 +62,7 @@ namespace Kuhpik
             background.color = color;
         }
 
-        public static void OpenScreen(EGamestate type)
+        public static void OpenScreen(GameStateName type)
         {
             foreach (var screen in stateScreens.Values)
             {
@@ -77,17 +77,17 @@ namespace Kuhpik
             }
         }
 
-        public static void OpenScreenAdditionaly(EGamestate type)
+        public static void OpenScreenAdditionaly(GameStateName type)
         {
             stateScreens[type].Open();
         }
 
-        public static void CloseScreen(EGamestate type)
+        public static void CloseScreen(GameStateName type)
         {
             stateScreens[type].Close();
         }
 
-        public static UIScreen GetUIScreen(EGamestate type)
+        public static UIScreen GetUIScreen(GameStateName type)
         {
             return stateScreens[type];
         }

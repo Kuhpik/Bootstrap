@@ -2,7 +2,7 @@
 {
     internal interface IUIScreen : IUIElement
     {
-        EGamestate Type { get; }
+        GameState.Identity Type { get; }
         void Open();
         void Close();
     }

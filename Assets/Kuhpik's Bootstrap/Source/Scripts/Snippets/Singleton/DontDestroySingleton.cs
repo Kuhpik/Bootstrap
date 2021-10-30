@@ -2,15 +2,14 @@
 
 namespace Kuhpik
 {
-    public abstract class DontDestroySingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class DontDestroySingleton<T> : Singleton<T> where T : MonoBehaviour
     {
-        public static T Instance { get; private set; }
-
         void Awake()
         {
             if (Instance == null)
             {
                 Instance = this as T;
+                transform.SetParent(null);
                 DontDestroyOnLoad(gameObject);
             }
 

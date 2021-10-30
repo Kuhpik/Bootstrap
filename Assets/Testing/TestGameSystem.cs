@@ -12,6 +12,6 @@ public class TestGameSystem : GameSystem, IIniting, IUpdating
     {
         Debug.Log($"Game state update. Frame {Time.frameCount}");
 
-        if (Input.GetKeyDown(KeyCode.Space)) Bootstrap.ChangeGameState(EGamestate.Loading);
+        if (Input.GetKeyDown(KeyCode.Space)) Bootstrap.ChangeGameState(GameStateName.Loading);
     }
 }

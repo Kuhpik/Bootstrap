@@ -7,7 +7,7 @@ public class TestLoadingSystem : GameSystem, IIniting, IUpdating
     {
         Debug.Log($"<color=yellow>Loading state inited. Frame {Time.frameCount}</color>");
 
-        Bootstrap.ChangeGameState(EGamestate.Game);
+        Bootstrap.ChangeGameState(GameStateName.Game);
     }
 
     void IUpdating.OnUpdate()
