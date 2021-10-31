@@ -3,16 +3,17 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    [DefaultExecutionOrder(10)]
-    public class PlayerDataInstaller : MonoBehaviour
+    public class PlayerDataInstaller : MonoBehaviour, IInstaller
     {
         [SerializeField] bool isTesting;
         [SerializeField] [ShowIf("isTesting")] PlayerData playerData;
 
+        public int Order => 2;
+
         const string saveKey = "saveKey";
         PlayerData data;
 
-        void Start()
+        public void Process()
         {
             data = HandlePlayerData();
 

@@ -12,7 +12,7 @@ namespace Kuhpik
 
         public virtual void OnFixedUpdate() { }
 
-        public virtual void OnGameExit() { }
+        public virtual void OnGameEnd() { }
 
         public virtual void OnGameStart() { }
 

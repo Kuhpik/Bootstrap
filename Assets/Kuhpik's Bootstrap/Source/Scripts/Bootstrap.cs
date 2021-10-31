@@ -10,7 +10,7 @@ namespace Kuhpik
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] GameConfig config;
-        static GameStateName lastState;
+        static GameState.Identificator lastState;
 
         internal static GameState currentState;
         internal static GameState[] gameStates;
@@ -20,7 +20,7 @@ namespace Kuhpik
         internal static event Action OnSaveEvent;
         internal static event Action OnGameStartEvent;
         internal static event Action OnGamePreStartEvent;
-        internal static event Action<GameStateName> OnStateChangedEvent;
+        internal static event Action<GameState.Identificator> OnStateChangedEvent;
 
         void Awake()
         {
@@ -69,10 +69,10 @@ namespace Kuhpik
             OnSaveEvent?.Invoke();
         }
 
-        public static void ChangeGameState(GameStateName type)
+        public static void ChangeGameState(GameState.Identificator id)
         {
             lastState = GetCurrentGamestate();
-            OnStateChangedEvent?.Invoke(type);
+            OnStateChangedEvent?.Invoke(id);
         }
 
         public static T GetSystem<T>() where T : class
@@ -80,12 +80,12 @@ namespace Kuhpik
             return systems[typeof(T)] as T;
         }
 
-        public static GameStateName GetCurrentGamestate()
+        public static GameState.Identificator GetCurrentGamestate()
         {
             return currentState.ID;
         }
 
-        public static GameStateName GetLastGamestate()
+        public static GameState.Identificator GetLastGamestate()
         {
             return lastState;
         }

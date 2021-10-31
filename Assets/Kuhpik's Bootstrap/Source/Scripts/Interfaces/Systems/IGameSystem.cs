@@ -10,6 +10,6 @@ namespace Kuhpik
         void OnFixedUpdate();
         void OnCustomTick();
         void OnStateExit();
-        void OnGameExit();
+        void OnGameEnd();
     }
 }

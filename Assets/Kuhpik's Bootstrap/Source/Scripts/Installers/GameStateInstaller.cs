@@ -6,103 +6,65 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    [DefaultExecutionOrder(10)]
-    public class GameStateInstaller : MonoBehaviour
+    public class GameStateInstaller : MonoBehaviour, IInstaller
     {
         [SerializeField] bool useArray;
-        [SerializeField] bool getFromScene;
-        [SerializeField] [ShowIf("useArray")] GameStateName[] gameStatesOrder;
-        [SerializeField] [HideIf("useArray")] GameStateName firstGameState;
-        [SerializeField] [ReorderableList] [HideIf("getFromScene")] GameStateSetuper[] gameStateSetupers;
+        [SerializeField] [HideIf("useArray")] GameState.Identificator firstGameState;
+        [SerializeField] [ShowIf("useArray")] GameState.Identificator[] gameStatesOrder;
 
-        FSMProcessor<GameStateName, GameState> fsm;
-        GameStateName[] statesOrder;
+        public int Order => 1;
+        public GameState.Identificator[] OrderedStates { get; private set; }
+        public FSMProcessor<GameState.Identificator, GameState> FSM { get; private set; }
 
-        void Start()
+        public void Process()
         {
-            InstallGameStates(out fsm, out statesOrder);
-            Bootstrap.OnGameStartEvent += ActivateStates;
-            Bootstrap.OnStateChangedEvent += ChangeGameState;
-        }
-
-        void InstallGameStates(out FSMProcessor<GameStateName, GameState> fsm, out GameStateName[] order)
-        {
-            order = useArray ? gameStatesOrder.Select(x => x).ToArray() : new GameStateName[] { firstGameState };
-            fsm = new FSMProcessor<GameStateName, GameState>();
-            ProcessWithGameObjects(fsm);
-        }
-
-        void ProcessWithGameObjects(FSMProcessor<GameStateName , GameState> fsm)
-        {
-            var setupers = getFromScene ? FindObjectsOfType<GameStateSetuper>() : gameStateSetupers;
+            var initialState = useArray ? gameStatesOrder[0] : firstGameState;
+            var setupers = FindObjectsOfType<GameState.SetuperComponent>();
             var systemsDictionary = new Dictionary<Type, GameSystem>();
+            var statesDictionary = setupers.ToDictionary(x => x.ID, x => x.CreateState());
 
-            //Prepare all Gamestates
+            InitializeFSM(initialState, setupers, statesDictionary);
+            HandleSharedStates(setupers);
+
+            Bootstrap.systems = systemsDictionary;
+            Bootstrap.gameStates = FSM.GetAllStates();
+            Bootstrap.currentState = FSM.CurrentState;
+        }
+
+        private void InitializeFSM(GameState.Identificator initialState, GameState.SetuperComponent[] setupers, Dictionary<GameState.Identificator, GameState> statesDictionary)
+        {
+            FSM = new FSMProcessor<GameState.Identificator, GameState>(false);
+
             foreach (var setuper in setupers)
             {
-                var systems = new List<GameSystem>();
-
-                for (int i = 0; i < setuper.transform.childCount; i++)
-                {
-                    if (setuper.transform.GetChild(i).gameObject.activeSelf)
-                    {
-                        if (setuper.transform.GetChild(i).TryGetComponent<GameSystem>(out var system))
-                        {
-                            systemsDictionary.Add(system.GetType(), system);
-                            systems.Add(system);
-                        }
-                    }
-                }
-
-                fsm.AddState(setuper.Type, new GameState(setuper.Type, setuper.IsRestarting, setuper.UseAdditionalScreens ? setuper.AdditionalScreens : new GameStateName[0], systems.ToArray()), setuper.AllowedTransitions);
+                FSM.AddState(setuper.ID, statesDictionary[setuper.ID], setuper.AllowedTransitions);
             }
 
-            //Handle one's that has additional states
+            FSM.SetState(initialState);
+        }
+
+        private void HandleSharedStates(GameState.SetuperComponent[] setupers)
+        {
             foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
             {
-                var state = fsm.GetState(setuper.Type);
+                var state = FSM.GetState(setuper.ID);
                 var first = new List<GameState>();
                 var last = new List<GameState>();
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheBegining.Length; i++)
                 {
-                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheBegining[i]);
+                    var additionalState = FSM.GetState(setuper.AdditionalStatesInTheBegining[i]);
                     first.Add(additionalState);
                 }
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheEnd.Length; i++)
                 {
-                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheEnd[i]);
+                    var additionalState = FSM.GetState(setuper.AdditionalStatesInTheEnd[i]);
                     last.Add(additionalState);
                 }
 
                 state.ContactStates(first, last);
             }
-
-            fsm.SetState(useArray ? gameStatesOrder[0] : firstGameState);
-
-            Bootstrap.gameStates = fsm.GetAllStates();
-            Bootstrap.systems = systemsDictionary;
-            Bootstrap.currentState = fsm.State;
-        }
-
-        void ActivateStates()
-        {
-            fsm.State.Activate();
-
-            for (int i = 1; i < statesOrder.Length; i++)
-            {
-                ChangeGameState(statesOrder[i]);
-            }
-        }
-
-        void ChangeGameState(GameStateName type)
-        {
-            fsm.State.Deactivate();
-            fsm.ChangeState(type);
-            fsm.State.Activate();
-
-            Bootstrap.currentState = fsm.State;
         }
     }
 }

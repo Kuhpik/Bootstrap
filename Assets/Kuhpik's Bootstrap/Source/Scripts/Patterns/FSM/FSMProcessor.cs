@@ -9,7 +9,7 @@ namespace Kuhpik
     {
         public TState CurrentState { get; private set; }
         public TKey CurrentStateKey { get; private set; }
-        public readonly bool IsAnyTransitionsAllowed;
+        public readonly bool IsAnyTransitionAllowed;
 
         public event Action<TKey> OnStateEnter;
         public event Action<TKey> OnStateExit;
@@ -17,24 +17,42 @@ namespace Kuhpik
         readonly Dictionary<TKey, TState> states;
         readonly Dictionary<TKey, IEnumerable<TKey>> allowedTransition;
 
-        /// <summary>
-        /// Creates FSM with all posible states and transitions between them.
-        /// </summary>
-        /// <param name="datas">Custom tuple for important data</param>
-        /// <param name="initialState">Initial state of this FSM</param>
-        /// <param name="allowAnyTransition">Should FSM ignore transition data?</param>
-        public FSMProcessor(IEnumerable<(TKey, TState, IEnumerable<TKey>)> datas, TKey initialState, bool allowAnyTransition) : base()
+        public FSMProcessor(bool allowAnyTransition)
         {
-            allowedTransition = datas.ToDictionary(x => x.Item1, x => x.Item3);
-            states = datas.ToDictionary(x => x.Item1, x => x.Item2);
-            IsAnyTransitionsAllowed = allowAnyTransition;
-            SetState(initialState);
+            states = new Dictionary<TKey, TState>();
+            IsAnyTransitionAllowed = allowAnyTransition;
+            allowedTransition = new Dictionary<TKey, IEnumerable<TKey>>();
+        }
+
+        public void SetState(TKey key)
+        {
+            if (CurrentState != null) OnStateExit?.Invoke(CurrentStateKey);
+
+            Debug.Log($"State changed to <color=orange>{key}</color>!");
+            CurrentState = states[key];
+            CurrentStateKey = key;
+
+            OnStateEnter?.Invoke(key);
         }
 
         public void ChangeState(TKey key)
         {
-            if (IsAnyTransitionsAllowed) SwitchStateIgnoringTransitions(key);
+            if (IsAnyTransitionAllowed) SwitchStateIgnoringTransitions(key);
             else SwitchState(key);
+        }
+
+        public void AddState(TKey key, TState state, IEnumerable<TKey> allowedTransitions)
+        {
+            if (!states.ContainsKey(key))
+            {
+                states.Add(key, state);
+                allowedTransition.Add(key, allowedTransitions);
+            }
+
+            else
+            {
+                Debug.LogError($"State with key {key} already exist in collection");
+            }
         }
 
         public TState[] GetAllStates()
@@ -53,6 +71,7 @@ namespace Kuhpik
             {
                 Debug.LogError($"Not allowed transition from {CurrentStateKey} to {key}!");
             }
+
             else
             {
                 SetState(key);
@@ -62,13 +81,6 @@ namespace Kuhpik
         void SwitchStateIgnoringTransitions(TKey key)
         {
             SetState(key);
-        }
-
-        void SetState(TKey key)
-        {
-            Debug.Log($"State changed to <color=orange>{key}</color>!");
-            CurrentState = states[key];
-            CurrentStateKey = key;
         }
     }
 }

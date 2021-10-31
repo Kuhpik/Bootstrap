@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace Kuhpik
 {
@@ -7,12 +6,12 @@ namespace Kuhpik
     {
         readonly public IGameSystem[] Systems;
         readonly public GameState[] StatesIncludingSubstates;
-        readonly public Identity[] AdditionalScreens;
-        readonly public Identity ID;
+        readonly public Identificator[] AdditionalScreens;
+        readonly public Identificator ID;
 
         bool isInited;
 
-        public GameState(Identity id, bool isRestarting, Identity[] additionalScreens, params MonoBehaviour[] systems)
+        public GameState(Identificator id, Identificator[] additionalScreens, IEnumerable<IGameSystem> systems)
         {
             //Systems = systems.Select(x => x as IGameSystem).ToArray();
             //StatesIncludingSubstates = new GameState[] { this };

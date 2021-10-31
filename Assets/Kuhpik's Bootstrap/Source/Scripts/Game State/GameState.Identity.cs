@@ -2,7 +2,7 @@
 {
     public partial class GameState
     {
-        public enum Identity
+        public enum Identificator
         {
             // Don't change int values in the middle of development.
             // Otherwise all of your settings in inspector can be messed up.
