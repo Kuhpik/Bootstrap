@@ -10,9 +10,9 @@ namespace Kuhpik
     public class UIManager : MonoBehaviour
     {
         [SerializeField] [BoxGroup("Settings")] Image backgroundScreen;
-        [SerializeField] [BoxGroup("Settings")] GameStateName previewScreen;
+        [SerializeField] [BoxGroup("Settings")] GameState.Identificator previewScreen;
 
-        static Dictionary<GameStateName, UIScreen> stateScreens;
+        static Dictionary<GameState.Identificator, UIScreen> stateScreens;
         static Dictionary<Type, UIScreen> uiScreens;
         static Image background;
 
@@ -62,34 +62,34 @@ namespace Kuhpik
             background.color = color;
         }
 
-        public static void OpenScreen(GameStateName type)
+        public static void OpenScreen(GameState.Identificator id)
         {
             foreach (var screen in stateScreens.Values)
             {
                 screen.Close();
             }
 
-            if (stateScreens.ContainsKey(type))
+            if (stateScreens.ContainsKey(id))
             {
-                stateScreens[type].Open();
-                background.gameObject.SetActive(stateScreens[type].UseBackground);
-                ChangeBackground(stateScreens[type].BackgroundSprite, stateScreens[type].BackgroundColor);
+                stateScreens[id].Open();
+                background.gameObject.SetActive(stateScreens[id].UseBackground);
+                ChangeBackground(stateScreens[id].BackgroundSprite, stateScreens[id].BackgroundColor);
             }
         }
 
-        public static void OpenScreenAdditionaly(GameStateName type)
+        public static void OpenScreenAdditionaly(GameState.Identificator id)
         {
-            stateScreens[type].Open();
+            stateScreens[id].Open();
         }
 
-        public static void CloseScreen(GameStateName type)
+        public static void CloseScreen(GameState.Identificator id)
         {
-            stateScreens[type].Close();
+            stateScreens[id].Close();
         }
 
-        public static UIScreen GetUIScreen(GameStateName type)
+        public static UIScreen GetUIScreen(GameState.Identificator id)
         {
-            return stateScreens[type];
+            return stateScreens[id];
         }
 
         public static T GetUIScreen<T>() where T : UIScreen

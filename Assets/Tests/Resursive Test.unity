@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 55811c4960e7dc640a11d2c00520c055,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +119,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -232,6 +235,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -450,6 +454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8a2a2cc3d4de34a874ee9670201dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &472402554
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +499,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 600d03a0b0e198e47982051e61446fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
   isTesting: 1
+  testArray: []
+  replaceArray: []
 --- !u!1 &479659707
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +779,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -895,6 +906,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -960,6 +972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 462ef6d0887c25e4b9e5d2dcd95870cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &1137451041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2225dcd1680fe994a9e51a73b3246631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &1199911530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,6 +1182,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1409,6 +1426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee3acaba048e515439144401d14ced34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1001 &1383131873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1583,6 +1602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02970d55a1797d64e88ecd02d5f28f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &1430023007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9396c2fa9ffd8cf4a8a87b689dc6da19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &1578235763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,6 +1767,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1824,6 +1848,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1676200666
 Canvas:
   m_ObjectHideFlags: 0
@@ -1914,6 +1939,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de52a93c901bf741a15e6287a246316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {}
+  config: {fileID: 0}
 --- !u!1 &1718655547
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,6 +2076,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2264,6 +2292,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
