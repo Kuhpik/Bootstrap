@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    public class InjectionsInstaller : MonoBehaviour, IInstaller
+    public class InjectionsInstaller : Installer
     {
         [SerializeField] [ReorderableList] ScriptableObject[] additionalInjections;
 
-        public int Order => 100;
+        public override int Order => 100;
 
-        public void Process()
+        public override void Process()
         {
             Bootstrap.OnGamePreStartEvent += Inject;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = System.Object;
@@ -34,6 +35,13 @@ namespace Kuhpik
         {
             itemsToInject.Add(config);
             itemsToInject.Add(new GameData());
+
+            var installers = FindObjectsOfType<Installer>().OrderBy(x => x.Order).ToArray();
+
+            for (int i = 0; i < installers.Length; i++)
+            {
+                installers[i].Process();
+            }
 
             OnGamePreStartEvent?.Invoke();
             OnGameStartEvent?.Invoke();

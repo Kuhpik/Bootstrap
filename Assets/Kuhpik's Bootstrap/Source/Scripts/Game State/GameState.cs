@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Kuhpik
 {
@@ -9,16 +10,17 @@ namespace Kuhpik
         readonly public Identificator[] AdditionalScreens;
         readonly public Identificator ID;
 
+        StateData data;
         bool isInited;
 
         public GameState(Identificator id, Identificator[] additionalScreens, IEnumerable<IGameSystem> systems)
         {
-            //Systems = systems.Select(x => x as IGameSystem).ToArray();
-            //StatesIncludingSubstates = new GameState[] { this };
-            //AdditionalScreens = additionalScreens;
-            //this.isRestarting = isRestarting;
-            //Type = type;
-            //Setup();
+            ID = id;
+            Systems = systems.ToArray();
+            StatesIncludingSubstates = new GameState[] { this };
+            AdditionalScreens = additionalScreens;
+            data = new StateData(systems);
+            Setup();
         }
 
         public void ContactStates(IEnumerable<GameState> statesInTheBegining, IEnumerable<GameState> statesInTheEnd)

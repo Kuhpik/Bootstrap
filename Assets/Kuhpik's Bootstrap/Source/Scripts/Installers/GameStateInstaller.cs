@@ -6,20 +6,20 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    public class GameStateInstaller : MonoBehaviour, IInstaller
+    public class GameStateInstaller : Installer
     {
         [SerializeField] bool useArray;
         [SerializeField] [HideIf("useArray")] GameState.Identificator firstGameState;
         [SerializeField] [ShowIf("useArray")] GameState.Identificator[] gameStatesOrder;
 
-        public int Order => 1;
-        public GameState.Identificator[] OrderedStates { get; private set; }
+        public override int Order => 1;
+        public GameState.Identificator[] OrderedStates { get; private set; } 
         public FSMProcessor<GameState.Identificator, GameState> FSM { get; private set; }
 
-        public void Process()
+        public override void Process()
         {
             var initialState = useArray ? gameStatesOrder[0] : firstGameState;
-            var setupers = FindObjectsOfType<GameState.SetuperComponent>();
+            var setupers = FindObjectsOfType<SetuperComponent>();
             var systemsDictionary = new Dictionary<Type, GameSystem>();
             var statesDictionary = setupers.ToDictionary(x => x.ID, x => x.CreateState());
 
@@ -31,7 +31,7 @@ namespace Kuhpik
             Bootstrap.currentState = FSM.CurrentState;
         }
 
-        private void InitializeFSM(GameState.Identificator initialState, GameState.SetuperComponent[] setupers, Dictionary<GameState.Identificator, GameState> statesDictionary)
+        private void InitializeFSM(GameState.Identificator initialState, SetuperComponent[] setupers, Dictionary<GameState.Identificator, GameState> statesDictionary)
         {
             FSM = new FSMProcessor<GameState.Identificator, GameState>(false);
 
@@ -43,7 +43,7 @@ namespace Kuhpik
             FSM.SetState(initialState);
         }
 
-        private void HandleSharedStates(GameState.SetuperComponent[] setupers)
+        private void HandleSharedStates(SetuperComponent[] setupers)
         {
             foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
             {

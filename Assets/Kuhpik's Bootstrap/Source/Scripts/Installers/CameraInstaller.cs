@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 namespace Kuhpik
 {
-    public class CameraInstaller : MonoBehaviour, IInstaller
+    public class CameraInstaller : Installer
     {
         [SerializeField] bool scaleFOV;
         [SerializeField] [ShowIf("scaleFOV")] bool allCameras;
@@ -17,11 +17,11 @@ namespace Kuhpik
         [SerializeField] [ShowIf("scaleFOV")] Vector2 targetResolution;
         [SerializeField] [ShowIf("scaleFOV")] [Tooltip("I commonly use this for tablet devices")] Vector2 screenRatioClamp = Vector2.up;
 
-        public int Order => 1000;
+        public override int Order => 1000;
 
         Dictionary<Camera, float> fovDictionary;
 
-        public void Process()
+        public override void Process()
         {
             if (scaleFOV)
             {
