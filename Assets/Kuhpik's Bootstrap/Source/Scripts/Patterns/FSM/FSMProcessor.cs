@@ -1,32 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Kuhpik
 {
     public sealed class FSMProcessor<TKey, TState>
     {
-        public TState State { get; private set; }
+        public TState CurrentState { get; private set; }
+        public TKey CurrentStateKey { get; private set; }
+        public readonly bool IsAnyTransitionsAllowed;
 
-        TKey currentStateKey;
-        Dictionary<TKey, TState> states = new Dictionary<TKey, TState>();
-        Dictionary<TKey, IEnumerable<TKey>> allowedTransition = new Dictionary<TKey, IEnumerable<TKey>>();
+        public event Action<TKey> OnStateEnter;
+        public event Action<TKey> OnStateExit;
 
-        public FSMProcessor() { }
+        readonly Dictionary<TKey, TState> states;
+        readonly Dictionary<TKey, IEnumerable<TKey>> allowedTransition;
 
-        public FSMProcessor(TKey key, TState state, params string[] allowedTransitions) : base()
+        /// <summary>
+        /// Creates FSM with all posible states and transitions between them.
+        /// </summary>
+        /// <param name="datas">Custom tuple for important data</param>
+        /// <param name="initialState">Initial state of this FSM</param>
+        /// <param name="allowAnyTransition">Should FSM ignore transition data?</param>
+        public FSMProcessor(IEnumerable<(TKey, TState, IEnumerable<TKey>)> datas, TKey initialState, bool allowAnyTransition) : base()
         {
-            currentStateKey = key;
-            State = state;
-            AddState(key, state);
+            allowedTransition = datas.ToDictionary(x => x.Item1, x => x.Item3);
+            states = datas.ToDictionary(x => x.Item1, x => x.Item2);
+            IsAnyTransitionsAllowed = allowAnyTransition;
+            SetState(initialState);
         }
 
-        public void AddState(TKey key, TState state, params TKey[] allowedTransitions)
+        public void ChangeState(TKey key)
         {
-            states.Add(key, state);
-            AddTransition(key, allowedTransitions);
+            if (IsAnyTransitionsAllowed) SwitchStateIgnoringTransitions(key);
+            else SwitchState(key);
         }
 
         public TState[] GetAllStates()
@@ -39,37 +47,28 @@ namespace Kuhpik
             return states[key];
         }
 
-        public void ChangeState(TKey key)
+        void SwitchState(TKey key)
         {
-            if (allowedTransition.ContainsKey(currentStateKey) && !allowedTransition[currentStateKey].Contains(key))
+            if (allowedTransition.ContainsKey(CurrentStateKey) && !allowedTransition[CurrentStateKey].Contains(key))
             {
-                Debug.LogError($"Not allowed transition from {currentStateKey} to {key}!");
+                Debug.LogError($"Not allowed transition from {CurrentStateKey} to {key}!");
             }
             else
             {
-                Debug.Log($"State changed to {key}!");
-                State = states[key];
-                currentStateKey = key;
+                SetState(key);
             }
         }
 
-        public async void ChangeState(TKey key, float delay)
+        void SwitchStateIgnoringTransitions(TKey key)
         {
-            await Task.Delay(TimeSpan.FromSeconds(delay));
-            ChangeState(key);
+            SetState(key);
         }
 
-        public void SetState(TKey key)
+        void SetState(TKey key)
         {
-            if (State != null) return;
-
-            currentStateKey = key;
-            State = states[key];
-        }
-
-        public void AddTransition(TKey key, params TKey[] allowedTransitions)
-        {
-            allowedTransition.Add(key, allowedTransitions);
+            Debug.Log($"State changed to <color=orange>{key}</color>!");
+            CurrentState = states[key];
+            CurrentStateKey = key;
         }
     }
 }
