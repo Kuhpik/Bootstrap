@@ -13,57 +13,64 @@ namespace Kuhpik
         [SerializeField] [ShowIf("useArray")] GameStateID[] gameStatesOrder;
 
         public override int Order => 1;
-        public GameStateID[] OrderedStates { get; private set; } 
-        public FSMProcessor<GameStateID, GameState> FSM { get; private set; }
+
+        FSMProcessor<GameStateID, GameState> fsm;
 
         public override void Process()
         {
-            var initialState = useArray ? gameStatesOrder[0] : firstGameState;
+            var launchStates = useArray ? gameStatesOrder : new GameStateID[] { firstGameState };
             var setupers = FindObjectsOfType<GameStateSetuperComponent>();
             var systemsDictionary = new Dictionary<Type, GameSystem>();
             var statesDictionary = setupers.ToDictionary(x => x.ID, x => x.CreateState());
 
-            InitializeFSM(initialState, setupers, statesDictionary);
+            InitializeFSM(setupers, statesDictionary);
             HandleSharedStates(setupers);
 
             Bootstrap.systems = systemsDictionary;
-            Bootstrap.gameStates = FSM.GetAllStates();
-            Bootstrap.currentState = FSM.CurrentState;
+            Bootstrap.currentState = fsm.CurrentState;
+            Bootstrap.launchStates = launchStates;
+            Bootstrap.FSM = fsm;
         }
 
-        private void InitializeFSM(GameStateID initialState, GameStateSetuperComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
+        private void InitializeFSM(GameStateSetuperComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
         {
-            FSM = new FSMProcessor<GameStateID, GameState>(false);
+            fsm = new FSMProcessor<GameStateID, GameState>(false);
 
             foreach (var setuper in setupers)
             {
                 var state = statesDictionary[setuper.ID];
 
-                FSM.AddState(setuper.ID, state, setuper.AllowedTransitions);
-                FSM.OnStateEnter += state.EnterState;
-                FSM.OnStateExit += state.ExitState;
+                fsm.AddState(setuper.ID, state, setuper.AllowedTransitions);
+                SubscribeStateToEvents(state);
             }
+        }
 
-            FSM.SetState(initialState);
+        private void SubscribeStateToEvents(GameState state)
+        {
+            fsm.OnStateEnter += state.EnterState;
+            fsm.OnStateExit += state.ExitState;
+
+            Bootstrap.GameStartEvent += state.GameStart;
+            Bootstrap.GameEndEvent += state.GameEnd;
         }
 
         private void HandleSharedStates(GameStateSetuperComponent[] setupers)
         {
             foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
             {
-                var state = FSM.GetState(setuper.ID);
+                var state = fsm.GetState(setuper.ID);
                 var first = new List<GameState>();
                 var last = new List<GameState>();
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheBegining.Length; i++)
                 {
-                    var additionalState = FSM.GetState(setuper.AdditionalStatesInTheBegining[i]);
+                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheBegining[i]);
                     first.Add(additionalState);
                 }
 
                 for (int i = 0; i < setuper.AdditionalStatesInTheEnd.Length; i++)
                 {
-                    var additionalState = FSM.GetState(setuper.AdditionalStatesInTheEnd[i]);
+                    var additionalState = fsm.GetState(setuper.AdditionalStatesInTheEnd[i]);
                     last.Add(additionalState);
                 }
 

@@ -5,15 +5,8 @@ using UnityEngine;
 
 public class RecursiveSystem11 : GameSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnInit()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Init 11");
     }
 }

@@ -26,6 +26,8 @@
                 {
                     data.StateEnteringSystems[i].OnStateEnter();
                 }
+
+                Init();
             }
         }
 

@@ -14,22 +14,22 @@ namespace Kuhpik
         static GameStateID lastState;
 
         internal static GameState currentState;
-        internal static GameState[] gameStates;
+        internal static GameStateID[] launchStates;
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
 
-        internal static event Action SaveEvent;
-        internal static event Action GameStartEvent;
         internal static event Action GamePreStartEvent;
+        internal static event Action GameStartEvent;
         internal static event Action GameEndEvent;
-        internal static event Action<GameStateID> OnStateChangedEvent;
+        internal static event Action SaveEvent;
+
+        internal static FSMProcessor<GameStateID, GameState> FSM;
 
         void Awake()
         {
             SaveEvent = null;
             GameStartEvent = null;
             GamePreStartEvent = null;
-            OnStateChangedEvent = null;
             GameEndEvent = null;
         }
 
@@ -38,20 +38,22 @@ namespace Kuhpik
             itemsToInject.Add(config);
             itemsToInject.Add(new GameData());
 
-            var installers = FindObjectsOfType<Installer>().OrderBy(x => x.Order).ToArray();
-
-            for (int i = 0; i < installers.Length; i++)
-            {
-                installers[i].Process();
-            }
+            ProcessInstallers();
 
             GamePreStartEvent?.Invoke();
             GameStartEvent?.Invoke();
+
+            LaunchStates();
         }
 
         void Update()
         {
             currentState.Update();
+        }
+
+        void LateUpdate()
+        {
+            currentState.LateUpdate();
         }
 
         void FixedUpdate()
@@ -79,7 +81,8 @@ namespace Kuhpik
         public static void ChangeGameState(GameStateID id)
         {
             lastState = GetCurrentGamestate();
-            OnStateChangedEvent?.Invoke(id);
+            FSM.ChangeState(id);
+            currentState = FSM.CurrentState;
         }
 
         public static T GetSystem<T>() where T : class
@@ -95,6 +98,27 @@ namespace Kuhpik
         public static GameStateID GetLastGamestate()
         {
             return lastState;
+        }
+
+        void LaunchStates()
+        {
+            FSM.SetState(launchStates[0]);
+            currentState = FSM.CurrentState;
+
+            for (int i = 1; i < launchStates.Length; i++)
+            {
+                ChangeGameState(launchStates[i]);
+            }
+        }
+
+        void ProcessInstallers()
+        {
+            var installers = FindObjectsOfType<Installer>().OrderBy(x => x.Order).ToArray();
+
+            for (int i = 0; i < installers.Length; i++)
+            {
+                installers[i].Process();
+            }
         }
     }
 }
