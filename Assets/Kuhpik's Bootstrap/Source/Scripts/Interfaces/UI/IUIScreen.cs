@@ -1,8 +1,7 @@
 ﻿namespace Kuhpik
 {
-    internal interface IUIScreen : IUIElement
+    internal interface IUIScreen
     {
-        GameState.Identificator Type { get; }
         void Open();
         void Close();
     }

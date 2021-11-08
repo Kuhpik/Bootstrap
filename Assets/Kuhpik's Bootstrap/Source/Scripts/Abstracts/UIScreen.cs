@@ -5,7 +5,7 @@ namespace Kuhpik
 {
     public class UIScreen : MonoBehaviour, IUIScreen
     {
-        [SerializeField] [BoxGroup("Settings")] GameState.Identificator type;
+        [SerializeField] [BoxGroup("Settings")] GameStateID type;
         [SerializeField] [BoxGroup("Settings")] bool getScreenFromChild = true;
         [SerializeField] [BoxGroup("Settings")] [HideIf("getScreenFromChild")] GameObject screen;
 
@@ -20,7 +20,7 @@ namespace Kuhpik
         [SerializeField] [BoxGroup("Elements")] [ShowIf("hideElementsOnOpen")] GameObject[] elementsToHideOnOpen;
         [SerializeField] [BoxGroup("Elements")] [ShowIf("showElementsOnHide")] GameObject[] elementsToShowOnHide;
 
-        public GameState.Identificator Type => type;
+        public GameStateID Type => type;
         public bool UseBackground => useBackground;
         public Color BackgroundColor => backgroundColor;
         public Sprite BackgroundSprite => backgroundSprite;
@@ -48,13 +48,6 @@ namespace Kuhpik
             }
 
             screen.SetActive(false);
-        }
-
-        /// <summary>
-        /// Use it for special cases.
-        /// </summary>
-        public virtual void Refresh()
-        {
         }
 
         /// <summary>

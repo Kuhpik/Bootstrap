@@ -11,24 +11,26 @@ namespace Kuhpik
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] GameConfig config;
-        static GameState.Identificator lastState;
+        static GameStateID lastState;
 
         internal static GameState currentState;
         internal static GameState[] gameStates;
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
 
-        internal static event Action OnSaveEvent;
-        internal static event Action OnGameStartEvent;
-        internal static event Action OnGamePreStartEvent;
-        internal static event Action<GameState.Identificator> OnStateChangedEvent;
+        internal static event Action SaveEvent;
+        internal static event Action GameStartEvent;
+        internal static event Action GamePreStartEvent;
+        internal static event Action GameEndEvent;
+        internal static event Action<GameStateID> OnStateChangedEvent;
 
         void Awake()
         {
-            OnSaveEvent = null;
-            OnGameStartEvent = null;
-            OnGamePreStartEvent = null;
+            SaveEvent = null;
+            GameStartEvent = null;
+            GamePreStartEvent = null;
             OnStateChangedEvent = null;
+            GameEndEvent = null;
         }
 
         void Start()
@@ -43,28 +45,25 @@ namespace Kuhpik
                 installers[i].Process();
             }
 
-            OnGamePreStartEvent?.Invoke();
-            OnGameStartEvent?.Invoke();
+            GamePreStartEvent?.Invoke();
+            GameStartEvent?.Invoke();
         }
 
         void Update()
         {
-            currentState.RunUpdate();
+            currentState.Update();
         }
 
         void FixedUpdate()
         {
-            currentState.RunFixedUpdate();
+            currentState.FixedUpdate();
         }
 
         public static void GameRestart(int sceneIndex)
         {
-            foreach (var state in gameStates)
-            {
-                state.Deactivate(true);
-            }
-
+            GameEndEvent?.Invoke();
             SaveGame();
+
             SceneManager.LoadScene(sceneIndex);
         }
 
@@ -74,10 +73,10 @@ namespace Kuhpik
         /// </summary>
         public static void SaveGame()
         {
-            OnSaveEvent?.Invoke();
+            SaveEvent?.Invoke();
         }
 
-        public static void ChangeGameState(GameState.Identificator id)
+        public static void ChangeGameState(GameStateID id)
         {
             lastState = GetCurrentGamestate();
             OnStateChangedEvent?.Invoke(id);
@@ -88,12 +87,12 @@ namespace Kuhpik
             return systems[typeof(T)] as T;
         }
 
-        public static GameState.Identificator GetCurrentGamestate()
+        public static GameStateID GetCurrentGamestate()
         {
             return currentState.ID;
         }
 
-        public static GameState.Identificator GetLastGamestate()
+        public static GameStateID GetLastGamestate()
         {
             return lastState;
         }

@@ -14,7 +14,7 @@ namespace Kuhpik
 
         public override void Process()
         {
-            Bootstrap.OnGamePreStartEvent += Inject;
+            Bootstrap.GamePreStartEvent += Inject;
         }
 
         void Inject()

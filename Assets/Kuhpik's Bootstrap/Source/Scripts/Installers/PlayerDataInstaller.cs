@@ -18,7 +18,7 @@ namespace Kuhpik
             data = HandlePlayerData();
 
             Bootstrap.itemsToInject.Add(data);
-            Bootstrap.OnSaveEvent += Save;
+            Bootstrap.SaveEvent += Save;
         }
 
         PlayerData HandlePlayerData()
