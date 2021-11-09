@@ -5,8 +5,8 @@ namespace Kuhpik
 {
     public sealed partial class GameState
     {
-        readonly public IGameSystem[] Systems;
         readonly public GameStateID ID;
+        public IGameSystem[] Systems;
         public GameState[] StatesIncludingSubstates { get; private set; }
 
         Data data;
@@ -17,7 +17,6 @@ namespace Kuhpik
             ID = id;
             Systems = systems.ToArray();
             StatesIncludingSubstates = new GameState[] { this };
-            data = new Data(systems);
             Setup();
         }
 

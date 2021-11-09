@@ -2,7 +2,7 @@
 
 namespace Kuhpik
 {
-    public abstract partial class GameSystem : MonoBehaviour, IGameSystem
+    public abstract class GameSystem : MonoBehaviour, IGameSystem
     {
         protected PlayerData player;
         protected GameConfig config;

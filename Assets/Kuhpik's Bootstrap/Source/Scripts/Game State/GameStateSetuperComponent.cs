@@ -12,6 +12,8 @@ namespace Kuhpik
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheBegining;
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheEnd;
 
+        GameState state;
+
         public GameStateID ID => type;
         public bool UseAdditionalStates => useAdditionalStates;
         public GameStateID[] AdditionalStatesInTheBegining => additionalStatesInTheBegining;
@@ -22,7 +24,18 @@ namespace Kuhpik
         {
             var systems = new List<IGameSystem>();
             GetSystemsRecursively(systems, transform);
-            return new GameState(type, systems);
+            state = new GameState(type, systems);
+            return state;
+        }
+
+        public GameState GetState()
+        {
+            if (state == null)
+            {
+                CreateState();
+            }
+
+            return state;
         }
 
         void GetSystemsRecursively(List<IGameSystem> systems, Transform target)

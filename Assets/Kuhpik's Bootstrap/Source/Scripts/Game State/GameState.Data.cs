@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Kuhpik
 {
@@ -34,7 +33,7 @@ namespace Kuhpik
             bool IsOverride(IGameSystem system, string methodName)
             {
                 var methodInfo = system.GetType().GetMethod(methodName);
-                return methodInfo.GetBaseDefinition() != methodInfo;
+                return methodInfo.DeclaringType != typeof(GameSystem);
             }
         }
     }
