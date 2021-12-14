@@ -38,6 +38,8 @@ namespace Kuhpik
             itemsToInject.Add(config);
             itemsToInject.Add(new GameData());
 
+            systems = FindObjectsOfType<GameSystem>().ToDictionary(x => x.GetType(), x => x);
+
             ProcessInstallers();
 
             GamePreStartEvent?.Invoke();

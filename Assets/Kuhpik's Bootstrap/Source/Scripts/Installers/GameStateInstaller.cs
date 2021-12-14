@@ -20,13 +20,11 @@ namespace Kuhpik
         {
             var launchStates = useArray ? gameStatesOrder : new GameStateID[] { firstGameState };
             var setupers = FindObjectsOfType<GameStateComponent>();
-            var systemsDictionary = new Dictionary<Type, GameSystem>();
             var statesDictionary = setupers.ToDictionary(x => x.ID, x => x.CreateState());
 
             InitializeFSM(setupers, statesDictionary);
             HandleSharedStates(setupers);
 
-            Bootstrap.systems = systemsDictionary;
             Bootstrap.currentState = fsm.CurrentState;
             Bootstrap.launchStates = launchStates;
             Bootstrap.FSM = fsm;
