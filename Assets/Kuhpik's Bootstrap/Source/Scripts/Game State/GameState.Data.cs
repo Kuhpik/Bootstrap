@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kuhpik
 {
@@ -7,27 +8,35 @@ namespace Kuhpik
     {
         public class Data
         {
-            readonly public IGameSystem[] StartingSystems;
-            readonly public IGameSystem[] StateEnteringSystems;
-            readonly public IGameSystem[] InitingSystems;
-            readonly public IGameSystem[] UpdatingSystems;
-            readonly public IGameSystem[] LateUpdatingSystems;
-            readonly public IGameSystem[] FixedUpdatingSystems;
-            readonly public IGameSystem[] TickingSystems;
-            readonly public IGameSystem[] StateExitingSystems;
-            readonly public IGameSystem[] GameEndingSystems;
+            public IGameSystem[] StartingSystems { get; private set; }
+            public IGameSystem[] StateEnteringSystems { get; private set; }
+            public IGameSystem[] InitingSystems { get; private set; }
+            public IGameSystem[] UpdatingSystems { get; private set; }
+            public IGameSystem[] LateUpdatingSystems { get; private set; }
+            public IGameSystem[] FixedUpdatingSystems { get; private set; }
+            public IGameSystem[] TickingSystems { get; private set; }
+            public IGameSystem[] StateExitingSystems { get; private set; }
+            public IGameSystem[] GameEndingSystems { get; private set; }
 
             public Data(IEnumerable<IGameSystem> systems)
             {
-                StartingSystems         = systems.Where(x => IsOverride(x, "OnGameStart"    )).ToArray();
-                StateEnteringSystems    = systems.Where(x => IsOverride(x, "OnStateEnter"   )).ToArray();
-                InitingSystems          = systems.Where(x => IsOverride(x, "OnInit"         )).ToArray();
-                UpdatingSystems         = systems.Where(x => IsOverride(x, "OnUpdate"       )).ToArray();
-                LateUpdatingSystems     = systems.Where(x => IsOverride(x, "OnLateUpdate"   )).ToArray();
-                FixedUpdatingSystems    = systems.Where(x => IsOverride(x, "OnFixedUpdate"  )).ToArray();
-                TickingSystems          = systems.Where(x => IsOverride(x, "OnCustomTick"   )).ToArray();
-                StateExitingSystems     = systems.Where(x => IsOverride(x, "OnStateExit"    )).ToArray();
-                GameEndingSystems       = systems.Where(x => IsOverride(x, "OnGameEnd"      )).ToArray();
+                PrepareCollections(systems);
+            }
+
+            async void PrepareCollections(IEnumerable<IGameSystem> systems)
+            {
+                StartingSystems = systems.Where(x => IsOverride(x, "OnGameStart")).ToArray();
+                StateEnteringSystems = systems.Where(x => IsOverride(x, "OnStateEnter")).ToArray();
+                InitingSystems = systems.Where(x => IsOverride(x, "OnInit")).ToArray();                
+                StateExitingSystems = systems.Where(x => IsOverride(x, "OnStateExit")).ToArray();
+                GameEndingSystems = systems.Where(x => IsOverride(x, "OnGameEnd")).ToArray();
+
+                await Task.Yield();
+
+                UpdatingSystems = systems.Where(x => IsOverride(x, "OnUpdate")).ToArray();
+                LateUpdatingSystems = systems.Where(x => IsOverride(x, "OnLateUpdate")).ToArray();
+                FixedUpdatingSystems = systems.Where(x => IsOverride(x, "OnFixedUpdate")).ToArray();
+                TickingSystems = systems.Where(x => IsOverride(x, "OnCustomTick")).ToArray();
             }
 
             bool IsOverride(IGameSystem system, string methodName)
