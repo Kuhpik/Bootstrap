@@ -1,5 +1,4 @@
 ﻿using NaughtyAttributes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +24,6 @@ namespace Kuhpik
             InitializeFSM(setupers, statesDictionary);
             HandleSharedStates(setupers);
 
-            Bootstrap.currentState = fsm.CurrentState;
             Bootstrap.launchStates = launchStates;
             Bootstrap.FSM = fsm;
         }

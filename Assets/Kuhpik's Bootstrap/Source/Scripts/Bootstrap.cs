@@ -11,9 +11,7 @@ namespace Kuhpik
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] GameConfig config;
-        static GameStateID lastState;
 
-        internal static GameState currentState;
         internal static GameStateID[] launchStates;
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
@@ -23,7 +21,13 @@ namespace Kuhpik
         internal static event Action GameEndEvent;
         internal static event Action SaveEvent;
 
+        internal static event Action<GameStateID> StateEnterEvent;
+        internal static event Action<GameStateID> StateExitEvent;
+
         internal static FSMProcessor<GameStateID, GameState> FSM;
+
+        static GameState lastState;
+        static GameState currentState;
 
         void Awake()
         {
@@ -82,8 +86,14 @@ namespace Kuhpik
 
         public static void ChangeGameState(GameStateID id)
         {
-            lastState = GetCurrentGamestate();
+            if (lastState != null)
+            {
+                StateExitEvent?.Invoke(lastState.ID);
+                lastState = currentState;
+            }
+
             FSM.ChangeState(id);
+            StateEnterEvent?.Invoke(id);
             currentState = FSM.CurrentState;
         }
 
@@ -92,22 +102,19 @@ namespace Kuhpik
             return systems[typeof(T)] as T;
         }
 
-        public static GameStateID GetCurrentGamestate()
+        public static GameStateID GetCurrentGamestateID()
         {
             return currentState.ID;
         }
 
-        public static GameStateID GetLastGamestate()
+        public static GameStateID GetLastGamestateID()
         {
-            return lastState;
+            return lastState.ID;
         }
 
         void LaunchStates()
         {
-            FSM.SetState(launchStates[0]);
-            currentState = FSM.CurrentState;
-
-            for (int i = 1; i < launchStates.Length; i++)
+            for (int i = 0; i < launchStates.Length; i++)
             {
                 ChangeGameState(launchStates[i]);
             }

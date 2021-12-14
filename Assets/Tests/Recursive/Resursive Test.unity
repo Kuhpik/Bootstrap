@@ -173,12 +173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf269eb1fe2c4e241a4136be4a36e62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  shouldOpenWithState: 1
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  backgroundSprite: {fileID: 0}
+  statesToOpenWith: 01000000
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -393,12 +391,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287ede4f49167834092ee5a8b3eeb6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  shouldOpenWithState: 0
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  backgroundSprite: {fileID: 0}
+  statesToOpenWith: 
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -487,12 +483,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287ede4f49167834092ee5a8b3eeb6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 10
+  shouldOpenWithState: 0
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  backgroundSprite: {fileID: 0}
+  statesToOpenWith: 
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -707,12 +701,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287ede4f49167834092ee5a8b3eeb6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  shouldOpenWithState: 0
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  backgroundSprite: {fileID: 0}
+  statesToOpenWith: 
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -1003,12 +995,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287ede4f49167834092ee5a8b3eeb6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  shouldOpenWithState: 0
   getScreenFromChild: 1
   screen: {fileID: 0}
-  useBackground: 0
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  backgroundSprite: {fileID: 0}
+  statesToOpenWith: 
   hideElementsOnOpen: 0
   showElementsOnHide: 0
   elementsToHideOnOpen: []
@@ -1273,7 +1263,7 @@ PrefabInstance:
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: useArray
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2266602398497349564, guid: 865d14520ea908b47818a741324e3095,
         type: 3}

@@ -21,20 +21,16 @@ namespace Kuhpik
             states = new Dictionary<TKey, TState>();
         }
 
-        public void SetState(TKey key)
+        public void ChangeState(TKey key)
         {
             if (CurrentState != null) OnStateExit?.Invoke(CurrentStateKey);
 
             LogExtensions.Log($"State changed to <color=orange>{key}</color>");
+
             CurrentState = states[key];
             CurrentStateKey = key;
 
             OnStateEnter?.Invoke(key);
-        }
-
-        public void ChangeState(TKey key)
-        {
-            SwitchState(key);
         }
 
         public void AddState(TKey key, TState state)
@@ -53,11 +49,6 @@ namespace Kuhpik
         public TState GetState(TKey key)
         {
             return states[key];
-        }
-
-        void SwitchState(TKey key)
-        {
-            SetState(key);
         }
     }
 }
