@@ -31,6 +31,11 @@ namespace Kuhpik
                 StateExitingSystems = systems.Where(x => IsOverride(x, "OnStateExit")).ToArray();
                 GameEndingSystems = systems.Where(x => IsOverride(x, "OnGameEnd")).ToArray();
 
+                UpdatingSystems = new IGameSystem[0];
+                LateUpdatingSystems = new IGameSystem[0];
+                FixedUpdatingSystems = new IGameSystem[0];
+                TickingSystems = new IGameSystem[0];
+
                 await Task.Yield();
 
                 UpdatingSystems = systems.Where(x => IsOverride(x, "OnUpdate")).ToArray();
