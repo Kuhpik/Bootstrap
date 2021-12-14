@@ -34,13 +34,13 @@ namespace Kuhpik
 
         private void InitializeFSM(GameStateComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
         {
-            fsm = new FSMProcessor<GameStateID, GameState>(false);
+            fsm = new FSMProcessor<GameStateID, GameState>();
 
             foreach (var setuper in setupers)
             {
                 var state = statesDictionary[setuper.ID];
 
-                fsm.AddState(setuper.ID, state, setuper.AllowedTransitions);
+                fsm.AddState(setuper.ID, state);
                 SubscribeStateToEvents(state);
             }
         }

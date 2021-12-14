@@ -6,25 +6,23 @@ namespace Kuhpik
 {
     public class GameStateComponent : MonoBehaviour
     {
-        [SerializeField] GameStateID type;
+        [SerializeField] GameStateID id;
         [SerializeField] bool useAdditionalStates;
-        [SerializeField] [ReorderableList] GameStateID[] allowedTransitions;
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheBegining;
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheEnd;
 
         GameState state;
 
-        public GameStateID ID => type;
+        public GameStateID ID => id;
         public bool UseAdditionalStates => useAdditionalStates;
         public GameStateID[] AdditionalStatesInTheBegining => additionalStatesInTheBegining;
         public GameStateID[] AdditionalStatesInTheEnd => additionalStatesInTheEnd;
-        public GameStateID[] AllowedTransitions => allowedTransitions;
 
         public GameState CreateState()
         {
             var systems = new List<IGameSystem>();
             GetSystemsRecursively(systems, transform);
-            state = new GameState(type, systems);
+            state = new GameState(id, systems);
             return state;
         }
 
