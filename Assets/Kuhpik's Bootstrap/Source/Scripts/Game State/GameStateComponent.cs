@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Kuhpik
 {
-    public class GameStateSetuperComponent : MonoBehaviour
+    public class GameStateComponent : MonoBehaviour
     {
         [SerializeField] GameStateID type;
         [SerializeField] bool useAdditionalStates;

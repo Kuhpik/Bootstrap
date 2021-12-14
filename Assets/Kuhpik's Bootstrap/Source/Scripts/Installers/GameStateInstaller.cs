@@ -19,7 +19,7 @@ namespace Kuhpik
         public override void Process()
         {
             var launchStates = useArray ? gameStatesOrder : new GameStateID[] { firstGameState };
-            var setupers = FindObjectsOfType<GameStateSetuperComponent>();
+            var setupers = FindObjectsOfType<GameStateComponent>();
             var systemsDictionary = new Dictionary<Type, GameSystem>();
             var statesDictionary = setupers.ToDictionary(x => x.ID, x => x.CreateState());
 
@@ -32,7 +32,7 @@ namespace Kuhpik
             Bootstrap.FSM = fsm;
         }
 
-        private void InitializeFSM(GameStateSetuperComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
+        private void InitializeFSM(GameStateComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
         {
             fsm = new FSMProcessor<GameStateID, GameState>(false);
 
@@ -54,7 +54,7 @@ namespace Kuhpik
             Bootstrap.GameEndEvent += state.GameEnd;
         }
 
-        private void HandleSharedStates(GameStateSetuperComponent[] setupers)
+        private void HandleSharedStates(GameStateComponent[] setupers)
         {
             foreach (var setuper in setupers.Where(x => x.UseAdditionalStates))
             {
