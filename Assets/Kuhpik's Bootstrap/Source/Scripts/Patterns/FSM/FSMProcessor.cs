@@ -25,7 +25,7 @@ namespace Kuhpik
         {
             if (CurrentState != null) OnStateExit?.Invoke(CurrentStateKey);
 
-            LogExtensions.Log($"State changed to {key}", Color.cyan);
+            LogExtensions.Log($"State changed to <color=orange>{key}</color>");
             CurrentState = states[key];
             CurrentStateKey = key;
 

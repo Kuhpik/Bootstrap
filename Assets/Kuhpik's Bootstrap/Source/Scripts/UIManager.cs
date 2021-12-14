@@ -47,7 +47,12 @@ namespace Kuhpik
             stateScreens = GameObject.FindObjectsOfType<UIScreen>().ToDictionary(x => x.Type, x => x);
             uiScreens = stateScreens.Values.Where(x => x.GetType() != typeof(UIScreen)).ToDictionary(x => x.GetType(), x => x);
 
-            foreach (var screen in stateScreens.Values) screen.Subscribe();
+            foreach (var screen in stateScreens.Values)
+            {
+                Bootstrap.itemsToInject.Add(screen);
+                screen.Subscribe();
+            }
+
             background = backgroundScreen;
         }
 
