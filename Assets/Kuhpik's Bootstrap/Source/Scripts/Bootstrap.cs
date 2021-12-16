@@ -29,14 +29,6 @@ namespace Kuhpik
         static GameState lastState;
         static GameState currentState;
 
-        void Awake()
-        {
-            SaveEvent = null;
-            GameStartEvent = null;
-            GamePreStartEvent = null;
-            GameEndEvent = null;
-        }
-
         void Start()
         {
             itemsToInject.Add(config);
@@ -69,6 +61,13 @@ namespace Kuhpik
 
         public static void GameRestart(int sceneIndex)
         {
+            SaveEvent = null;
+            GameStartEvent = null;
+            GamePreStartEvent = null;
+            GameEndEvent = null;
+            StateEnterEvent = null;
+            StateExitEvent = null;
+
             GameEndEvent?.Invoke();
             SaveGame();
 
