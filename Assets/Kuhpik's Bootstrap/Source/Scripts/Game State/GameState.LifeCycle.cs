@@ -22,12 +22,12 @@
         {
             if (this.ID == ID)
             {
+                Init();
+
                 for (int i = 0; i < data.StateEnteringSystems.Length; i++)
                 {
                     data.StateEnteringSystems[i].OnStateEnter();
                 }
-
-                Init();
             }
         }
 
