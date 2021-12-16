@@ -1420,11 +1420,6 @@ PrefabInstance:
       propertyPath: gameStatesOrder.Array.data[1]
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3071254408399880636, guid: 865d14520ea908b47818a741324e3095,
-        type: 3}
-      propertyPath: screenRatioClamp.y
-      value: 0.8
-      objectReference: {fileID: 0}
     - target: {fileID: 3619535309375669431, guid: 865d14520ea908b47818a741324e3095,
         type: 3}
       propertyPath: config

@@ -129,7 +129,7 @@ MonoBehaviour:
   clampAspectRatio: 1
   cameras: []
   targetResolution: {x: 1080, y: 1920}
-  screenRatioClamp: {x: 0, y: 1}
+  screenRatioClamp: {x: 0, y: 0.8}
 --- !u!1 &1917835718499638880
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,11 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useArray: 0
-  getFromScene: 1
-  gameStatesOrder: 00000000
   firstGameState: 0
-  gameStateSetupers:
-  - {fileID: 0}
+  gameStatesOrder: 00000000
 --- !u!1 &5457145906544905826
 GameObject:
   m_ObjectHideFlags: 0
