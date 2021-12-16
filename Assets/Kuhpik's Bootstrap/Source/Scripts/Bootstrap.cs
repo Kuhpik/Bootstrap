@@ -61,17 +61,22 @@ namespace Kuhpik
 
         public static void GameRestart(int sceneIndex)
         {
+            GameEndEvent?.Invoke();
+
+            ResetEvent();
+            SaveGame();
+
+            SceneManager.LoadScene(sceneIndex);
+        }
+
+        private static void ResetEvent()
+        {
             SaveEvent = null;
             GameStartEvent = null;
             GamePreStartEvent = null;
             GameEndEvent = null;
             StateEnterEvent = null;
             StateExitEvent = null;
-
-            GameEndEvent?.Invoke();
-            SaveGame();
-
-            SceneManager.LoadScene(sceneIndex);
         }
 
         /// <summary>
