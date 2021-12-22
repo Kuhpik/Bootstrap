@@ -90,9 +90,9 @@ namespace Kuhpik
 
         public static void ChangeGameState(GameStateID id)
         {
-            if (lastState != null)
+            if (currentState != null)
             {
-                StateExitEvent?.Invoke(lastState.ID);
+                StateExitEvent?.Invoke(currentState.ID);
                 lastState = currentState;
             }
 
