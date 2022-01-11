@@ -1,11 +1,11 @@
-﻿#if UNITY_EDITOR
-
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Kuhpik
@@ -20,6 +20,8 @@ namespace Kuhpik
         [SerializeField] [BoxGroup("Settings")] KeyCode screenshotKey;
         [SerializeField] [BoxGroup("Settings")] Vector2Int[] targetResolutions;
         [SerializeField] [BoxGroup("Path")] [ReadOnly] string path;
+
+#if UNITY_EDITOR
 
         [Button] void SelectFolder() { path = EditorUtility.OpenFolderPanel("Choose output directory", "", ""); }
         [Button] void OpenFolder() { if (Directory.Exists(path)) System.Diagnostics.Process.Start("explorer.exe", path.Replace("/", "\\")); }
@@ -49,7 +51,7 @@ namespace Kuhpik
                 var customSize = GetFixedResolution(resolution.x, resolution.y);
                 sizeHolder.CallMethod("AddCustomSize", customSize);
 
-                var customIndex = (int)sizeHolder.CallMethod("IndexOf", customSize) + (int)sizeHolder.CallMethod("GetBuiltinCount"); 
+                var customIndex = (int)sizeHolder.CallMethod("IndexOf", customSize) + (int)sizeHolder.CallMethod("GetBuiltinCount");
                 indexes.Add(resolution, customIndex);
 
                 indexesList.Add(resolution);
@@ -58,7 +60,7 @@ namespace Kuhpik
 
         void OnDestroy()
         {
-            for (int i = indexesList.Count - 1; i >= 0 ; i--)
+            for (int i = indexesList.Count - 1; i >= 0; i--)
             {
                 sizeHolder.CallMethod("RemoveCustomSize", indexes[indexesList[i]]);
             }
@@ -128,7 +130,6 @@ namespace Kuhpik
         }
 
         #endregion
+#endif
     }
 }
-
-#endif
