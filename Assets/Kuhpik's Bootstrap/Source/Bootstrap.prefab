@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 8944666747402394047}
   - component: {fileID: 3071254408399880636}
   m_Layer: 0
-  m_Name: Camera FOV
+  m_Name: Camera FOV Adapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 2073867915062446639}
   - component: {fileID: 2266602398497349564}
   m_Layer: 0
-  m_Name: Game states
+  m_Name: Set Initial Game State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 1626055025274432400}
   - component: {fileID: 5057732464669537595}
   m_Layer: 0
-  m_Name: Injections
+  m_Name: Inject Scriptable Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 4614255419346043161}
   - component: {fileID: 3803046130012422129}
   m_Layer: 0
-  m_Name: Player's data
+  m_Name: Test Player Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
