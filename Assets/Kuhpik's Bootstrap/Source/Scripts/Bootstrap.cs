@@ -16,6 +16,9 @@ namespace Kuhpik
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
 
+        public static PlayerData PlayerData;
+        public static GameData GameData;
+
         internal static event Action GamePreStartEvent;
         internal static event Action GameStartEvent;
         internal static event Action GameEndEvent;
@@ -37,6 +40,9 @@ namespace Kuhpik
             systems = FindObjectsOfType<GameSystem>().ToDictionary(x => x.GetType(), x => x);
 
             ProcessInstallers();
+
+            GameData = itemsToInject.First(x => x.GetType() == typeof(GameData)) as GameData;
+            PlayerData = itemsToInject.First(x => x.GetType() == typeof(PlayerData)) as PlayerData;
 
             GamePreStartEvent?.Invoke();
             GameStartEvent?.Invoke();
