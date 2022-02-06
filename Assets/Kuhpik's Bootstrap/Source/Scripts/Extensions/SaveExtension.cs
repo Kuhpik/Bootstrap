@@ -1,43 +1,23 @@
-﻿using System;
+﻿using Sirenix.OdinSerializer;
+using System;
 using UnityEngine;
 
 namespace Kuhpik
 {
     public static class SaveExtension
     {
-        /// <summary>
-        /// Save value in PlayerPrefs using JsonUtility.
-        /// </summary>
-        public static void Save<T>(T value, string id)
+        public static void Save<T>(T value, string key)
         {
-            var @string = JsonUtility.ToJson(value);
-            PlayerPrefs.SetString(id, @string);
+            byte[] bytes = SerializationUtility.SerializeValue(value, DataFormat.Binary);
+            PlayerPrefs.SetString(key, Convert.ToBase64String(bytes));
         }
 
-        public static T Override<T>(string id, T value)
+        public static T Load<T>(string key, T defaultValue)
         {
-            if (PlayerPrefs.HasKey(id))
+            if (PlayerPrefs.HasKey(key))
             {
-                var @string = PlayerPrefs.GetString(id);
-                JsonUtility.FromJsonOverwrite(@string, value);
-                return value;
-            }
-
-            else
-            {
-                return value;
-            }
-        }
-
-        /// <summary>
-        /// Load value from PlayerPrefs using JsonUtility.
-        /// </summary>
-        public static T Load<T>(string id, T defaultValue)
-        {
-            if (PlayerPrefs.HasKey(id))
-            {
-                var @string = PlayerPrefs.GetString(id);
-                return JsonUtility.FromJson<T>(@string);
+                byte[] bytes = Convert.FromBase64String(PlayerPrefs.GetString(key));
+                return SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
             }
 
             else

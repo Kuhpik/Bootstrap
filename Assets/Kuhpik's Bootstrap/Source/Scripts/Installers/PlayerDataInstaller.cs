@@ -6,7 +6,7 @@ namespace Kuhpik
     public class PlayerDataInstaller : Installer
     {
         [SerializeField] bool isTesting;
-        [SerializeField] [ShowIf("isTesting")] PlayerData playerData;
+        [SerializeField] [ShowIf("isTesting")] PlayerData testData;
 
         public override int Order => 2;
 
@@ -23,17 +23,21 @@ namespace Kuhpik
 
         PlayerData HandlePlayerData()
         {
-            #if UNITY_EDITOR
-            if (isTesting) return playerData;
-            else return SaveExtension.Override(saveKey, new PlayerData());
-            #else
-            return SaveExtension.Override(saveKey, new PlayerData());
-            #endif
+#if UNITY_EDITOR
+            return isTesting ? testData : Load();
+#else
+            return Load();
+#endif
         }
 
         void Save()
         {
             SaveExtension.Save(data, saveKey);
+        }
+
+        PlayerData Load()
+        {
+            return SaveExtension.Load(saveKey, new PlayerData());
         }
     }
 }
