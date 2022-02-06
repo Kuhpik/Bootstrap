@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace Kuhpik
+namespace Kuhpik.Tools
 {
     // Thx to https://gist.github.com/yasirkula/fba5c7b5280aa90cdb66a68c4005b52d
     // Unity's github https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/GameView/GameView.cs
