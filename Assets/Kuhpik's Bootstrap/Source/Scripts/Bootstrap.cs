@@ -69,13 +69,13 @@ namespace Kuhpik
         {
             GameEndEvent?.Invoke();
 
-            ResetEvent();
             SaveGame();
+            Reset();
 
             SceneManager.LoadScene(sceneIndex);
         }
 
-        private static void ResetEvent()
+        private static void Reset()
         {
             SaveEvent = null;
             GameStartEvent = null;
@@ -83,6 +83,8 @@ namespace Kuhpik
             GameEndEvent = null;
             StateEnterEvent = null;
             StateExitEvent = null;
+
+            itemsToInject.Clear();
         }
 
         /// <summary>
