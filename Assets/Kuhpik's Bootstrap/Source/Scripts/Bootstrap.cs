@@ -16,8 +16,8 @@ namespace Kuhpik
         internal static Dictionary<Type, GameSystem> systems;
         internal static List<Object> itemsToInject = new List<Object>();
 
-        public static PlayerData PlayerData;
-        public static GameData GameData;
+        public static PlayerData PlayerData { get; private set; }
+        public static GameData GameData { get; private set; }
 
         internal static event Action GamePreStartEvent;
         internal static event Action GameStartEvent;
