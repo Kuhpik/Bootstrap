@@ -65,6 +65,11 @@ namespace Kuhpik
             currentState.FixedUpdate();
         }
 
+        void OnApplicationQuit()
+        {
+            Reset();
+        }
+
         public static void GameRestart(int sceneIndex)
         {
             GameEndEvent?.Invoke();
