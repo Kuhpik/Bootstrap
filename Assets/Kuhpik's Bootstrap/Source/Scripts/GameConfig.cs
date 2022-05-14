@@ -3,7 +3,7 @@ using NaughtyAttributes;
 
 namespace Kuhpik
 {
-    [CreateAssetMenu(menuName = "Kuhpik/GameConfig")]
+    [CreateAssetMenu(menuName = "Config/GameConfig")]
     public sealed class GameConfig : ScriptableObject
     {
         // Example
