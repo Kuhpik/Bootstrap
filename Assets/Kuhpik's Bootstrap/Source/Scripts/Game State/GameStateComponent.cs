@@ -1,5 +1,6 @@
 ﻿using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Kuhpik
@@ -10,6 +11,9 @@ namespace Kuhpik
         [SerializeField] bool useAdditionalStates;
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheBegining;
         [SerializeField] [ReorderableList] [ShowIf("useAdditionalStates")] GameStateID[] additionalStatesInTheEnd;
+
+        [Header("DEBUG")]
+        [SerializeField, ReadOnly] List<string> systemNames;
 
         GameState state;
 
@@ -23,6 +27,7 @@ namespace Kuhpik
             var systems = new List<IGameSystem>();
             GetSystemsRecursively(systems, transform);
             state = new GameState(id, systems);
+            DisplaySystemsInInspector(systems);
             return state;
         }
 
@@ -38,6 +43,8 @@ namespace Kuhpik
 
         void GetSystemsRecursively(List<IGameSystem> systems, Transform target)
         {
+            if (!target.gameObject.activeSelf) return;
+
             if (target.TryGetComponent<IGameSystem>(out var system))
             {
                 systems.Add(system);
@@ -48,6 +55,11 @@ namespace Kuhpik
                 var index = i;
                 GetSystemsRecursively(systems, target.GetChild(index));
             }
+        }
+
+        void DisplaySystemsInInspector(List<IGameSystem> systems)
+        {
+            systemNames = systems.Select(x => x.GetType().Name).ToList();
         }
     }
 }

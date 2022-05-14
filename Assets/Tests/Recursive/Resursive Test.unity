@@ -390,6 +390,7 @@ MonoBehaviour:
   useAdditionalStates: 0
   additionalStatesInTheBegining: 
   additionalStatesInTheEnd: 
+  systemNames: []
 --- !u!1 &116355505
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +632,7 @@ MonoBehaviour:
   useAdditionalStates: 1
   additionalStatesInTheBegining: 03000000
   additionalStatesInTheEnd: 03000000
+  systemNames: []
 --- !u!1 &375415055
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,7 +894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &919820650
 Transform:
   m_ObjectHideFlags: 0
@@ -1985,6 +1987,7 @@ MonoBehaviour:
   useAdditionalStates: 0
   additionalStatesInTheBegining: 
   additionalStatesInTheEnd: 
+  systemNames: []
 --- !u!1 &1884660989
 GameObject:
   m_ObjectHideFlags: 0
