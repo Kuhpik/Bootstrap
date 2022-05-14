@@ -8,29 +8,29 @@ using Object = System.Object;
 namespace Kuhpik
 {
     [DefaultExecutionOrder(500)]
-    public class Bootstrap : MonoBehaviour
+    public class Bootstrap : Singleton<Bootstrap>
     {
         [SerializeField] GameConfig config;
 
-        internal static GameStateID[] launchStates;
-        internal static Dictionary<Type, GameSystem> systems;
-        internal static List<Object> itemsToInject = new List<Object>();
+        public PlayerData PlayerData { get; private set; }
+        public GameData GameData { get; private set; }
 
-        public static PlayerData PlayerData { get; private set; }
-        public static GameData GameData { get; private set; }
+        internal GameStateID[] launchStates;
+        internal Dictionary<Type, GameSystem> systems;
+        internal List<Object> itemsToInject = new List<Object>();
 
-        internal static event Action GamePreStartEvent;
-        internal static event Action GameStartEvent;
-        internal static event Action GameEndEvent;
-        internal static event Action SaveEvent;
+        internal event Action GamePreStartEvent;
+        internal event Action GameStartEvent;
+        internal event Action GameEndEvent;
+        internal event Action SaveEvent;
 
-        internal static event Action<GameStateID> StateEnterEvent;
-        internal static event Action<GameStateID> StateExitEvent;
+        internal event Action<GameStateID> StateEnterEvent;
+        internal event Action<GameStateID> StateExitEvent;
+        
+        internal FSMProcessor<GameStateID, GameState> fsm;
 
-        internal static FSMProcessor<GameStateID, GameState> FSM;
-
-        static GameState lastState;
-        static GameState currentState;
+        GameState currentState;
+        GameState lastState;
 
         void Start()
         {
@@ -65,43 +65,23 @@ namespace Kuhpik
             currentState.FixedUpdate();
         }
 
-        void OnApplicationQuit()
-        {
-            Reset();
-        }
-
-        public static void GameRestart(int sceneIndex)
+        public void GameRestart(int sceneIndex)
         {
             GameEndEvent?.Invoke();
-
             SaveGame();
-            Reset();
-
             SceneManager.LoadScene(sceneIndex);
-        }
-
-        private static void Reset()
-        {
-            SaveEvent = null;
-            GameStartEvent = null;
-            GamePreStartEvent = null;
-            GameEndEvent = null;
-            StateEnterEvent = null;
-            StateExitEvent = null;
-
-            itemsToInject.Clear();
         }
 
         /// <summary>
         /// Saves all changes in Player Data to PlayerPrefs.
         /// On level complete\fail use GameRestart() instead.
         /// </summary>
-        public static void SaveGame()
+        public void SaveGame()
         {
             SaveEvent?.Invoke();
         }
 
-        public static void ChangeGameState(GameStateID id)
+        public void ChangeGameState(GameStateID id)
         {
             if (currentState != null)
             {
@@ -109,22 +89,22 @@ namespace Kuhpik
                 lastState = currentState;
             }
 
-            FSM.ChangeState(id);
+            fsm.ChangeState(id);
             StateEnterEvent?.Invoke(id);
-            currentState = FSM.CurrentState;
+            currentState = fsm.CurrentState;
         }
 
-        public static T GetSystem<T>() where T : class
+        public T GetSystem<T>() where T : class
         {
             return systems[typeof(T)] as T;
         }
 
-        public static GameStateID GetCurrentGamestateID()
+        public GameStateID GetCurrentGamestateID()
         {
             return currentState.ID;
         }
 
-        public static GameStateID GetLastGamestateID()
+        public GameStateID GetLastGamestateID()
         {
             return lastState.ID;
         }

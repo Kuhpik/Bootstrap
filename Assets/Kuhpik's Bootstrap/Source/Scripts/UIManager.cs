@@ -17,12 +17,12 @@ namespace Kuhpik
 
             foreach (var screen in uiScreensByType.Values)
             {
-                Bootstrap.itemsToInject.Add(screen);
+                Bootstrap.Instance.itemsToInject.Add(screen);
                 screen.Subscribe();
             }
 
-            Bootstrap.StateEnterEvent += TryOpenScreenWithState;
-            Bootstrap.StateExitEvent += x => CloseAllScreens();
+            Bootstrap.Instance.StateEnterEvent += TryOpenScreenWithState;
+            Bootstrap.Instance.StateExitEvent += x => CloseAllScreens();
 
             CloseAllScreens();
         }

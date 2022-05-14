@@ -15,7 +15,7 @@ namespace Kuhpik.Tools
             var playerDataDrawerComponent = playerDataDrawer.AddComponent<PlayerDataDrawer>();
 
             playerDataDrawer.transform.SetParent(transform);
-            playerDataDrawerComponent.SetData(Bootstrap.itemsToInject.First(x => x.GetType() == playerDataType) as PlayerData);
+            playerDataDrawerComponent.SetData(Bootstrap.Instance.itemsToInject.First(x => x.GetType() == playerDataType) as PlayerData);
 
             //------------------//
 
@@ -24,7 +24,7 @@ namespace Kuhpik.Tools
             var gameDataDrawerComponent = gameDataDrawer.AddComponent<GameDataDrawer>();
 
             gameDataDrawer.transform.SetParent(transform);
-            gameDataDrawerComponent.SetData(Bootstrap.itemsToInject.First(x => x.GetType() == gameDataType) as GameData);
+            gameDataDrawerComponent.SetData(Bootstrap.Instance.itemsToInject.First(x => x.GetType() == gameDataType) as GameData);
         }
     }
 

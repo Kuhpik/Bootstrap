@@ -24,8 +24,8 @@ namespace Kuhpik
             InitializeFSM(setupers, statesDictionary);
             HandleSharedStates(setupers);
 
-            Bootstrap.launchStates = launchStates;
-            Bootstrap.FSM = fsm;
+            Bootstrap.Instance.launchStates = launchStates;
+            Bootstrap.Instance.fsm = fsm;
         }
 
         private void InitializeFSM(GameStateComponent[] setupers, Dictionary<GameStateID, GameState> statesDictionary)
@@ -46,8 +46,8 @@ namespace Kuhpik
             fsm.OnStateEnter += state.EnterState;
             fsm.OnStateExit += state.ExitState;
 
-            Bootstrap.GameStartEvent += state.GameStart;
-            Bootstrap.GameEndEvent += state.GameEnd;
+            Bootstrap.Instance.GameStartEvent += state.GameStart;
+            Bootstrap.Instance.GameEndEvent += state.GameEnd;
         }
 
         private void HandleSharedStates(GameStateComponent[] setupers)

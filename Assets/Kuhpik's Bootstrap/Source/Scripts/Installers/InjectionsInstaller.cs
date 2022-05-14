@@ -14,12 +14,12 @@ namespace Kuhpik
 
         public override void Process()
         {
-            Bootstrap.GamePreStartEvent += Inject;
+            Bootstrap.Instance.GamePreStartEvent += Inject;
         }
 
         void Inject()
         {
-            Inject(Bootstrap.systems.Values.ToArray(), Bootstrap.itemsToInject.Concat(additionalInjections).ToArray());
+            Inject(Bootstrap.Instance.systems.Values.ToArray(), Bootstrap.Instance.itemsToInject.Concat(additionalInjections).ToArray());
         }
 
         void Inject(IEnumerable<GameSystem> systems, params object[] injections)
