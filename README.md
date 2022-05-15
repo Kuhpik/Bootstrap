@@ -1,12 +1,15 @@
-# Kuhpik's Framework
+# Kuhpik Bootstrap
 ### Создан для упрощения разработки маленьких игр на Unity.
 Решает большинство рутинных задач вроде создания менеджера окон, сохранения данных и закладывания архитектуры.
 
 ## Установка
 * Скачайте последний [Unitypackage](../../releases/latest)
-* Вам так же будет нужен плагин [Naughty Attributes](https://github.com/dbrizov/NaughtyAttributes)
 * Для построения более гибкой архитектуры я рекомендую так же поставить плагин [Signals](https://github.com/supyrb/signals)
 * Переместите на вашу сцену префабы **Bootstrap** и **UI Canvas** которые находятся в папке _Kuhpik's Bootstrap/Source_
+
+## Какие плагины используются?
+* [Naughty Attributes](https://github.com/dbrizov/NaughtyAttributes). Для быстрого прототипирования окон инспектора.
+* [Odin Serializer](https://github.com/TeamSirenix/odin-serializer). Для сохранения данных. Позволяет сериализовывать такие коллекции как Dictionary.
 
 ## Зачем это использовать?
 - Наличие готовых инструментов, например, для адаптирования FOV камеры, сохранений прогресса, UI-менеджер и т.д.
@@ -24,7 +27,7 @@
 
 ## FAQ
 ### Подходит ли этот фреймворк для реальной разработки?
-Конечно! На данный момент выпущено и протестировано более 200 проектов в жанре Hypercasual, парочка головоломок и idle-action проектов. Но из-за активного переписывания, я бы рекомендовал [версию от 24.03.2021](https://github.com/Kuhpik/Bootstrap/releases/tag/2021.03.24) Это точно самое стабильное решение.
+Конечно! На данный момент выпущено и протестировано более 200 проектов в жанре Hypercasual, парочка головоломок и idle-action проектов.
 
 ## Contributors
 [Oleg Kravchenko](https://github.com/Razrob) - Помощь в переходе на OdinSerializer. Написал удобный AOTBuilder.
