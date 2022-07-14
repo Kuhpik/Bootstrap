@@ -70,7 +70,7 @@ namespace Kuhpik
                     last.Add(additionalState);
                 }
 
-                state.ContactStates(first, last);
+                state.JoinStates(first, last);
             }
         }
     }

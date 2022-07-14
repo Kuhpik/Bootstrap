@@ -4,17 +4,43 @@
     {
         public void GameStart()
         {
-            for (int i = 0; i < data.StartingSystems.Length; i++)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
-                data.StartingSystems[i].OnGameStart();
+                for (int j = 0; j < StatesIncludingSubstates[i].data.GameStartingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.GameStartingSystems[j].OnGameStart();
+                }
+
+                // No more game start calls
+                StatesIncludingSubstates[i].data.GameStartingSystems = new IGameSystem[0];
+            }
+        }
+
+        public void Init()
+        {
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
+            {
+                for (int j = 0; j < StatesIncludingSubstates[i].data.InitingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.InitingSystems[j].OnInit();
+                }
+
+                // No more Init calls
+                StatesIncludingSubstates[i].data.InitingSystems = new IGameSystem[0];
             }
         }
 
         public void GameEnd()
         {
-            for (int i = 0; i < data.GameEndingSystems.Length; i++)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
-                data.GameEndingSystems[i].OnGameEnd();
+                for (int j = 0; j < StatesIncludingSubstates[i].data.GameEndingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.GameEndingSystems[j].OnGameEnd();
+                }
+
+                // No more game end calls
+                StatesIncludingSubstates[i].data.GameEndingSystems = new IGameSystem[0];
             }
         }
 
@@ -24,9 +50,9 @@
             {
                 Init();
 
-                for (int i = 0; i < data.StateEnteringSystems.Length; i++)
+                for (int i = 0; i < this.data.StateEnteringSystems.Length; i++)
                 {
-                    data.StateEnteringSystems[i].OnStateEnter();
+                    this.data.StateEnteringSystems[i].OnStateEnter();
                 }
             }
         }
@@ -35,55 +61,55 @@
         {
             if (this.ID == ID)
             {
-                for (int i = 0; i < data.StateExitingSystems.Length; i++)
+                for (int i = 0; i < this.data.StateExitingSystems.Length; i++)
                 {
-                    data.StateExitingSystems[i].OnStateExit();
+                    this.data.StateExitingSystems[i].OnStateExit();
                 }
             }
         }
 
-        public void Init()
-        {
-            if (isInited) return;
-
-            for (int i = 0; i < data.InitingSystems.Length; i++)
-            {
-                data.InitingSystems[i].OnInit();
-            }
-
-            isInited = true;
-        }
-
         public void Update()
         {
-            for (int i = 0; i < data.UpdatingSystems.Length; i++)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
-                data.UpdatingSystems[i].OnUpdate();
+                for (int j = 0; j < StatesIncludingSubstates[i].data.UpdatingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.UpdatingSystems[j].OnUpdate();
+                }
             }
         }
 
         public void LateUpdate()
         {
-            for (int i = 0; i < data.LateUpdatingSystems.Length; i++)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
-                data.LateUpdatingSystems[i].OnLateUpdate();
+                for (int j = 0; j < StatesIncludingSubstates[i].data.LateUpdatingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.LateUpdatingSystems[j].OnLateUpdate();
+                }
             }
         }
 
         public void FixedUpdate()
         {
-            for (int i = 0; i < data.FixedUpdatingSystems.Length; i++)
+            for (int i = 0; i < StatesIncludingSubstates.Length; i++)
             {
-                data.FixedUpdatingSystems[i].OnFixedUpdate();
+                for (int j = 0; j < StatesIncludingSubstates[i].data.FixedUpdatingSystems.Length; j++)
+                {
+                    StatesIncludingSubstates[i].data.FixedUpdatingSystems[j].OnFixedUpdate();
+                }
             }
         }
 
-        public void CustomTick()
-        {
-            for (int i = 0; i < data.TickingSystems.Length; i++)
-            {
-                data.TickingSystems[i].OnCustomTick();
-            }
-        }
+        // public void CustomTick()
+        // {
+        //     for (int i = 0; i < StatesIncludingSubstates.Length; i++)
+        //     {
+        //         for (int j = 0; j < StatesIncludingSubstates[i].data.TickingSystems.Length; j++)
+        //         {
+        //             StatesIncludingSubstates[i].data.TickingSystems[j].OnCustomTick();
+        //         }
+        //     }
+        // }
     }
 }

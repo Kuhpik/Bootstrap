@@ -8,15 +8,15 @@ namespace Kuhpik
     {
         public class Data
         {
-            public IGameSystem[] StartingSystems        { get; private set; }
-            public IGameSystem[] StateEnteringSystems   { get; private set; }
-            public IGameSystem[] InitingSystems         { get; private set; }
-            public IGameSystem[] UpdatingSystems        { get; private set; }
-            public IGameSystem[] LateUpdatingSystems    { get; private set; }
-            public IGameSystem[] FixedUpdatingSystems   { get; private set; }
-            public IGameSystem[] TickingSystems         { get; private set; }
-            public IGameSystem[] StateExitingSystems    { get; private set; }
-            public IGameSystem[] GameEndingSystems      { get; private set; }
+            public IGameSystem[] GameStartingSystems;
+            public IGameSystem[] StateEnteringSystems;
+            public IGameSystem[] InitingSystems;
+            public IGameSystem[] UpdatingSystems;
+            public IGameSystem[] LateUpdatingSystems;
+            public IGameSystem[] FixedUpdatingSystems;
+            public IGameSystem[] TickingSystems;
+            public IGameSystem[] StateExitingSystems;
+            public IGameSystem[] GameEndingSystems;
 
             public Data(IEnumerable<IGameSystem> systems)
             {
@@ -25,7 +25,7 @@ namespace Kuhpik
 
             async void PrepareCollections(IEnumerable<IGameSystem> systems)
             {
-                StartingSystems         = systems.Where(x => IsOverride(x, nameof(x.OnGameStart))).ToArray();
+                GameStartingSystems     = systems.Where(x => IsOverride(x, nameof(x.OnGameStart))).ToArray();
                 StateEnteringSystems    = systems.Where(x => IsOverride(x, nameof(x.OnStateEnter))).ToArray();
                 InitingSystems          = systems.Where(x => IsOverride(x, nameof(x.OnInit))).ToArray();                
                 StateExitingSystems     = systems.Where(x => IsOverride(x, nameof(x.OnStateExit))).ToArray();
