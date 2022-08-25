@@ -68,6 +68,9 @@ public static class DependentTypesFinder
 
                 foreach (Type genericType in genericTypes)
                     FindDependentTypes(genericType, ref resultTypes);
+                
+                if (basedType.IsArray)
+                    FindDependentTypes(basedType.GetElementType(), ref resultTypes);
             }
         }
 
